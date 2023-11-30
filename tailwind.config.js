@@ -18,7 +18,10 @@ export default {
         ITEM_BG_COLOR: '#F5F5F5',
         LINE_POINT_COLOR: 'rgba(89, 153, 212, 0.25)',
         ETC_COLOR: '#464BD8',
-      }
+      },
+			dropShadow: {
+				toggle: "3px 0px 4px 0px rgba(255, 255, 255, 0.25)",
+			},
     },
   },
   plugins: [],
