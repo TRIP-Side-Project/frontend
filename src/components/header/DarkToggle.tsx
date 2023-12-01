@@ -1,5 +1,5 @@
-import Sun from "@/assets/Sun";
-import Moon from "@/assets/Moon";
+import Sun from "@/assets/svg/Sun";
+import Moon from "@/assets/svg/Moon";
 
 const DarkToggle = () => {
 	return (
