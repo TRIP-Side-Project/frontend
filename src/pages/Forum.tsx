@@ -1,3 +1,4 @@
+import Pagenation from "@/components/Pagenation";
 import HotItem from "@/components/cardItems/HotItem";
 import ForumItem from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
@@ -39,6 +40,7 @@ const Forum = () => {
 						<ForumItem key={index} />
 					))}
 				</div>
+				<Pagenation />
 			</div>
 		</div>
 	);
