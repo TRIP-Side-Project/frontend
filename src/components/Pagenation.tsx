@@ -3,7 +3,7 @@ import ArrowLeft from "@/assets/svg/ArrowLeft";
 import ArrowRight from "@/assets/svg/ArrowRight";
 
 const Pagenation = () => {
-	const [activeBtn, setActiveBtn] = useState<number | null>(null);
+	const [activeBtn, setActiveBtn] = useState<number>(1);
 	// const activeBtn = isClick ? "font-bold text-BTN_HOVER_COLOR" : "";
 	// const numBtn = `mx-2 ${activeBtn}`;
 
