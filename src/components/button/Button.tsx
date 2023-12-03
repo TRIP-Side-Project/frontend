@@ -1,9 +1,10 @@
 export interface btnAttributes {
 	width: string;
-	height: string;
+	// height: string;
 	text: string;
 	bgColor?: string;
 	border?: string;
+	position?: string;
 	type: "circle" | "square";
 }
 
@@ -12,13 +13,13 @@ interface btnTypes {
 }
 
 const Button = ({ btnInfo }: btnTypes) => {
-	const { width, height, bgColor, border, text, type } = btnInfo;
+	const { width, bgColor, border, position, text, type } = btnInfo;
 	const basicStyle = type === "circle" ? "blue_circleBtn" : `blue_squareBtn`;
 	const bg = bgColor ? `bg-${bgColor}` : "";
 	const borderStyle = border ? `border border-${border}` : "";
-	console.log(width, height, bg, borderStyle);
-	const btnStyle = `${basicStyle} `;
-
+	const float = position ? `float-${position}` : "";
+	const btnStyle = `${basicStyle} w-[${width}] ${float} ${bg} ${borderStyle} `;
+	console.log(btnStyle);
 	//circle | square
 
 	return (

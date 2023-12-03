@@ -1,9 +1,18 @@
 import Pagenation from "@/components/Pagenation";
+import Button, { btnAttributes } from "@/components/button/Button";
 import HotItem from "@/components/cardItems/HotItem";
 import ForumItem from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
 
 const Forum = () => {
+	const btnInfo: btnAttributes = {
+		width: "172px",
+		// height: "50px",
+		position: "right",
+		text: "새 글 등록하기",
+		type: "square",
+	};
+
 	return (
 		<div className="flex flex-col text-BASIC_BLACK max-w-[1200px]">
 			{/* 상단 인기 여행 아이템 섹션 */}
@@ -40,6 +49,7 @@ const Forum = () => {
 						<ForumItem key={index} />
 					))}
 				</div>
+				<Button btnInfo={btnInfo} />
 				<Pagenation />
 			</div>
 		</div>
