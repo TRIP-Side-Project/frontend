@@ -1,7 +1,6 @@
 import { SVG } from "@/types/svg";
 
 const ArrowRight = ({ fillColor, width, height }: SVG) => {
-	fillColor = "#000000";
 	return (
 		<svg
 			width={width}
