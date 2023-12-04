@@ -1,5 +1,5 @@
 import jeju1 from "@/assets/jeju1.png";
-import DestinationSvg from "@/assets/Destination";
+import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
 import SeoulImage from "@/assets/img/seoul.png";
 import GangreoungImage from "@/assets/img/gangreoung.png";
