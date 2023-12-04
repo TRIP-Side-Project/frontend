@@ -1,6 +1,12 @@
 import jeju1 from "@/assets/jeju1.png";
 import DestinationSvg from "@/assets/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
+import SeoulImage from "@/assets/img/seoul.png";
+import GangreoungImage from "@/assets/img/gangreoung.png";
+import BusanImage from "@/assets/img/busan.png";
+import JejuImage from "@/assets/img/jeju2.png";
+import AllAreasImage from "@/assets/img/seeallareas.png";
+import NextOutline from "@/assets/svg/NextOutline";
 export default function Home () {
   return(
     <>
@@ -20,8 +26,8 @@ export default function Home () {
           </div>
         </div>
       </div>
-      <div className="px-16 flex flex-col gap-20">
-        <div className="border flex flex-col justify-between align-center w-full">
+      <div className="px-16 flex flex-col gap-28">
+        <div className="flex flex-col justify-between align-center w-full">
           <h1 className="text-center text-3xl mb-14">추천 상품</h1>
           <div className="h-[230px] w-full flex justify-between">
             <div className="w-[48%] cursor-pointer shadow-md p-3 overflow-hidden relative bg-ITEM_BG_COLOR rounded-md flex gap-3 align-center">
@@ -60,30 +66,90 @@ export default function Home () {
             </div>
           </div>
         </div>
-        <div className="border flex flex-col justify-between align-center w-full">
+        <div className="flex flex-col justify-between align-center w-full">
           <h1 className="text-center text-3xl mb-14">지역별 여행</h1>
           <div className="h-[370px] w-full flex flex-col justify-between align-center">
-            <div className="h-[250px] bg-slate-400 flex justify-between">
-              <div className="w-[22%] bg-purple-100 h-full"></div>
-              <div className="w-[22%] bg-purple-100 h-full"></div>
-              <div className="w-[22%] bg-purple-100 h-full"></div>
-              <div className="w-[22%] bg-purple-100 h-full"></div>
-
+            <div className="h-[250px] flex justify-between relative">
+              <div className="absolute top-1/2 transform rotate-180 -translate-y-1/2  left-[-5%] z-10 cursor-pointer">
+                <NextOutline fillColor="#666666" width="40px" height="40px" />
+              </div>
+              <div className="absolute top-1/2 transform -translate-y-1/2 right-[-5%] z-10 cursor-pointer">
+                <NextOutline fillColor="#666666" width="40px" height="40px" />
+              </div>
+              <div className="w-[22%] h-full rounded-md relative overflow-hidden cursor-pointer">
+                <div className="w-full h-full bg-BASIC_BLACK">
+                  <img src={SeoulImage} alt="seoul image" className="w-full h-full opacity-70" />
+                </div>
+                <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">서울 | 경기</h2>
+              </div>
+              <div className="w-[22%] h-full rounded-md relative overflow-hidden">
+                <div className="w-full h-full bg-BASIC_BLACK">
+                  <img src={GangreoungImage} alt="gangreoung image" className="w-full h-full opacity-70 cursor-pointer" />
+                </div>
+                <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">강릉</h2>
+              </div>
+              <div className="w-[22%] h-full rounded-md relative overflow-hidden">
+                <div className="w-full h-full bg-BASIC_BLACK">
+                  <img src={BusanImage} alt="busan image" className="w-full h-full opacity-70 cursor-pointer" />
+                </div>
+                <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">부산</h2>
+              </div>
+              <div className="w-[22%] h-full rounded-md relative overflow-hidden">
+                <div className="w-full h-full bg-BASIC_BLACK">
+                  <img src={JejuImage} alt="jeju image" className="w-full h-full opacity-70 cursor-pointer" />
+                </div>
+                <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">제주</h2>
+              </div>
             </div>
-            <div className="h-[100px] bg-slate-700">d</div>
+            <div className="relative cursor-pointer">
+              <div className="w-full h-[100px] bg-BASIC_BLACK rounded-md overflow-hidden">
+                <img src={AllAreasImage} alt="see all areas of korea" className="w-full h-full opacity-70" />
+              </div>
+              <h2 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-BASIC_WHITE text-2xl">여행지가 아직 정해지지 않았다면?</h2>
+              <div className="flex absolute top-1/2 transform -translate-y-1/2 right-5 text-LIGHT_GRAY_COLOR">
+                <span>전국보기</span>
+                <div className="">
+                  <ArrowRight fillColor="#aaaaaa" width="15px" height="24px" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="border flex flex-col justify-between align-center w-full">
+        <div className="flex flex-col justify-between align-center w-full">
           <h1 className="text-center text-3xl mb-14">테마별 여행</h1>
-          <div className="h-[200px] w-full bg-slate-400 flex justify-between">
-            <div className="w-[30%] h-full bg-rose-300"></div>
-            <div className="w-[30%] h-full bg-rose-300"></div>
-            <div className="w-[30%] h-full bg-rose-300"></div>
+          <div className="h-[200px] w-full flex justify-between">
+            <div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
+              <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">눈꽃여행</h2>
+            </div>
+            <div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
+              <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">바닷가여행</h2>
+            </div>
+            <div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
+              <h2 className="text-BASIC_WHITE absolute bottom-2 right-2 text-2xl">산길여행</h2> 
+            </div>
           </div>
-        </div>
-        <div className="w-full h-[500px] bg-emerald-400 flex flex-col justify-between align-center w-full">
-          <h1 className="text-center text-3xl mb-14">여행후기</h1>
-          <div className="border w-2/5 h-[400px]">내용</div>
+        </div>   
+      </div>
+      <div className="px-16 pt-10 pb-16 w-full bg-cyan-100 flex flex-col justify-between align-center w-full">
+        <h1 className="text-center text-3xl mb-14">여행후기</h1>
+        <div className="flex align-center justify-between">
+          <div className="w-2/5">
+            <h2 className="text-2xl font-bold">대충여행후기제목</h2>
+            <div className="w-full h-0 border border-BASIC_BLACK my-5" />
+            <p className="text-xl">대충여행후기내용임 그렇다니까요 반박시 반박 불가 어허</p>
+            <div className="text-LIGHT_GRAY_COLOR text-base my-2">
+              <span className="mr-2">#제주</span>
+              <span className="mr-2">#힐링</span>
+            </div>
+            <div className="text-LIGHT_GRAY_COLOR mt-5 text-base flex cursor-pointer">
+              <p>자세히보기</p>
+              <ArrowRight fillColor="#aaaaaa" width="15" height="24" />
+            </div>
+          </div>
+          <div className="w-1/2 flex justify-between align-center">
+            <div className="w-[45%] h-[300px] bg-rose-300"></div>
+            <div className="w-[45%] h-[300px] bg-rose-300"></div>
+          </div>
         </div>
       </div>
     </div>
