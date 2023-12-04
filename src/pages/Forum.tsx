@@ -1,5 +1,5 @@
 import Pagenation from "@/components/Pagenation";
-import Button, { btnAttributes } from "@/components/button/Button";
+import Button, { btnAttributes } from "@/common/category/button/Button";
 import HotItem from "@/components/cardItems/HotItem";
 import ForumItem from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";

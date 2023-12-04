@@ -7,11 +7,14 @@ const HotItem = () => {
 			<div className="">
 				<img src={Temp} alt="temp Image" className="object-cover h-48 w-62" />
 			</div>
-			<div className="relative flex-1 text-xl font-bold">
-				<p className="z-50 my-3"> 최고의 경주 여행!</p>
-				<HotBedge />
-				<span className="absolute left-0 inline p-2 bottom-1.5 realtive bg-SPECIAL_COLOR z-10"></span>
+			<div className="flex-1 text-xl font-bold">
+				<div className="relative inline-block my-3">
+					<p className="relative z-50">최고의 경주 여행!</p>
+					<span className="absolute bottom-0 left-0 w-full p-2 opacity-75 realtive bg-SPECIAL_COLOR"></span>
+					<HotBedge />
+				</div>
 			</div>
+
 			<div className="text-sm font-light text-right text-BASIC_BLACK">
 				작성자
 			</div>
