@@ -1,6 +1,7 @@
 import Train from "@/assets/svg/Train";
 import Button, { btnAttributes } from "@/common/button/Button";
 import Bookmark from "@/components/Bookmark/Bookmark";
+import ProductCardItems from "@/components/productCardItems/ProductCardItems";
 import { useState } from "react";
 
 export default function ProductListDetail () {
@@ -26,7 +27,7 @@ export default function ProductListDetail () {
   // 관련상품
   // 상태 타입 지정 해야함
 
-  const [isTrain, setIsTrain] = useState(false);
+  const [isTrain, setIsTrain] = useState(true);
   const [isBus, setIsBus] = useState(false);
   
   const handleisTrain = (): void => {
@@ -58,7 +59,7 @@ export default function ProductListDetail () {
 
   return (
     <>
-    <div className="px-28 mt-20">
+    <div className="px-28 pt-20 bg-BASIC_WHITE">
       <div className="border-b pb-10 border-LIGHT_GRAY_COLOR mb-20 flex h-[400px] align-center relative gap-10">
         <div className="w-[400px] h-[300px] bg-rose-300 rounded-md">
           {/* 이미지 들어갈 자리 */}
@@ -91,7 +92,7 @@ export default function ProductListDetail () {
         </div>
         <Bookmark />
       </div>
-      <div>
+      <div className="mb-20">
         <h1 className="text-3xl font-bold mb-5">관련 교통편</h1>
         <div className="flex justify-between align-center text-lg font-bold">
           <div className="text-center cursor-pointer w-[120px] flex flex-row rounded-md h-fit overflow-hidden bg-LINE_POINT_COLOR">
@@ -122,7 +123,7 @@ export default function ProductListDetail () {
           </div>
           <Button btnInfo={searchBtnInfo} />
         </div>
-        <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mb-20 mt-5 flex justify-center align-center">
+        <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center align-center">
           <div className="flex flex-col justify-around">
             <h3 className="text-xl font-bold">여행 일정을 공유해주세요!</h3>
             <div className="w-fit mx-auto">
@@ -131,9 +132,13 @@ export default function ProductListDetail () {
           </div>
         </div>
       </div>
-      <div className="text-3xl font-bold mb-5">
+      <div className="pb-20">
         <h1 className="text-3xl font-bold mb-5">관련상품</h1>
-        <div className="w-full h-[400px] bg-green-300"></div>
+        <div className="w-full flex justify-between align-center">
+          {Array.from(Array(3), (_, index) => (
+            <ProductCardItems key={index} />
+          ))}
+        </div>
       </div>
     </div>
     </>
