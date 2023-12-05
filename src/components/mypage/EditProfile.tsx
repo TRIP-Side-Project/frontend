@@ -1,5 +1,4 @@
-// import MyPageModal from "@/components/modal/MypageModal";
-import BasicModal, { ModalAttributes } from "../modal/BasicModal";
+import MyPageModal from "@/components/modal/MypageModal";
 import { useState } from "react";
 import Temp from "@/assets/img/temp.png";
 import Setting from "@/assets/svg/Setting";
@@ -12,11 +11,6 @@ const EditProfile = () => {
 	const handleClick = () => {
 		setIsClick(!isClick);
 		// console.log("클릭");
-	};
-
-	const modal: ModalAttributes = {
-		content: "게시글을 삭제하시겠습니까",
-		isClick: handleClick,
 	};
 
 	return (
@@ -56,8 +50,7 @@ const EditProfile = () => {
 				</div>
 			</div>
 
-			{/* {isClick && <MyPageModal isClick={handleClick} />} */}
-			{isClick && <BasicModal modal={modal} />}
+			{isClick && <MyPageModal isClick={handleClick} />}
 		</>
 	);
 };
