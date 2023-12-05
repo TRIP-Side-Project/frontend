@@ -1,3 +1,4 @@
+import BackToList from "@/assets/svg/BackToList";
 import Train from "@/assets/svg/Train";
 import Button, { btnAttributes } from "@/common/button/Button";
 import Bookmark from "@/components/Bookmark/Bookmark";
@@ -60,6 +61,10 @@ export default function ProductListDetail () {
   return (
     <>
     <div className="px-28 pt-20 bg-BASIC_WHITE">
+      <div className="flex gap-1 mb-5 cursor-pointer align-top">
+        <p>목록 돌아가기</p>
+        <BackToList fillColor="#333333" width="20px" height="20px" />
+      </div>
       <div className="border-b pb-10 border-LIGHT_GRAY_COLOR mb-20 flex h-[400px] align-center relative gap-10">
         <div className="w-[400px] h-[300px] bg-rose-300 rounded-md">
           {/* 이미지 들어갈 자리 */}
