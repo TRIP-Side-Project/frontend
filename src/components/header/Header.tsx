@@ -56,10 +56,6 @@ const Header = () => {
 						<button
 							className={navBtn}
 							onBlur={onBlur}
-							onMouseEnter={() => {
-								setIsOpen(true);
-								setNavType(true);
-							}}
 							onClick={() => openNav("region")}
 						>
 							지역별 여행
@@ -67,10 +63,6 @@ const Header = () => {
 						<button
 							className={navBtn}
 							onBlur={onBlur}
-							onMouseEnter={() => {
-								setIsOpen(true);
-								setNavType(false);
-							}}
 							onClick={() => openNav(null)}
 						>
 							테마별 여행
