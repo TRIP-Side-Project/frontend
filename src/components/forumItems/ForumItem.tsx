@@ -1,27 +1,16 @@
-// import Editor from "@/assets/svg/Editor";
-import { useState } from "react";
+import Category from "@/common/category/Category";
 
 const ForumItem = () => {
 	const propsBg = "BAISC_WHITE";
 	const itemWrapper = `w-full whitespace-nowrap h-[70px] py-3 items-center flex flex-row 
 	justify-between text-lg font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-${propsBg} 
 	hover:font-bold hover:cursor-pointer`;
-	const [isEditor] = useState("user");
-	//bg-LINE_POINT_COLOR
-	//bg-BASIC_WHITE
+	const isEditor = "editor";
 
 	return (
 		<div className={itemWrapper}>
 			<div className="grid place-items-center basis-1/6 bg-text-POINT_COLOR">
-				{isEditor === "editor" ? (
-					<div className="w-24 px-3 py-1 text-sm text-center rounded-2xl bg-SPECIAL_COLOR">
-						에디터 추천
-					</div>
-				) : (
-					<div className="w-24 px-3 py-1 text-sm text-center border-2 rounded-2xl border-MAIN_COLOR">
-						여행 후기
-					</div>
-				)}
+				<Category isEditor={isEditor} />
 			</div>
 			<div className="px-3 basis-3/6">
 				에디터 소개하는 강릉 여행 ~ <span className="text-sm">(5)</span>

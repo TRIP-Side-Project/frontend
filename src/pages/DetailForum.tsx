@@ -1,13 +1,12 @@
 import Heart from "@/assets/svg/Heart";
+import Category from "@/common/category/Category";
 import Comment from "@/components/comment/Comment";
 
 const DetailForum = () => {
 	return (
 		<div className="flex flex-col min-w-[1200px] max-w-[1200px] text-BASIC_BLACK mb-20">
 			<div className="flex flex-row justify-between py-2 mt-20 border-b border-BASIC_BLACK">
-				<button className="px-3 py-1 text-sm bg-red-400 rounded-full">
-					에디터 추천
-				</button>
+				<Category isEditor={"editor"} />
 
 				<div className="flex flex-row divide-x divide-LIGHT_GRAY_COLOR">
 					<p className="px-5">MD.Ari</p>
