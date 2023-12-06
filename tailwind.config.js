@@ -11,6 +11,7 @@ export default {
 				BTN_COLOR: "#5999D4",
 				BTN_HOVER_COLOR: "#2C6CA6",
 				LIGHT_GRAY_COLOR: "#AAAAAA",
+				DARK_GRAY_COLOR: `#666666`,
 				BASIC_WHITE: "#FAFAFA",
 				ITEM_BG_COLOR: "#F5F5F5",
 				LINE_POINT_COLOR: "rgba(89, 153, 212, 0.25)",
