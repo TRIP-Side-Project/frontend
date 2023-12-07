@@ -1,5 +1,6 @@
 export type SVG = {
-	fillColor: string;
+	fillColor?: string;
+	innerColor?: string;
 	width: string;
 	height: string;
 	onClick?: () => void;
