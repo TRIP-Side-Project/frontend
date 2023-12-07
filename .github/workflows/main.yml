@@ -34,4 +34,4 @@ jobs:
         run: aws s3 sync --region ap-northeaset-2 build s3://triptrip-project --delete
 
       - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-inavlidation --distribution-id ${{ DEV_AWS_DISTRIBUTION_ID }}
+        run: aws cloudfront create-inavlidation --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }}
