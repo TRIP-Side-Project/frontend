@@ -24,13 +24,13 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ AWS_ACCESS_KEY_ID }}
-          aws-secre-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secre-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
       - name: Deploy to S3
         env: 
-          aws-access-key-id: ${{ AWS_ACCESS_KEY_ID }}
-          aws-secre-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secre-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: aws s3 sync --region ap-northeaset-2 build s3://triptrip-project --delete
 
       - name: Invalidate CloudFront Cache
