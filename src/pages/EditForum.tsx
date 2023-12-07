@@ -1,7 +1,22 @@
-// import {useForm} from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { btnAttributes } from "@/common/button/Button";
 
+type Inputs = {
+	title: string;
+	tag: string;
+	content: string;
+};
+
 const EditForum = () => {
+	const {
+		register,
+		handleSubmit,
+		// watch,
+		formState: { errors },
+	} = useForm<Inputs>();
+	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+	// console.log(watch("title"));
+
 	const titleStyle = "font-bold text-lg my-1";
 	const inputStyle =
 		"bg-BASIC_WHITE rounded-xl border px-3 py-1 font-semibold text-sm border-BASIC_BLACK h-9 w-full";
@@ -20,28 +35,30 @@ const EditForum = () => {
 		type: "square",
 	};
 	return (
-		<div className="flex flex-col min-w-[1200px] text-BASIC_BLACK ">
+		<div className="flex flex-col w-[1200px] text-BASIC_BLACK ">
 			<div className="">
 				<div className="my-5 text-3xl font-bold">여행 후기</div>
 				<p className="my-3 text-sm font-base">
 					여러분의 즐거웠던 여행 후기를 공유해주세요!
 				</p>
 			</div>
-			<form className="my-3">
-				<div className="mb-8">
+			<form className="my-3" onSubmit={handleSubmit(onSubmit)}>
+				{/* <div className="mb-8">
 					<div className={titleStyle}>카테고리</div>
 					<select className={inputStyle}>
 						<option value="review">여행 후기</option>
 						<option value="editor">에디터 추천</option>
 					</select>
-				</div>
+				</div> */}
 				<div className="mb-8 ">
 					<div className={titleStyle}>제목</div>
 					<input
 						type="text"
 						placeholder="제목을 입력해주세요."
 						className={inputStyle}
-					></input>
+						defaultValue=""
+						{...register("title")}
+					/>
 				</div>
 				<div className="mb-8">
 					<div className={titleStyle}>태그</div>
@@ -49,11 +66,18 @@ const EditForum = () => {
 						type="text"
 						placeholder="태그를 입력해주세요"
 						className={inputStyle}
-					></input>
+						{...register("tag", { required: true })}
+					/>
 				</div>
 				<div className="mb-8 bg-yellow-200">
-					<div className={titleStyle}>본문</div>
+					<div id="editor" className={titleStyle}></div>
 				</div>
+
+				{errors.title && <span>This failed is required </span>}
+				<input
+					type="submit"
+					className="px-3 py-2 bg-pink-400 cursor-pointer hover:bg-pink-200 "
+				/>
 			</form>
 			<div className="flex flex-row justify-end">
 				<Button btnInfo={cancelBtn} />
