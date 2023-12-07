@@ -35,5 +35,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: aws s3 sync --region ap-northeast-2 ./dist s3://triptrip-project --delete
 
-      - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }} --paths '/*'
+      - name: Cloudfront invalidation
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }} \
+            --paths "/*"
