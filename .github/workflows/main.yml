@@ -6,26 +6,32 @@ on:
 jobs:
   build:
     runs-on : ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
     steps:
       - name: Chckout source code.
         uses: actions/checkout@v3
+      - name: Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm --force ci
+      - name: Build Production.
+        run: CI-false npm run build --if-present
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ AWS_ACCESS_KEY_ID }}
+          aws-secre-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Deploy to S3
+        env: 
+          aws-access-key-id: ${{ AWS_ACCESS_KEY_ID }}
+          aws-secre-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
+        run: aws s3 sync --region ap-northeaset-2 build s3://triptrip-project --delete
 
-      - name: Build
-        run: npm run build
-        working-directory: ./
-
-      - name: Sync Bucket
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_EC2_METADATA_DISABLED: true
-        run: |
-          aws s3 cp \
-            --recursive \
-            --region ap-northeaset-2 \
-            dist s3://triptrip-project/ \
-        working-directory: ./
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-inavlidation --distribution-id ${{ DEV_AWS_DISTRIBUTION_ID }}
