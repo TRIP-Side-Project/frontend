@@ -1,0 +1,32 @@
+name: dev
+on: 
+  push: 
+    branches:
+      - main
+jobs:
+  build:
+    runs-on : macOS
+    steps:
+      - name: Chckout source code.
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./
+
+      - name: Build
+        run: npm run build
+        working-directory: ./
+
+      - name: Sync Bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: true
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeaset-2 \
+            dist s3:arn:aws:s3:::triptrip-project \
+            --delete
+        working-directory: ./
