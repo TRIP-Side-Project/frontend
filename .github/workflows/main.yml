@@ -27,5 +27,6 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeaset-2 \
-            dist s3:arn:aws:s3:::triptrip-project \
+            dist s3://triptrip-project/ \
+            --delete
         working-directory: ./
