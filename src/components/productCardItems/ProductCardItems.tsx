@@ -3,7 +3,7 @@ import jeju from "@/assets/img/jeju1.png";
 export default function ProductCardItems () {
   return (
     <>
-    <div className="bg-ITEM_BG_COLOR w-72 h-[360px] p-3 rounded-md shadow-md">
+    <div className="bg-ITEM_BG_COLOR w-72 h-[360px] p-3 rounded-md shadow-md cursor-pointer">
             <div className="w-full h-[220px] relative bg-rose-100 rounded-md overflow-hidden">
               <div className="w-full h-full">
                 <img src={jeju} alt="jeju image" className="w-full h-full"/>
