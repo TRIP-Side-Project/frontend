@@ -8,9 +8,9 @@ const Search = () => {
 		setSearch(event.target.value);
 	};
 	return (
-		<div className="relative flex flex-row items-center px-2 py-1 mx-auto my-5 border rounded-2xl bg-BASIC_WHITE w-96 min-w-fit h-fit border-BASIC_BLACK">
+		<div className="relative flex flex-row items-center px-2 py-1 border rounded-xl bg-BASIC_WHITE w-96 min-w-fit h-fit border-BASIC_BLACK">
 			<div className="relative">
-				<SearchIcon fillColor={"#AAAAAA"} width={"27px"} height={"27px"} />
+				<SearchIcon fillColor={"#AAAAAA"} width={"20px"} height={"20px"} />
 			</div>
 			<input
 				type="text"
