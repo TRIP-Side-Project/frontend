@@ -151,11 +151,11 @@ const Signup = () => {
               </div>
               <div>
                 <SignupInfo title={"비밀번호"} type={"password"} value={signupInfo.password} name={"password"} placeholder={"비밀번호"} changeValue={changeNameValue} />
-                {!vaildPw && <p className="text-ETC_COLOR text-xs">! 영문, 숫자로 이루어진 8자리 이상 입력해주세요.</p>}
+                {!vaildPw && <p className="text-ETC_COLOR text-xs pt-1">! 영문, 숫자로 이루어진 8자리 이상 입력해주세요.</p>}
               </div>
               <div>
                 <SignupInfo title={"비밀번호 재입력"} type={"password"} value={signupInfo.passwordCheck} name={"passwordCheck"} placeholder={"비밀번호 재입력"} changeValue={changeNameValue} />
-                {!correctPw && <p className="text-POINT_COLOR text-xs">! 비밀번호가 일치하지 않습니다.</p>}
+                {!correctPw && <p className="text-POINT_COLOR text-xs pt-1">! 비밀번호가 일치하지 않습니다.</p>}
               </div>
               {/* <Button btnInfo={submitBtnInfo} /> */}
               <button type="submit" className="text-xl font-bold rounded-md py-3 bg-BTN_COLOR text-BASIC_WHITE">회원가입</button>

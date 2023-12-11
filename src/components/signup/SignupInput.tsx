@@ -10,7 +10,7 @@ export interface signupInputProps {
 
 }
 const SignupInfo = ({title, type, value, name, placeholder, changeValue }:signupInputProps) => {
-  const signupInfoStyle = "border w-full rounded-md h-12 pl-3 border-BASIC_BLACK";
+  const signupInfoStyle = "border w-full rounded-md h-12 pl-3 border-BASIC_BLACK focus:outline-MAIN_COLOR";
   return (
     <div>
       <h2 className="pb-2">{title}<span className="text-ETC_COLOR"> *</span></h2>
