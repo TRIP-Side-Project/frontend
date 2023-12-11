@@ -3,6 +3,7 @@ import Button, { btnAttributes } from "@/common/button/Button";
 import HotItem from "@/components/cardItems/HotItem";
 import ForumItem from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
+import { Link } from "react-router-dom";
 
 const Forum = () => {
 	const btnInfo: btnAttributes = {
@@ -19,13 +20,17 @@ const Forum = () => {
 			<div className="my-5 text-3xl font-bold">여행 후기</div>
 			<div className="grid grid-cols-3 m-auto gap-x-36">
 				{Array.from(Array(3), (_, index) => (
-					<HotItem key={index} />
+					<Link to={'/forum/detail'}>
+						<HotItem key={index} />
+					</Link>
 				))}
 			</div>
 
 			{/* 게시판 목록 및 검색 창 섹션 */}
 			<div className="flex flex-col mt-10">
-				<Search />
+				<div className="mx-auto my-5">
+					<Search />
+				</div>
 				<div className="">
 					<div className="flex flex-row justify-between my-3 text-LIGHT_GRAY_COLOR">
 						<div className="divide-x divide-solid divide-BASIC_BLACK">
@@ -46,7 +51,9 @@ const Forum = () => {
 						<li className="basis-1/6">좋아요</li>
 					</ul>
 					{Array.from(Array(8), (_, index) => (
-						<ForumItem key={index} />
+						<Link to={'/forum/detail'}>
+							<ForumItem key={index} />
+						</Link>
 					))}
 				</div>
 				<Button btnInfo={btnInfo} />
