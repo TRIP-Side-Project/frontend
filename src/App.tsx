@@ -11,6 +11,7 @@ import DetailForum from "./pages/DetailForum";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
+import Test from "./components/Test";
 
 function App() {
 	return (
@@ -27,6 +28,7 @@ function App() {
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
+					<Route path="/test" element={<Test />} />
 				</Routes>
 			</Layout>
 			<Footer />

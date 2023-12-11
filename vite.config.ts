@@ -13,4 +13,13 @@ export default defineConfig({
 			include: ["./src/**/*.ts", "./src/**/*.tsx"],
 		}),
 	],
+	server: {
+		proxy: {
+			"/proxy": {
+				target: "http://49.50.165.53",
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/proxy/, ""),
+			},
+		},
+	},
 });
