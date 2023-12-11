@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { btnAttributes } from "@/common/button/Button";
+import TextEditor from "@/components/TextEditor";
 
 type Inputs = {
 	title: string;
@@ -70,7 +71,10 @@ const EditForum = () => {
 					/>
 				</div>
 				<div className="mb-8 bg-yellow-200">
-					<div id="editor" className={titleStyle}></div>
+					<div id="editor" className={titleStyle}>
+						본문
+					</div>
+					<TextEditor />
 				</div>
 
 				{errors.title && <span>This failed is required </span>}
