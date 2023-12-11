@@ -1,8 +1,9 @@
 // import Button, { btnAttributes } from "@/common/button/Button";
+import SignupInfo from "@/components/signup/signupInput";
 import axios from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 
-export default function Signup () {
+const Signup = () => {
   // 버튼
   // const emailCheckBtnInfo: btnAttributes = {
 	// 	width: "140px",
@@ -141,25 +142,19 @@ export default function Signup () {
                   </div>
                 </div>
               </div>
+              <SignupInfo title={"이름"} type={"text"} value={signupInfo.userName} name={"userName"} placeholder={"이름"} changeValue={changeNameValue} />
               <div>
-                <h2 className="pb-2">이름<span className="text-ETC_COLOR">*</span></h2>
-                <input type="text" value={signupInfo.userName} name="userName" onChange={changeNameValue} placeholder="이름" className="border w-full rounded-md h-12 pl-3 border-BASIC_BLACK"></input>
-              </div>
-              <div>
-                <h2 className="pb-2">이메일<span className="text-ETC_COLOR">*</span></h2>
-                <input type="text" value={signupInfo.email} name="email" onChange={changeNameValue} placeholder="이메일" className="border w-full rounded-md h-12 pl-3 border-BASIC_BLACK"></input>
+                <SignupInfo title={"이메일"} type={"text"} value={signupInfo.email} name={"email"} placeholder={"이메일"} changeValue={changeNameValue} />
                 <div className="text-right mt-2">
                   <button className="rounded-md bg-BTN_COLOR px-2 py-1 text-BASIC_WHITE">이메일 인증하기</button>
                 </div>
               </div>
               <div>
-                <h2 className="pb-2">비밀번호<span className="text-ETC_COLOR">*</span></h2>
-                <input type="password" value={signupInfo.password} name="password" onChange={changeNameValue} placeholder="비밀번호" className="border w-full rounded-md h-12 pl-3 border-BASIC_BLACK"></input>
+                <SignupInfo title={"비밀번호"} type={"password"} value={signupInfo.password} name={"password"} placeholder={"비밀번호"} changeValue={changeNameValue} />
                 {!vaildPw && <p className="text-ETC_COLOR text-xs">! 영문, 숫자로 이루어진 8자리 이상 입력해주세요.</p>}
               </div>
               <div>
-                <h2 className="pb-2">비밀번호 재입력<span className="text-ETC_COLOR">*</span></h2>
-                <input type="password" value={signupInfo.passwordCheck} name="passwordCheck" onChange={changeNameValue} placeholder="비밀번호를 다시 입력해주세요." className="border w-full rounded-md h-12 pl-3 border-BASIC_BLACK"></input>
+                <SignupInfo title={"비밀번호 재입력"} type={"password"} value={signupInfo.passwordCheck} name={"passwordCheck"} placeholder={"비밀번호 재입력"} changeValue={changeNameValue} />
                 {!correctPw && <p className="text-POINT_COLOR text-xs">! 비밀번호가 일치하지 않습니다.</p>}
               </div>
               {/* <Button btnInfo={submitBtnInfo} /> */}
@@ -172,3 +167,5 @@ export default function Signup () {
     </>
   )
 }
+
+export default Signup;
