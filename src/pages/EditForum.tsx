@@ -36,7 +36,7 @@ const EditForum = () => {
 		type: "square",
 	};
 	return (
-		<div className="flex flex-col w-[1200px] text-BASIC_BLACK ">
+		<div className="flex flex-col w-full text-BASIC_BLACK ">
 			<div className="">
 				<div className="my-5 text-3xl font-bold">여행 후기</div>
 				<p className="my-3 text-sm font-base">

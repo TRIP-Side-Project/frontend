@@ -19,7 +19,7 @@ const Mypage = () => {
 	};
 
 	return (
-		<div className="flex flex-col w-[1200px] mb-20 text-BASIC_BLACK">
+		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK">
 			{/* <div className="inset-x-0 top-0 z-0 w-screen h-44 bg-POINT_COLOR"></div> */}
 			<EditProfile />
 			<div className="flex flex-row mt-5 ">

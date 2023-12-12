@@ -124,7 +124,7 @@ const Signup = () => {
 
 	return (
 		<>
-			<div className="flex justify-center w-screen align-center">
+			<div className="flex justify-center w-full align-center">
 				<div className="flex justify-center w-3/5 my-32 border border-BASIC_BLACK align-center">
 					<div className="flex flex-col justify-between w-2/3 gap-10 py-12 mx-auto align-center">
 						<h1 className="text-xl font-bold text-center">회원가입</h1>
