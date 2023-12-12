@@ -1,22 +1,9 @@
-// import Button, { btnAttributes } from "@/common/button/Button";
 import SignupInfo from "@/components/signup/SignupInput";
 import axios from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const Signup = () => {
 	// 버튼
-	// const emailCheckBtnInfo: btnAttributes = {
-	// 	width: "140px",
-	// 	position: "right",
-	// 	text: "이메일 인증하기",
-	// 	type: "square",
-	// };
-	// const submitBtnInfo: btnAttributes = {
-	// 	width: "140px",
-	// 	position: "cen",
-	// 	text: "회원가입",
-	// 	type: "square",
-	// };
 
 	// Input 에 글 작성을 감지해서 퍼센트 바 width 값 설정
 
@@ -71,25 +58,25 @@ const Signup = () => {
 	// 비밀번호 유효성 검사
 	const [vaildPw, setVaildPw] = useState(false);
 	const regex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+	const signupInfoPw = signupInfo.password;
 	useEffect(() => {
 		if (regex.test(signupInfo.password)) {
 			setVaildPw(true);
 		} else {
 			setVaildPw(false);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [signupInfo.password]);
+	}, [signupInfoPw]);
 
 	// 비밀번호 재입력 확인
 	const [correctPw, setCorrectPw] = useState(false);
+	const signupInfoPwCheck = signupInfo.passwordCheck;
 	useEffect(() => {
 		if (signupInfo.password === signupInfo.passwordCheck) {
 			setCorrectPw(true);
 		} else {
 			setCorrectPw(false);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [signupInfo.passwordCheck]);
+	}, [signupInfoPwCheck]);
 
 	// 프로필 이미지 업로드
 	const [imageFile, setImageFile] = useState<string>("");
@@ -224,7 +211,6 @@ const Signup = () => {
 										</p>
 									)}
 								</div>
-								{/* <Button btnInfo={submitBtnInfo} /> */}
 								<button
 									type="submit"
 									className="py-3 text-xl font-bold rounded-md bg-BTN_COLOR text-BASIC_WHITE"
