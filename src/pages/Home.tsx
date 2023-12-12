@@ -13,15 +13,18 @@ import NextOutline from "@/assets/svg/NextOutline";
 import RegionProductTheme from "@/components/regionProductTheme/RegionProductTheme";
 
 export default function Home() {
-
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
-	
+
 	return (
 		<>
-			<div className="flex flex-col gap-20 bg-BASIC_WHITE">
+			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE">
 				<div className="w-screen h-[750px] relative">
-					<div> 
-						<img src={jeju1} alt="jeju image" className="absolute top-0 left-0 w-full h-full opacity-70" />
+					<div>
+						<img
+							src={jeju1}
+							alt="jeju image"
+							className="absolute top-0 left-0 w-full h-full opacity-70"
+						/>
 					</div>
 					<img
 						src={jeju1}
@@ -72,8 +75,14 @@ export default function Home() {
 								<div className="absolute top-1/2 transform -translate-y-1/2 right-[-4%] z-10 cursor-pointer">
 									<NextOutline fillColor="#666666" width="40px" height="40px" />
 								</div>
-								<RegionProductTheme region={"서울 | 경기"} regionImgUrl={SeoulImage} />
-								<RegionProductTheme region={"강릉"} regionImgUrl={GangreoungImage} />
+								<RegionProductTheme
+									region={"서울 | 경기"}
+									regionImgUrl={SeoulImage}
+								/>
+								<RegionProductTheme
+									region={"강릉"}
+									regionImgUrl={GangreoungImage}
+								/>
 								<RegionProductTheme region={"부산"} regionImgUrl={BusanImage} />
 								<RegionProductTheme region={"제주"} regionImgUrl={JejuImage} />
 							</div>

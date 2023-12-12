@@ -7,9 +7,10 @@ const DetailForum = () => {
 	const navigator = useNavigate();
 	const backButton = () => {
 		navigator(-1);
-	}
+	};
 	return (
-		<div className="flex flex-col min-w-[1200px] max-w-[1200px] text-BASIC_BLACK mb-20">
+		// <div className="flex flex-col lg:min-w-[1200px] md:min-w-[900px] text-BASIC_BLACK mb-20">
+		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK bg-BASIC_WHITE">
 			<div className="flex flex-row justify-between py-2 mt-20 border-b border-BASIC_BLACK">
 				<Category isEditor={"editor"} />
 
@@ -20,7 +21,10 @@ const DetailForum = () => {
 				</div>
 			</div>
 			<div className="flex flex-row items-center justify-between py-2">
-				<div className="font-sm text-BASIC_BLACK cursor-pointer hover:font-bold" onClick={backButton}>
+				<div
+					className="cursor-pointer font-sm text-BASIC_BLACK hover:font-bold"
+					onClick={backButton}
+				>
 					여행 후기 &gt; 에디터 소개하는 강릉 여행
 				</div>
 				<div className="flex flex-row items-center">

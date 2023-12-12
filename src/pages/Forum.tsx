@@ -15,12 +15,12 @@ const Forum = () => {
 	};
 
 	return (
-		<div className="flex flex-col text-BASIC_BLACK max-w-[1200px]">
+		<div className="flex flex-col w-full text-BASIC_BLACK">
 			{/* 상단 인기 여행 아이템 섹션 */}
 			<div className="my-5 text-3xl font-bold">여행 후기</div>
 			<div className="grid grid-cols-3 m-auto gap-x-36">
 				{Array.from(Array(3), (_, index) => (
-					<Link to={'/forum/detail'}>
+					<Link to={"/forum/detail"}>
 						<HotItem key={index} />
 					</Link>
 				))}
@@ -51,7 +51,7 @@ const Forum = () => {
 						<li className="basis-1/6">좋아요</li>
 					</ul>
 					{Array.from(Array(8), (_, index) => (
-						<Link to={'/forum/detail'}>
+						<Link to={"/forum/detail"}>
 							<ForumItem key={index} />
 						</Link>
 					))}
