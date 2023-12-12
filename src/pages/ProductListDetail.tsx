@@ -3,7 +3,7 @@ import Train from "@/assets/svg/Train";
 import Button, { btnAttributes } from "@/common/button/Button";
 import Bookmark from "@/components/Bookmark/Bookmark";
 import ProductCardItems from "@/components/productCardItems/ProductCardItems";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductListDetail () {
@@ -22,9 +22,18 @@ export default function ProductListDetail () {
     type: "square"
   }
 
+  // style
+  const locationStyle = "ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1 font-light focus:outline-MAIN_COLOR";
+
   // 달력
   const today = new Date();
-  const todayDate = today.toISOString().substring(0,10);
+  const todayDate = today.toISOString().substring(0, 10);
+  const [selectedDate, setSelectedDate] = useState(todayDate);
+  const handleDateChange = (event:ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(event.target.value)
+  }
+  const currentHour = ('0' + today.getHours()).slice(-2);
+  console.log(currentHour);
 
   // 관련상품
   // 상태 타입 지정 해야함
@@ -53,16 +62,26 @@ export default function ProductListDetail () {
     }
     setIsBus(!isBus);
   }
-
-  // 교통편
   
-  const [depature, setDepature] = useState('');
-  const [arrival, setArrival] = useState('');
+  interface locationInfo {
+    depature: string;
+    arrival: string;
+  }
 
-  // const changeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   console.log(event.target.value);
-  // }
-  // console.log(depature);
+  const [location, setLocation] = useState<locationInfo>({
+    depature: "",
+    arrival: "",
+  });
+
+  const changeLocationValue = (event:ChangeEvent<HTMLInputElement>) => {
+    setLocation({
+      ...location,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  // 시간
+  // const [selectedTime, setSelectedTime] = useState<string>('');
 
   // 뒤로가기 버튼
   const navigate = useNavigate();
@@ -123,11 +142,11 @@ export default function ProductListDetail () {
           <div className="flex flex-col gap-5">
             <div>
               <span>출발</span>
-              <input type="text" value={depature} onChange={(event) => {setDepature(event.target.value)}} className="ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1 font-light" />
+              <input type="text" name="depature" value={location.depature} onChange={changeLocationValue} className={locationStyle} />
             </div>
             <div>
               <span>도착</span>
-              <input type="text" value={arrival} onChange={(event) => {setArrival(event.target.value)}} className="ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1"/>
+              <input type="text" name="arrival" value={location.arrival} onChange={changeLocationValue} className={locationStyle} />
             </div>
           </div>
           <div className="flex flex-col gap-5">
@@ -135,11 +154,22 @@ export default function ProductListDetail () {
               {/* 디테일한 디자인 생각 좀 해보고 구현할게요. */}
               {/* 날짜 선택 스크립트 구현 예정 */}
               <span>날짜</span>
-              <input type="date" value={todayDate} className="ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1"/>
+              <input type="date" value={selectedDate} onChange={handleDateChange} className={locationStyle}/>
             </div>
             <div>
               <span>시간</span>
-              <input type="text" className="ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1"/>
+              <input type="text" className={locationStyle} />
+              <div className={locationStyle}>
+                {currentHour + ' 시'}
+              </div>
+              <div>
+                <ul>
+                  <li>0 시</li>    
+                  <li>1 시</li>    
+                  <li>2 시</li>    
+                  <li>3 시</li>    
+                </ul>    
+              </div>
             </div>
           </div>
           <Button btnInfo={searchBtnInfo} />
