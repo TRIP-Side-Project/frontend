@@ -7,7 +7,7 @@ interface RegionProductInfo {
 const RegionProductTheme: React.FC<RegionProductInfo> = ({region, regionImgUrl}) => {
   return (
     <>
-    <div className="w-[22%] rounded-md relative overflow-hidden cursor-pointer">
+    <div className="w-[300px] md:w-[22%] rounded-md relative overflow-hidden cursor-pointer">
 			<div className="w-full h-full bg-BASIC_BLACK">
 				<img
 					src={regionImgUrl}
