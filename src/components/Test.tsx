@@ -14,10 +14,11 @@ const Test = () => {
 			.get("/api/articles")
 			.then((res) => {
 				console.log(res);
-				setData(data);
+				setData(res.data);
 			})
 			.catch((err) => console.log(err));
 	};
+	console.log(data);
 	const handleStartBtn = () => {
 		console.log("버튼 클릭");
 		getTempData();
