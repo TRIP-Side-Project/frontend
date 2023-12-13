@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface navSelectType {
 	trip: boolean | undefined;
 }
@@ -12,7 +14,9 @@ const Topnav = ({ trip }: navSelectType) => {
 		<div className={navContainer}>
 			{trip === true ? (
 				<>
-					<button className={navStyle}>전체</button>
+					<Link to={'/products'}>
+						<button className={navStyle}>전체</button>
+					</Link>
 					<button className={navStyle}>서울 | 경기</button>
 					<button className={navStyle}>강릉</button>
 					<button className={navStyle}>부산</button>
@@ -23,7 +27,9 @@ const Topnav = ({ trip }: navSelectType) => {
 				</>
 			) : (
 				<>
-					<button className={navStyle}>전체</button>
+					<Link to={'/products'}>
+						<button className={navStyle}>전체</button>
+					</Link>
 					<button className={navStyle}>눈꽃여행</button>
 					<button className={navStyle}>바닷가여행</button>
 					<button className={navStyle}>산길여행</button>

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #FAFAFA;
+}
+
 @layer components {
     .blue_squareBtn {
         @apply py-2 px-5 my-3 mx-2 text-center bg-MAIN_COLOR text-BASIC_WHITE hover:bg-BTN_HOVER_COLOR rounded-lg font-medium;

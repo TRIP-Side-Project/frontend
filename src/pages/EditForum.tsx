@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { btnAttributes } from "@/common/button/Button";
+import TextEditor from "@/components/TextEditor";
 
 type Inputs = {
 	title: string;
@@ -35,7 +36,7 @@ const EditForum = () => {
 		type: "square",
 	};
 	return (
-		<div className="flex flex-col w-[1200px] text-BASIC_BLACK ">
+		<div className="flex flex-col w-full text-BASIC_BLACK ">
 			<div className="">
 				<div className="my-5 text-3xl font-bold">여행 후기</div>
 				<p className="my-3 text-sm font-base">
@@ -70,7 +71,10 @@ const EditForum = () => {
 					/>
 				</div>
 				<div className="mb-8 bg-yellow-200">
-					<div id="editor" className={titleStyle}></div>
+					<div id="editor" className={titleStyle}>
+						본문
+					</div>
+					<TextEditor />
 				</div>
 
 				{errors.title && <span>This failed is required </span>}

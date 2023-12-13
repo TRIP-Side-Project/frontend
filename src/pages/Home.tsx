@@ -1,3 +1,6 @@
+import ProductCardItems from "@/components/productCardItems/ProductCardItems";
+import RecommendProductItems from "@/components/recommendProductItems/RecommendProductItems";
+
 import jeju1 from "@/assets/img/jeju1.png";
 import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
@@ -7,18 +10,44 @@ import BusanImage from "@/assets/img/busan.png";
 import JejuImage from "@/assets/img/jeju2.png";
 import AllAreasImage from "@/assets/img/seeallareas.png";
 import NextOutline from "@/assets/svg/NextOutline";
+import RegionProductTheme from "@/components/regionProductTheme/RegionProductTheme";
+import { useEffect, useState } from "react";
+
 export default function Home() {
+	const sectionTitle = "text-3xl text-center mb-14 font-bold";
+	const themeTitleStyle = "absolute text-xl md:text-2xl text-BASIC_WHITE bottom-2 right-2";
+
+	// 동적 화면 사이즈 구하기
+	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
+	// 전역에서 관리해야할듯
+	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+	useEffect(() => {
+    const resizeListener = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", resizeListener);
+  });
+
+  // console.log("innerWidth", innerWidth);
+
 	return (
 		<>
-			<div className="flex flex-col gap-20 ">
-				<div className="w-screen h-[750px] bg-cyan-100 relative">
+			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE">
+				<div className="w-full h-[750px] relative">
+					<div>
+						<img
+							src={jeju1}
+							alt="jeju image"
+							className="absolute top-0 left-0 w-full h-full opacity-70"
+						/>
+					</div>
 					<img
 						src={jeju1}
 						alt="jejuImage"
 						className="absolute w-4/5 transform -translate-x-1/2 -translate-y-1/2 h-3/4 top-1/2 left-1/2"
 					/>
-					<div className="">
-						<div className="px-10 bg-[rgba(0,0,0,0.4)] w-1/3 h-full z-1 absolute top-0 right-0 flex flex-col justify-center align-center gap-4">
+					<div>
+						<div className="px-10 bg-[rgba(0,0,0,0.4)] w-full md:w-1/3 h-full z-1 absolute top-0 right-0 flex flex-col justify-center gap-4">
 							<h1 className="my-5 text-2xl text-BASIC_WHITE">출발지</h1>
 							<div className="border-b text-BASIC_WHITE ">
 								<span className="inline-block">
@@ -42,147 +71,60 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col px-16 gap-28">
-					<div className="flex flex-col justify-between w-full align-center">
-						<h1 className="text-3xl text-center mb-14">추천 상품</h1>
-						<div className="h-[230px] w-full flex justify-between">
-							<div className="w-[48%] cursor-pointer shadow-md p-3 overflow-hidden relative bg-ITEM_BG_COLOR rounded-md flex gap-3 align-center">
-								<div className="absolute top-0 px-2 py-3 bg-red-500 left-5 text-BASIC_WHITE rounded-b-md">
-									<p>HOT</p>
-								</div>
-								<img
-									src={jeju1}
-									alt="jeju image"
-									className="rounded-lg w-[250px] h-full"
-								/>
-								<div>
-									<h2 className="text-2xl text-BASIC_BLACK">Gyeong-ju</h2>
-									<div className="absolute top-5 right-1">
-										<ArrowRight
-											fillColor="#cccccc"
-											width="20px"
-											height="20px"
-										/>
-									</div>
-									<p className="pt-2 text-sm text-LIGHT_GRAY_COLOR">
-										@아리아리랑 투어
-									</p>
-								</div>
-								<div className="absolute bottom-0 right-0 flex flex-col gap-1">
-									<p className="pr-3 text-right text-BASIC_BLACK">
-										₩ 1,000,000원
-									</p>
-									<p className="px-5 py-1 text-2xl bg-yellow-400 rounded-tl-2xl text-BASIC_WHITE ">
-										# A.K.A 경주
-									</p>
-								</div>
-							</div>
-							<div className="w-[48%] cursor-pointer shadow-md p-3 overflow-hidden relative bg-ITEM_BG_COLOR rounded-md flex gap-3 align-center">
-								<div className="absolute top-0 px-2 py-3 bg-red-500 left-5 text-BASIC_WHITE rounded-b-md">
-									<p>HOT</p>
-								</div>
-								<img
-									src={jeju1}
-									alt="jeju image"
-									className="rounded-lg w-[250px] h-full"
-								/>
-								<div>
-									<h2 className="text-2xl text-BASIC_BLACK">Gyeong-ju</h2>
-									<div className="absolute top-5 right-1">
-										<ArrowRight
-											fillColor="#cccccc"
-											width="20px"
-											height="20px"
-										/>
-									</div>
-									<p className="pt-2 text-sm text-LIGHT_GRAY_COLOR">
-										@아리아리랑 투어
-									</p>
-								</div>
-								<div className="absolute bottom-0 right-0 flex flex-col gap-1">
-									<p className="pr-3 text-right text-BASIC_BLACK">
-										₩ 1,000,000원
-									</p>
-									<p className="px-5 py-1 text-2xl bg-yellow-400 rounded-tl-2xl text-BASIC_WHITE ">
-										# A.K.A 경주
-									</p>
-								</div>
-							</div>
+				<div className="flex flex-col gap-28">
+					<div className="flex flex-col justify-between w-full">
+						<h1 className={sectionTitle}>추천 상품</h1>
+						{innerWidth > 768 &&
+							<div className="h-[230px] w-full flex justify-between">
+							{Array.from(Array(2), (_, index) => (
+								<RecommendProductItems key={index} />
+							))}
 						</div>
+						}
+						{innerWidth <= 768 &&
+							<div className="h-[230px] w-full flex justify-center">
+								<RecommendProductItems />
+							</div>
+						}
 					</div>
-					<div className="flex flex-col justify-between w-full align-center">
-						<h1 className="text-3xl text-center mb-14">지역별 여행</h1>
-						<div className="h-[370px] w-full flex flex-col justify-between align-center">
-							<div className="h-[250px] flex justify-between relative">
-								<div className="absolute top-1/2 transform rotate-180 -translate-y-1/2  left-[-5%] z-10 cursor-pointer">
+					<div className="flex flex-col justify-between w-full">
+						<h1 className={sectionTitle}>지역별 여행</h1>
+						<div className="h-[370px] w-full flex flex-col justify-between">
+							<div className="h-[250px] flex justify-center md:justify-between relative">
+								<div className="absolute top-1/2 transform rotate-180 -translate-y-1/2 left-0 z-10 cursor-pointer">
 									<NextOutline fillColor="#666666" width="40px" height="40px" />
 								</div>
-								<div className="absolute top-1/2 transform -translate-y-1/2 right-[-5%] z-10 cursor-pointer">
+								<div className="absolute top-1/2 transform -translate-y-1/2 right-0 z-10 cursor-pointer">
 									<NextOutline fillColor="#666666" width="40px" height="40px" />
 								</div>
-								<div className="w-[22%] h-full rounded-md relative overflow-hidden cursor-pointer">
-									<div className="w-full h-full bg-BASIC_BLACK">
-										<img
-											src={SeoulImage}
-											alt="seoul image"
-											className="w-full h-full opacity-70"
-										/>
-									</div>
-									<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-										서울 | 경기
-									</h2>
-								</div>
-								<div className="w-[22%] h-full rounded-md relative overflow-hidden">
-									<div className="w-full h-full bg-BASIC_BLACK">
-										<img
-											src={GangreoungImage}
-											alt="gangreoung image"
-											className="w-full h-full cursor-pointer opacity-70"
-										/>
-									</div>
-									<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-										강릉
-									</h2>
-								</div>
-								<div className="w-[22%] h-full rounded-md relative overflow-hidden">
-									<div className="w-full h-full bg-BASIC_BLACK">
-										<img
-											src={BusanImage}
-											alt="busan image"
-											className="w-full h-full cursor-pointer opacity-70"
-										/>
-									</div>
-									<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-										부산
-									</h2>
-								</div>
-								<div className="w-[22%] h-full rounded-md relative overflow-hidden">
-									<div className="w-full h-full bg-BASIC_BLACK">
-										<img
-											src={JejuImage}
-											alt="jeju image"
-											className="w-full h-full cursor-pointer opacity-70"
-										/>
-									</div>
-									<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-										제주
-									</h2>
-								</div>
+								{innerWidth > 768 &&
+								<>
+									<RegionProductTheme region={"서울 | 경기"} regionImgUrl={SeoulImage} />
+									<RegionProductTheme	region={"강릉"}	regionImgUrl={GangreoungImage} />
+									<RegionProductTheme region={"부산"} regionImgUrl={BusanImage} />
+									<RegionProductTheme region={"제주"} regionImgUrl={JejuImage} />
+								</>
+								}
+								{innerWidth <= 768 &&
+								<>
+									<RegionProductTheme region={"서울 | 경기"} regionImgUrl={SeoulImage} />
+								</>
+								}
 							</div>
 							<div className="relative cursor-pointer">
-								<div className="w-full h-[100px] bg-BASIC_BLACK rounded-md overflow-hidden">
+								<div className="w-full h-[100px] bg-BASIC_BLACK md:rounded-md overflow-hidden">
 									<img
 										src={AllAreasImage}
 										alt="see all areas of korea"
 										className="w-full h-full opacity-70"
 									/>
 								</div>
-								<h2 className="absolute text-2xl transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-BASIC_WHITE">
+								<h2 className="text-lg md:text-2xl absolute top-1/2 left-1/3 md:left-1/2 transform -translate-y-1/2 -translate-x-1/4 md:-translate-x-1/2 text-BASIC_WHITE">
 									여행지가 아직 정해지지 않았다면?
 								</h2>
-								<div className="absolute flex transform -translate-y-1/2 top-1/2 right-5 text-LIGHT_GRAY_COLOR">
+								<div className="absolute flex bottom-2 right-2 md:transform md:-translate-y-1/2 md:top-1/2 md:right-5 text-LIGHT_GRAY_COLOR">
 									<span>전국보기</span>
-									<div className="">
+									<div>
 										<ArrowRight
 											fillColor="#aaaaaa"
 											width="15px"
@@ -193,31 +135,48 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col justify-between w-full align-center">
-						<h1 className="text-3xl text-center mb-14">테마별 여행</h1>
-						<div className="h-[200px] w-full flex justify-between">
-							<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
-								<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-									눈꽃여행
-								</h2>
+					<div className="flex flex-col justify-between w-full">
+						<h1 className={sectionTitle}>테마별 여행</h1>
+						{innerWidth > 768 &&
+							<div className="h-[200px] w-full flex justify-between">
+								<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative cursor-pointer">
+									<h2 className={themeTitleStyle}>
+										눈꽃여행
+									</h2>
+								</div>
+								<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative cursor-pointer">
+									<h2 className={themeTitleStyle}>
+										바닷가여행
+									</h2>
+								</div>
+								<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative cursor-pointer">
+									<h2 className={themeTitleStyle}>
+										산길여행
+									</h2>
+								</div>
 							</div>
-							<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
-								<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-									바닷가여행
-								</h2>
+						}
+						{innerWidth <= 768 &&
+							<div className="relative h-[200px] w-full flex justify-center md:justify-between">
+								<div className="absolute top-1/2 transform rotate-180 -translate-y-1/2 left-0 z-10 cursor-pointer">
+									<NextOutline fillColor="#666666" width="40px" height="40px" />
+								</div>
+								<div className="absolute top-1/2 transform -translate-y-1/2 right-0 z-10 cursor-pointer">
+									<NextOutline fillColor="#666666" width="40px" height="40px" />
+								</div>
+								<div className="w-[250px] md:w-[30%] h-full bg-MAIN_COLOR rounded-md relative cursor-pointer">
+									<h2 className={themeTitleStyle}>
+										눈꽃여행
+									</h2>
+								</div>
 							</div>
-							<div className="w-[30%] h-full bg-MAIN_COLOR rounded-md relative">
-								<h2 className="absolute text-2xl text-BASIC_WHITE bottom-2 right-2">
-									산길여행
-								</h2>
-							</div>
-						</div>
+						}
 					</div>
 				</div>
-				<div className="flex flex-col justify-between w-full px-16 pt-10 pb-16 bg-cyan-100 align-center">
-					<h1 className="text-3xl text-center mb-14">여행후기</h1>
-					<div className="flex justify-between align-center">
-						<div className="w-2/5">
+				<div className="flex flex-col justify-between w-full px-16 pt-10 pb-16 mb-10 bg-cyan-100">
+					<h1 className={sectionTitle}>여행후기</h1>
+					<div className="md:flex md:justify-between">
+						<div className="w-full md:w-2/5">
 							<h2 className="text-2xl font-bold">대충여행후기제목</h2>
 							<div className="w-full h-0 my-5 border border-BASIC_BLACK" />
 							<p className="text-xl">
@@ -227,14 +186,22 @@ export default function Home() {
 								<span className="mr-2">#제주</span>
 								<span className="mr-2">#힐링</span>
 							</div>
-							<div className="flex mt-5 text-base cursor-pointer text-LIGHT_GRAY_COLOR">
+							<div className="flex justify-end md:justify-start mt-5 text-base cursor-pointer text-LIGHT_GRAY_COLOR">
 								<p>자세히보기</p>
 								<ArrowRight fillColor="#aaaaaa" width="15" height="24" />
 							</div>
 						</div>
-						<div className="flex justify-between w-1/2 align-center">
-							<div className="w-[45%] h-[300px] bg-rose-300"></div>
-							<div className="w-[45%] h-[300px] bg-rose-300"></div>
+						<div className="mt-10 md:ml-10 flex justify-center md:justify-between md:w-[500px] md:gap-2">
+							{innerWidth > 768 &&
+								<>
+									{Array.from(Array(2), (_, index) => (
+										<ProductCardItems key={index} />
+									))}
+								</>
+							}
+							{innerWidth <= 768 &&
+									<ProductCardItems />
+							}
 						</div>
 					</div>
 				</div>
