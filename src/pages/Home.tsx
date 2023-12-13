@@ -19,6 +19,7 @@ export default function Home() {
 
 	// 동적 화면 사이즈 구하기
 	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
+	// 전역에서 관리해야할듯
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	useEffect(() => {
     const resizeListener = () => {
