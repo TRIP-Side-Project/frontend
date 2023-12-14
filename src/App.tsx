@@ -14,6 +14,7 @@ import Mypage from "./pages/Mypage";
 import Test from "./components/Test";
 
 function App() {
+	window.localStorage.setItem("memberId", "1");
 	return (
 		<BrowserRouter>
 			<Header />
