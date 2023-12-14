@@ -1,5 +1,6 @@
 import BasicModal, { ModalAttributes } from "@/components/modal/BasicModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export interface btnAttributes {
 	width: string;
@@ -10,7 +11,7 @@ export interface btnAttributes {
 	border?: string;
 	position?: string;
 	type: "circle" | "square";
-	//상위에서 로그인 상태 일 때 실행되어야 할 함수
+	//로그인 상태 일 때 실행되어야 할 함수
 	onClick?: (() => void) | void | undefined;
 	//현재 로그인 상태 여부 확인
 	isLogin?: boolean;
@@ -37,8 +38,8 @@ const Button = ({ btnInfo }: btnTypes) => {
 		onClick,
 		isLogin,
 		loginBtnType,
-		modal,
 	} = btnInfo;
+	let { modal } = btnInfo;
 
 	//console.log(btnInfo);
 	const basicStyle = type === "circle" ? "blue_circleBtn" : `blue_squareBtn`;
@@ -47,7 +48,19 @@ const Button = ({ btnInfo }: btnTypes) => {
 	const float = position ? `float-${position}` : "";
 	const tColor = textColor ? `text-${textColor}` : "";
 	const btnStyle = `${basicStyle} w-[${width}] ${float} ${bg} ${borderStyle} ${tColor} `;
-	//console.log(btnStyle);
+	const navigate = useNavigate();
+	const linkLogin = () => {
+		navigate("/login");
+	};
+	const loginModal = {
+		content: "로그인 한 사용자만 사용할 수 있습니다. 로그인 하시겠습니까?",
+		noClick: () => setIsOpen(false),
+		yesClick: () => {
+			linkLogin(), console.log("로그인 페이지로 이동");
+		},
+	};
+	//입력 받는 모달이 있으면 해당 modal 속성 사용
+	modal = modal ? modal : loginModal;
 
 	//noClick : 모달 닫는 함수 추가
 	const modifiedModal: ModalAttributes = {
@@ -59,7 +72,7 @@ const Button = ({ btnInfo }: btnTypes) => {
 	// console.log(modifiedModal);
 	const checkLogin = () => {
 		if (isLogin) {
-			//로그인 상태 인 경우 원하는 함수 설정
+			//로그인 상태였을 때 실행하기를 원하는 함수 설정
 			console.log("로그인 된 상태로 함수 실행!");
 			onClick?.();
 		} else {
@@ -72,7 +85,6 @@ const Button = ({ btnInfo }: btnTypes) => {
 	const handleButtonClick = () => {
 		if (loginBtnType && modal) {
 			// 로그인 확인용 버튼으로 설정했을 경우
-
 			console.log("로그인 확인용 버튼 클릭 ");
 			checkLogin();
 		} else {

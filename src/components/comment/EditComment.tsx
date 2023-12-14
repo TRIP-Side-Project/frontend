@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
 import Temp2 from "@/assets/img/seeallareas.png";
 import Button, { btnAttributes } from "@/common/button/Button";
-import { ModalAttributes } from "../modal/BasicModal";
-// import axios from "axios";
 
 export interface ParentInfo {
 	// articleId: number;
@@ -21,12 +19,6 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	const tempLogin = true; //임시 전역 로그인 상태
 	console.log(parentInfo[0], parentInfo[1]);
 	console.log(editData);
-
-	//모달 -> Yes -> 로그인 이동
-	const navigate = useNavigate();
-	const linkLogin = () => {
-		navigate("/login");
-	};
 
 	//새 댓글 등록하는 함수
 	const sendNewComment = async () => {
@@ -54,16 +46,10 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 			// });
 			console.log("댓글 수정하는 기능 작동!");
 			console.log(`수정 : ${isComment}`);
-			//이거 학고 페이지 업데이트?
+			//이거 하고 페이지 리랜더링 되는지 확인 필요.
 		} catch (err) {
 			throw new Error(`댓글 수정 버튼 에러 ${err}`);
 		}
-	};
-
-	//모달에 필요한 props
-	const modal: ModalAttributes = {
-		content: "로그인한 사용자만 작성 가능합니다. 이동하시겠습니까?",
-		yesClick: () => linkLogin(),
 	};
 
 	//버튼에 필요한 props
@@ -75,7 +61,6 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 
 		isLogin: tempLogin,
 		loginBtnType: true,
-		modal: modal,
 		onClick: isEditMode ? amendComment : sendNewComment,
 	};
 
