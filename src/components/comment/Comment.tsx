@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import EditComment from "./EditComment";
-import CommentItem from "./commentItem";
+import CommentItem from "./CommentItem";
 
 import ArrowComment from "@/assets/svg/ArrowComment";
 
