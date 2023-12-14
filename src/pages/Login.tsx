@@ -1,7 +1,8 @@
 import Google from "@/assets/svg/Google";
 import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
+import axios from "axios";
 
 export default function Login () {
 
@@ -24,6 +25,25 @@ export default function Login () {
       [event.target.name]: event.target.value,
     })
   }
+  // FormEventHandler<HTMLFormElement>
+  console.log(loginInfo);
+  const postLogin:MouseEventHandler<HTMLButtonElement>  = async (event) => {
+    event.preventDefault();
+
+    try {
+        await axios.post('/proxy/api/members/join', {
+          "email": loginInfo.email,
+          "password": loginInfo.password,
+          "nickname": "메롱",
+        });
+        // const data = response.data;
+        console.log("버튼 클릭!");
+        
+    } catch (error) {
+        console.error('요청 실패:', error);
+    }
+  }
+
 
   return(
     <>
@@ -35,7 +55,7 @@ export default function Login () {
             <div className="w-full flex flex-col items-center justify-between gap-5">
               <input type="text" value={loginInfo.email} name="email" onChange={changeLoginValue} placeholder="이메일" className={loginInputClass}></input>
               <input type="password" value={loginInfo.password} name="password" placeholder="비밀번호" onChange={changeLoginValue} className={loginInputClass}></input>
-              <button className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
+              <button onClick={postLogin} className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
             </div>
           </form>
           <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
