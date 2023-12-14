@@ -80,7 +80,7 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	};
 
 	return (
-		<div className="flex flex-row items-center justify-between h-32 px-2 py-5 my-2 border-2 rounded-lg border-MAIN_COLOR">
+		<div className="flex flex-row items-center justify-between flex-1 h-32 px-2 py-5 my-2 border-2 rounded-lg border-MAIN_COLOR">
 			<img src={Temp2} alt="userImage" className="rounded-full w-14 h-14" />
 
 			<form className="flex items-center justify-center flex-1 h-full my-2 ml-3">
