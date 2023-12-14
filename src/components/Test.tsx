@@ -11,7 +11,7 @@ const Test = () => {
 
 	const getTempData = () => {
 		axios
-			.get("/api/articles")
+			.get("https://triptrip.site/api/articles")
 			.then((res) => {
 				console.log(res);
 				setData(res.data);
