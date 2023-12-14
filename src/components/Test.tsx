@@ -11,7 +11,7 @@ const Test = () => {
 
 	const getTempData = () => {
 		axios
-			.get("http://49.50.165.53/api/articles")
+			.get("https://triptrip.site/api/articles")
 			.then((res) => {
 				console.log(res);
 				setData(res.data);
