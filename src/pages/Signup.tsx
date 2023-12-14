@@ -1,6 +1,8 @@
-import SignupInfo from "@/components/signup/SignupInput";
 import axios from "axios";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from "react";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+import SignupInfo from "@/components/signup/SignupInput";
 
 const Signup = () => {
 	// 버튼
@@ -12,6 +14,7 @@ const Signup = () => {
 		email: string;
 		password: string;
 		passwordCheck: string;
+		imageFile: Blob | string;
 	}
 
 	const [signupInfo, setSignupInfo] = useState<SignupData>({
@@ -19,6 +22,7 @@ const Signup = () => {
 		email: "",
 		password: "",
 		passwordCheck: "",
+		imageFile: "",
 	});
 
 	const target = useRef<HTMLDivElement>(null);
@@ -59,53 +63,101 @@ const Signup = () => {
 	const [vaildPw, setVaildPw] = useState(false);
 	const regex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 	// const signupInfoPw = signupInfo.password;
+	const isValidPassword = regex.test(signupInfo.password);
 	useEffect(() => {
-		if (regex.test(signupInfo.password)) {
+		// const { password } = signupInfo;
+		if (isValidPassword) {
 			setVaildPw(true);
 		} else {
 			setVaildPw(false);
 		}
-	}, [signupInfo.password]);
+	}, [signupInfo.password, isValidPassword]);
 
 	// 비밀번호 재입력 확인
-	const [correctPw, setCorrectPw] = useState(false);
+	const [isCorrectPw, setisCorrectPw] = useState(false);
 	useEffect(() => {
-		if (signupInfo.password === signupInfo.passwordCheck) {
-			setCorrectPw(true);
+		const passwordsMatch = signupInfo.password === signupInfo.passwordCheck;
+		if (passwordsMatch) {
+			setisCorrectPw(true);
 		} else {
-			setCorrectPw(false);
+			setisCorrectPw(false);
 		}
-	}, [signupInfo.password, signupInfo.passwordCheck]);
+	}, [signupInfo.password, signupInfo.passwordCheck, setisCorrectPw]);
 
 	// 프로필 이미지 업로드
 	const [imageFile, setImageFile] = useState<string>("");
 	const handleImageFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files !== null) {
+		if (event.target.files) {
 			const selectedFile = event.target.files[0];
+			setSignupInfo({
+				...signupInfo,
+				imageFile: selectedFile
+			});
 			if (selectedFile) {
 				const blobURL = URL.createObjectURL(selectedFile);
 				setImageFile(blobURL); // Blob URL을 상태로 설정
 			}
 		}
 	};
+	console.log(signupInfo);
 
-	// 회원가입 제출
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault;
+	// 이메일 인증
+	const [isVaildEmail, setIsVaildEmail] = useState(false); // 이메일 유효성 검증 상태
+	const handleEmailCheck: MouseEventHandler<HTMLButtonElement> = (event) => {
+		event.preventDefault();
 
-		const fetchData = async () => {
+		const sendEmail = async () => {
 			try {
-				const response = await axios.post("https://api.example.com/data", {
-					// 전달할 내용
-					// 통신 연결 시 확인 및 코드 구축
-					name: signupInfo.userName,
-				});
+				const response = await axios.post(`${BASE_URL}/api/members/send-email/${signupInfo.email}`);
+				setIsVaildEmail(true);
 				console.log(response);
+				
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
 		};
-		fetchData();
+		sendEmail();
+	}
+	console.log(isVaildEmail);
+	console.log(isValidPassword);
+	console.log(isCorrectPw);
+
+	// 회원가입 제출
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		// formData.append('email', signupInfo.email);
+		// formData.append('password', signupInfo.password);
+		// formData.append('nickname', signupInfo.userName);
+		// formData.append('profileImg', signupInfo.imageFile);
+		const formData = {
+			"joinRequest": {
+				"email": signupInfo.email,
+				"password": signupInfo.password,
+				"nickname": signupInfo.userName,
+			},
+			"profileImg": null // 포함 안 시켜서 보내도 O
+		}
+		console.log(formData);
+
+		if(isVaildEmail && isValidPassword && isCorrectPw){
+			const fetchData = async () => {
+				try {
+					const response = await axios.post(`${BASE_URL}/api/members/join`, 
+						formData,
+						{
+							headers: {
+								'Content-Type': 'application/json'
+								// 'multipart/form-data' -> 이미지 파일 보낼 때 타입
+							}
+						}
+					);
+					console.log(response);
+				} catch (error) {
+					console.error("Error fetching data:", error);
+				}
+			};
+			fetchData();
+		}
 	};
 
 	return (
@@ -175,7 +227,7 @@ const Signup = () => {
 										changeValue={changeNameValue}
 									/>
 									<div className="mt-2 text-right">
-										<button className="px-2 py-1 rounded-md bg-BTN_COLOR text-BASIC_WHITE">
+										<button onClick={handleEmailCheck} className="px-2 py-1 rounded-md bg-BTN_COLOR text-BASIC_WHITE">
 											이메일 인증하기
 										</button>
 									</div>
@@ -204,7 +256,7 @@ const Signup = () => {
 										placeholder={"비밀번호 재입력"}
 										changeValue={changeNameValue}
 									/>
-									{!correctPw && (
+									{!isCorrectPw && (
 										<p className="pt-1 text-xs text-POINT_COLOR">
 											! 비밀번호가 일치하지 않습니다.
 										</p>
