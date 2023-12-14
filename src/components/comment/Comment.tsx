@@ -1,43 +1,45 @@
-import { useState } from "react";
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-
-import Temp from "@/assets/img/temp.png";
-import DeleteBtn from "@/common/button/DeleteBtn";
-import AmendBtn from "@/common/button/AmendBtn";
-import HideComment from "@/components/comment/HideComment";
-import EditComment from "./EditComment";
-import ArrowComment from "@/assets/svg/ArrowComment";
 import axios from "axios";
 
-interface CommentReTypes {
+import EditComment from "./EditComment";
+import CommentItem from "./commentItem";
+
+import ArrowComment from "@/assets/svg/ArrowComment";
+
+export interface CommentReTypes {
 	articleId: number;
 	children: null;
 	commentId: number;
 	content: string;
 	createdAt: string;
 	parentId: number;
-	writeId: number;
+	writerId: number;
 	writerNickname: string;
 }
 
-interface CommentTypes {
+export interface CommentTypes {
 	articleId: number;
-	children: CommentReTypes[];
+	children: CommentReTypes[] | null;
 	commentId: number;
 	content: string;
 	createdAt: string;
-	parendId: null;
+	parentId: null | number;
 	writerId: number;
 	writerNickname: string;
 }
 
 const Comment = () => {
-	const [isHide, setIsHide] = useState(false);
-	const [is2CHide, setIs2CHide] = useState(false);
-	const [editCommitId, setEditCommentId] = useState<number | null>(null);
-	//여기 하던 중 isLenth 여부 설정
-	const isLength = 3;
-	// const [commentData, setCommentData] = useState<null | CommentTypes[]>(null);
+	const [isHide, setIsHide] = useState<boolean>(false);
+	//props로 articleId 넘겨 받아야 함
+	const TarticleId = 1;
+
+	//대댓글 숨김 관리 -> Props -> CommentItem
+	const handleHideComment = () => {
+		setIsHide(!isHide);
+	};
+
 	const getComments = async () => {
 		try {
 			const response = await axios.get("http://localhost:5000/comments");
@@ -53,114 +55,45 @@ const Comment = () => {
 	});
 	console.log(data);
 
-	const handleHideComment = () => {
-		setIsHide(!isHide);
-	};
+	//중복 데이터 메모이제이션
+	const memoizedData = useMemo(() => data, [data]);
 
-	const handle2CHide = (commentId: number) => {
-		setEditCommentId(commentId);
-		setIs2CHide(!is2CHide);
-	};
-
-	if (isPending) return <span>Loading...</span>;
+	if (isPending)
+		return (
+			<span className="h-full mx-auto mt-5 text-xl font-semibol">
+				데이터를 불러오는 중입니다. 잠시만요!
+			</span>
+		);
 	if (isError) return <span>Error: {error.message}</span>;
 
 	return (
 		<div className="py-5 ">
-			{/* 댓글 등록 파트  */}
-			<EditComment />
+			{/* 새 댓글 등록 파트  */}
+			<EditComment parentInfo={[TarticleId, null, null]} />
 			{/* 댓글 내용 파트 */}
 			<div className="py-3 mt-10 border-y-2 border-LIGHT_GRAY_COLOR">
-				{data &&
-					data.map((comment: CommentTypes) => (
-						<div key={comment.commentId}>
-							<div
-								key={`comment-actions-${comment.commentId}`}
-								className="flex flex-row justify-between px-2 py-2 "
-							>
-								<img
-									src={Temp}
-									alt="userImage"
-									className="rounded-full w-14 h-14"
-								/>
-								<div className="flex-1 w-9/12 ml-3 text-BASIC_BLACK">
-									<div className="text-lg font-semibold">
-										{comment.writerNickname}
-									</div>
-									<div className="">{comment.content}</div>
-								</div>
-								<div className="flex flex-row ">
-									<div className="mx-3 text-sm text-DARK_GRAY_COLOR">
-										{comment.createdAt}
-									</div>
-									<AmendBtn />
-									<DeleteBtn />
-								</div>
-							</div>
-							{/* 대댓글 - 숨김- */}
-							<div className="flex flex-row my-3">
-								{comment.children.length !== 0 ? (
-									<HideComment
-										isHide={isHide}
-										onClick={handleHideComment}
-										isLength={isLength}
-									/>
-								) : (
-									<></>
-								)}
-								<button
-									key={`comment-button-${comment.commentId}`}
-									className="ml-5 text-sm text-LIGHT_GRAY_COLOR hover:text-ETC_COLOR pointer-cursor"
-									onClick={() => handle2CHide(comment.commentId)}
-								>
-									{is2CHide && editCommitId === comment.commentId
-										? "댓글 취소"
-										: "댓글 쓰기"}
-								</button>
-							</div>
-
-							{/* 대댓글 */}
-							{isHide ? (
-								<div className="ml-10 bg-LINE_POINT_COLOR ">
-									{comment.children.length !== 0 &&
-										comment.children.map((el: CommentReTypes) => (
-											<div
-												key={el.commentId}
-												className="flex flex-row justify-between px-2 py-2 my-1 border-b border-b-LIGHT_GRAY_COLOR"
-											>
-												<ArrowComment width={"25px"} height={"25px"} />
-												<img
-													src={Temp}
-													alt="userImage"
-													className="ml-3 rounded-full w-14 h-14"
-												/>
-												<div className="flex-1 w-9/12 ml-3 text-BASIC_BLACK">
-													<div className="text-lg font-semibold">
-														{el.writeId}
-													</div>
-													<div className="">{el.content}</div>
-												</div>
-												<div className="flex flex-row ">
-													<div className="mx-3 text-sm text-DARK_GRAY_COLOR">
-														{el.createdAt}
-													</div>
-													<AmendBtn />
-													<DeleteBtn />
-												</div>
-											</div>
-										))}
-								</div>
-							) : (
-								<></>
-							)}
-
-							{/* 댓글 등록 파트  */}
-							{is2CHide && editCommitId === comment.commentId ? (
-								<EditComment />
-							) : (
-								<></>
-							)}
-						</div>
+				{memoizedData &&
+					memoizedData.map((comment: CommentTypes) => (
+						<>
+							<CommentItem
+								datas={comment}
+								key={comment.commentId}
+								isHide={isHide}
+								setIsHide={handleHideComment}
+								type={"origin"}
+							/>
+							{isHide && comment.children !== null
+								? comment.children.map((childComment: CommentTypes) => (
+										<div
+											key={`child-comment-${childComment.commentId}`}
+											className="flex flex-row justify-between px-2 ml-10 "
+										>
+											<ArrowComment width={"25px"} height={"25px"} />
+											<CommentItem datas={childComment} type={"child"} />
+										</div>
+								  ))
+								: null}
+						</>
 					))}
 			</div>
 		</div>
