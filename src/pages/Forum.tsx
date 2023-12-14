@@ -1,18 +1,49 @@
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
 import Pagenation from "@/components/Pagenation";
 import Button, { btnAttributes } from "@/common/button/Button";
 import HotItem from "@/components/cardItems/HotItem";
-import ForumItem from "@/components/forumItems/ForumItem";
+import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
-import { Link } from "react-router-dom";
+import FindList from "@/assets/svg/FindList";
 
 const Forum = () => {
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const navigate = useNavigate();
+	//새 글 등록하기 버튼 navigator 연결
+	const navigateNewForum = () => {
+		navigate("/forum/edit");
+	};
+
 	const btnInfo: btnAttributes = {
 		width: "172px",
 		// height: "50px",
 		position: "right",
 		text: "새 글 등록하기",
 		type: "square",
+		isLogin: false,
+		loginBtnType: true,
+		onClick: () => navigateNewForum,
 	};
+
+	const getForumLists = async () => {
+		try {
+			const response = await axios.get(`${BASE_URL}/api/articles `);
+			return response.data;
+		} catch (err) {
+			throw new Error(`게시판 목록 에러 ${err}`);
+		}
+	};
+
+	const { isPending, isError, data, error } = useQuery({
+		queryKey: ["forumLists"],
+		queryFn: getForumLists,
+	});
+	console.log(data);
+	if (isPending) return <span>데이터를 불러오는 중!</span>;
+	if (isError) return <span>Error: {error.message}</span>;
 
 	return (
 		<div className="flex flex-col w-full text-BASIC_BLACK">
@@ -50,11 +81,20 @@ const Forum = () => {
 						<li className="basis-1/6">조회수</li>
 						<li className="basis-1/6">좋아요</li>
 					</ul>
-					{Array.from(Array(8), (_, index) => (
-						<Link to={"/forum/detail"}>
-							<ForumItem key={index} />
-						</Link>
-					))}
+					{data.result.length !== 0 ? (
+						data.result.map((list: ForumList) => {
+							<Link to={`/forum/detail/${list.articleId}`}>
+								<ForumItem key={list.articleId} data={list} />
+							</Link>;
+						})
+					) : (
+						<div className="flex flex-col items-center justify-center h-56 bg-ITEM_BG_COLOR">
+							<FindList width={"90px"} height={"90px"} />
+							<div className="text-xl font-bold text-BASIC_BLACK">
+								I am not 데이터예요.
+							</div>
+						</div>
+					)}
 				</div>
 				<Button btnInfo={btnInfo} />
 				<Pagenation />

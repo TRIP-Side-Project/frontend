@@ -1,11 +1,11 @@
 interface categoryTypes {
-	isEditor: "editor" | "user";
+	isEditor: "EDITOR" | "MEMBER";
 }
 
 const Category = ({ isEditor }: categoryTypes) => {
 	return (
 		<div className="">
-			{isEditor === "editor" ? (
+			{isEditor === "EDITOR" ? (
 				<div className="w-24 px-3 py-1 text-sm text-center rounded-2xl bg-SPECIAL_COLOR">
 					에디터 추천
 				</div>
