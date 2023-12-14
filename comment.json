@@ -1,0 +1,55 @@
+{
+    "comments": [
+        {
+            "commentId": 1,
+            "writerId": 1,
+            "writerNickname": "권동욱",
+            "articleId": 1,
+            "content": "첫번째 오리진 댓글",
+            "parentId": null,
+            "createdAt": "2023-12-11T01:37:42.677525",
+            "children": [
+                {
+                    "commentId": 4,
+                    "writerId": 1,
+                    "writerNickname": "권동욱",
+                    "articleId": 1,
+                    "content": "대댓글 테스트",
+                    "parentId": 1,
+                    "createdAt": "2023-12-11T01:37:58.04026",
+                    "children": null
+                },
+                {
+                    "commentId": 5,
+                    "writerId": 2,
+                    "writerNickname": "박효정",
+                    "articleId": 1,
+                    "content": "대댓글 테스트2",
+                    "parentId": 1,
+                    "createdAt": "2023-12-11T01:37:58.741803",
+                    "children": null
+                },
+                {
+                    "commentId": 6,
+                    "writerId": 2,
+                    "writerNickname": "박효정",
+                    "articleId": 1,
+                    "content": "대댓글 테스트3",
+                    "parentId": 1,
+                    "createdAt": "2023-12-11T01:38:03.365343",
+                    "children": null
+                }
+            ]
+        },
+        {
+            "commentId": 2,
+            "writerId": 3,
+            "writerNickname": "박아리",
+            "articleId": 1,
+            "content": "나도",
+            "parentId": null,
+            "createdAt": "2023-12-11T01:37:43.325893",
+            "children": []
+        }
+    ]
+  }
