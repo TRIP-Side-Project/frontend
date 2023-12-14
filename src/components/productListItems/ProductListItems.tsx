@@ -32,7 +32,9 @@ export default function ProductListItems () {
           </div>
         </div>
       </Link>
-      <Bookmark />
+      <div className="absolute bottom-0 right-2 md:top-0 md:right-0 ">
+        <Bookmark />
+      </div>
     </div>
     
     </>
