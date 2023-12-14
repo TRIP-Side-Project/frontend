@@ -3,17 +3,12 @@ import axios from "axios";
 
 const Test = () => {
 	const [data, setData] = useState("데이터 나오는 곳");
-	// , {
-	// 	eamil: "kwondongwook1@gmail.com",
-	// 	password: "1234",
-	// 	// nickname: "emma",
-	// }
 
 	const getTempData = () => {
 		axios
 			.get("https://triptrip.site/api/articles")
 			.then((res) => {
-				console.log(res);
+				console.log(res.data);
 				setData(res.data);
 			})
 			.catch((err) => console.log(err));
