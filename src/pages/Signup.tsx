@@ -58,25 +58,24 @@ const Signup = () => {
 	// 비밀번호 유효성 검사
 	const [vaildPw, setVaildPw] = useState(false);
 	const regex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
-	const signupInfoPw = signupInfo.password;
+	// const signupInfoPw = signupInfo.password;
 	useEffect(() => {
 		if (regex.test(signupInfo.password)) {
 			setVaildPw(true);
 		} else {
 			setVaildPw(false);
 		}
-	}, [signupInfoPw]);
+	}, [signupInfo.password]);
 
 	// 비밀번호 재입력 확인
 	const [correctPw, setCorrectPw] = useState(false);
-	const signupInfoPwCheck = signupInfo.passwordCheck;
 	useEffect(() => {
 		if (signupInfo.password === signupInfo.passwordCheck) {
 			setCorrectPw(true);
 		} else {
 			setCorrectPw(false);
 		}
-	}, [signupInfoPwCheck]);
+	}, [signupInfo.password, signupInfo.passwordCheck]);
 
 	// 프로필 이미지 업로드
 	const [imageFile, setImageFile] = useState<string>("");
