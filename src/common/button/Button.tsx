@@ -1,3 +1,6 @@
+import BasicModal, { ModalAttributes } from "@/components/modal/BasicModal";
+import { useState } from "react";
+
 export interface btnAttributes {
 	width: string;
 	// height: string;
@@ -7,6 +10,13 @@ export interface btnAttributes {
 	border?: string;
 	position?: string;
 	type: "circle" | "square";
+	//상위에서 로그인 상태 일 때 실행되어야 할 함수
+	onClick?: (() => void) | void | undefined;
+	//현재 로그인 상태 여부 확인
+	isLogin?: boolean;
+	//로그인 버튼으로 사용할 거니 여부
+	loginBtnType?: true;
+	modal?: ModalAttributes | undefined;
 }
 
 interface btnTypes {
@@ -14,7 +24,22 @@ interface btnTypes {
 }
 
 const Button = ({ btnInfo }: btnTypes) => {
-	const { width, bgColor, textColor, border, position, text, type } = btnInfo;
+	const [isOpen, setIsOpen] = useState(false);
+
+	const {
+		width,
+		bgColor,
+		textColor,
+		border,
+		position,
+		text,
+		type,
+		onClick,
+		isLogin,
+		loginBtnType,
+		modal,
+	} = btnInfo;
+
 	//console.log(btnInfo);
 	const basicStyle = type === "circle" ? "blue_circleBtn" : `blue_squareBtn`;
 	const bg = bgColor ? `bg-${bgColor}` : "";
@@ -23,11 +48,46 @@ const Button = ({ btnInfo }: btnTypes) => {
 	const tColor = textColor ? `text-${textColor}` : "";
 	const btnStyle = `${basicStyle} w-[${width}] ${float} ${bg} ${borderStyle} ${tColor} `;
 	//console.log(btnStyle);
-	//circle | square
+
+	//noClick : 모달 닫는 함수 추가
+	const modifiedModal: ModalAttributes = {
+		// 타입 강제 할당
+		// ...(modal as ModalAttributes),
+		...modal!,
+		noClick: () => setIsOpen(false),
+	};
+	// console.log(modifiedModal);
+	const checkLogin = () => {
+		if (isLogin) {
+			//로그인 상태 인 경우 원하는 함수 설정
+			console.log("로그인 된 상태로 함수 실행!");
+			onClick?.();
+		} else {
+			// 알림 모달 오픈
+			setIsOpen(true);
+			console.log("모달 버튼 오픈 실행 !");
+		}
+	};
+
+	const handleButtonClick = () => {
+		if (loginBtnType && modal) {
+			// 로그인 확인용 버튼으로 설정했을 경우
+
+			console.log("로그인 확인용 버튼 클릭 ");
+			checkLogin();
+		} else {
+			// 별도의 클릭 버튼으로 설정했을 경우
+			onClick?.();
+			console.log("일반 버튼 클릭  ");
+		}
+	};
 
 	return (
 		<div>
-			<button className={btnStyle}>{text}</button>
+			<button className={btnStyle} onClick={handleButtonClick}>
+				{text}
+			</button>
+			{isOpen && modal ? <BasicModal modal={modifiedModal} /> : null}
 		</div>
 	);
 };
