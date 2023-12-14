@@ -5,9 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import Pagenation from "@/components/Pagenation";
 import Button, { btnAttributes } from "@/common/button/Button";
 import HotItem from "@/components/cardItems/HotItem";
-import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
+// import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
-import FindList from "@/assets/svg/FindList";
+// import FindList from "@/assets/svg/FindList";
 
 const Forum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -30,7 +30,7 @@ const Forum = () => {
 
 	const getForumLists = async () => {
 		try {
-			const response = await axios.get(`${BASE_URL}/api/articles `);
+			const response = await axios.get(`${BASE_URL}/api/articles`);
 			return response.data;
 		} catch (err) {
 			throw new Error(`게시판 목록 에러 ${err}`);
@@ -81,8 +81,8 @@ const Forum = () => {
 						<li className="basis-1/6">조회수</li>
 						<li className="basis-1/6">좋아요</li>
 					</ul>
-					{data.result.length !== 0 ? (
-						data.result.map((list: ForumList) => {
+					{/* {data.results.length !== 0 ? (
+						data.results.map((list: ForumList) => {
 							<Link to={`/forum/detail/${list.articleId}`}>
 								<ForumItem key={list.articleId} data={list} />
 							</Link>;
@@ -94,7 +94,7 @@ const Forum = () => {
 								I am not 데이터예요.
 							</div>
 						</div>
-					)}
+					)} */}
 				</div>
 				<Button btnInfo={btnInfo} />
 				<Pagenation />
