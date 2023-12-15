@@ -125,18 +125,29 @@ const Signup = () => {
 	// 회원가입 제출
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		// const formData = {
+			// 	"joinRequest": {
+				// 		"email": signupInfo.email,
+				// 		"password": signupInfo.password,
+				// 		"nickname": signupInfo.userName,
+				// 	},
+				// 	"profileImg": null // 포함 안 시켜서 보내도 O
+				// }
+		const data = {
+			email: signupInfo.email,
+			password: signupInfo.password,
+			nickname: signupInfo.userName,
+    };
+    // formData.append("file", imgFile);
+		const formData = new FormData();
 		// formData.append('email', signupInfo.email);
 		// formData.append('password', signupInfo.password);
 		// formData.append('nickname', signupInfo.userName);
 		// formData.append('profileImg', signupInfo.imageFile);
-		const formData = {
-			"joinRequest": {
-				"email": signupInfo.email,
-				"password": signupInfo.password,
-				"nickname": signupInfo.userName,
-			},
-			"profileImg": null // 포함 안 시켜서 보내도 O
-		}
+		const jsonData = JSON.stringify(data);
+		formData.append(
+			"joinRequest", 
+			jsonData);
 		console.log(formData);
 
 		if(isVaildEmail && isValidPassword && isCorrectPw){
