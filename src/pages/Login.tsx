@@ -29,31 +29,40 @@ const Login = () => {
 
   // 로그인
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  
 
   const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fetchData = async () => {
+      const bodyData = {
+        "email": loginInfo.email,
+        "password": loginInfo.password,
+      }
 				try {
 					const response = await axios.post(`${BASE_URL}/api/members/login`, 
-						{
-              "email": loginInfo.email,
-              "password": loginInfo.password,
-            },
-            {
-							headers: {
-								'Content-Type': 'application/json'
-								// 'multipart/form-data' -> 이미지 파일 보낼 때 타입
-							}
+					bodyData,
+          {
+						headers: {
+							'Content-Type': 'application/json'
 						}
+					}
 					
 					);
-					console.log(response);
+					// console.log(response);
+          const token = response.data.accessToken;
+          if (token) {
+            localStorage.setItem("access_token", token);
+          }
 				} catch (error) {
 					console.error("Error fetching data:", error);
 				}
 			};
 			fetchData();
   }
+  // 로컬스토리지에 액세스 토큰 저장
+  console.log(localStorage.getItem('access_token'));
+
+  // 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
 
   // 카카오 소셜 로그인
   const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
