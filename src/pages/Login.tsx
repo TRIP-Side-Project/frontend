@@ -1,10 +1,10 @@
 import Google from "@/assets/svg/Google";
 import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
-import { ChangeEvent, MouseEventHandler, useState } from "react";
-import axios from "axios";
+import { ChangeEvent, useState } from "react";
 
-export default function Login () {
+
+const Login = () => {
 
   const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
 
@@ -25,26 +25,11 @@ export default function Login () {
       [event.target.name]: event.target.value,
     })
   }
-  // FormEventHandler<HTMLFormElement>
-  console.log(loginInfo);
-  const postLogin:MouseEventHandler<HTMLButtonElement>  = async (event) => {
-    event.preventDefault();
 
-    try {
-        await axios.post('/proxy/api/members/join', {
-          "email": loginInfo.email,
-          "password": loginInfo.password,
-          "nickname": "메롱",
-        });
-        // const data = response.data;
-        console.log("버튼 클릭!");
-        
-    } catch (error) {
-        console.error('요청 실패:', error);
-    }
-  }
-
-
+  // 카카오 소셜 로그인
+  const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
+  const REDIRECT_URI = import.meta.env.KAKAO_REDIRECT_URI;
+  
   return(
     <>
     <div className="h-screen flex justify-center items-center w-full h-screen">
@@ -55,7 +40,7 @@ export default function Login () {
             <div className="w-full flex flex-col items-center justify-between gap-5">
               <input type="text" value={loginInfo.email} name="email" onChange={changeLoginValue} placeholder="이메일" className={loginInputClass}></input>
               <input type="password" value={loginInfo.password} name="password" placeholder="비밀번호" onChange={changeLoginValue} className={loginInputClass}></input>
-              <button onClick={postLogin} className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
+              <button className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
             </div>
           </form>
           <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
@@ -71,9 +56,11 @@ export default function Login () {
             <div className="w-[35px] h-[35px] cursor-pointer">
               <img src={naver} alt="naver oauth" />
             </div>
-            <div className="w-[35px] h-[35px] cursor-pointer">
-              <img src={kakao} alt="kakao oauth" />
-            </div>
+            <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_API_KEY}&redirect_uri=${REDIRECT_URI}`}>
+              <div className="w-[35px] h-[35px] cursor-pointer">
+                <img src={kakao} alt="kakao oauth" />
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -81,3 +68,4 @@ export default function Login () {
     </>
   )
 }
+export default Login;
