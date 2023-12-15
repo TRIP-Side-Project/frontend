@@ -3,11 +3,14 @@ import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 const Login = () => {
-
+  // 스타일 클래스
   const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
+  
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // 로그인 정보
   interface loginData {
@@ -27,10 +30,7 @@ const Login = () => {
     })
   }
 
-  // 로그인
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-  
-
+  // 로그인 요청
   const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fetchData = async () => {
@@ -45,9 +45,7 @@ const Login = () => {
 						headers: {
 							'Content-Type': 'application/json'
 						}
-					}
-					
-					);
+					});
 					// console.log(response);
           const token = response.data.accessToken;
           if (token) {
@@ -67,6 +65,7 @@ const Login = () => {
   // 카카오 소셜 로그인
   const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
   const REDIRECT_URI = import.meta.env.KAKAO_REDIRECT_URI;
+
   
   return(
     <>
@@ -82,9 +81,13 @@ const Login = () => {
             </div>
           </form>
           <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
-            <button>비밀번호 찾기</button>
+            <Link to={"/findpw"}>
+              <button>비밀번호 찾기</button>
+            </Link>
             <span>|</span>
-            <button>회원가입</button>
+            <Link to={'/signup'}>
+              <button>회원가입</button>
+            </Link>
           </div>
           <div className="border h-0" />
           <div className="flex justify-center py-5 item-center w-full gap-14">
