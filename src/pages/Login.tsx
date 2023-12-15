@@ -3,11 +3,14 @@ import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 const Login = () => {
-
+  // 스타일 클래스
   const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
+  
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // 로그인 정보
   interface loginData {
@@ -27,37 +30,42 @@ const Login = () => {
     })
   }
 
-  // 로그인
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-
+  // 로그인 요청
   const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fetchData = async () => {
+      const bodyData = {
+        "email": loginInfo.email,
+        "password": loginInfo.password,
+      }
 				try {
 					const response = await axios.post(`${BASE_URL}/api/members/login`, 
-						{
-              "email": loginInfo.email,
-              "password": loginInfo.password,
-            },
-            {
-							headers: {
-								'Content-Type': 'application/json'
-								// 'multipart/form-data' -> 이미지 파일 보낼 때 타입
-							}
+					bodyData,
+          {
+						headers: {
+							'Content-Type': 'application/json'
 						}
-					
-					);
-					console.log(response);
+					});
+					// console.log(response);
+          const token = response.data.accessToken;
+          if (token) {
+            localStorage.setItem("access_token", token);
+          }
 				} catch (error) {
 					console.error("Error fetching data:", error);
 				}
 			};
 			fetchData();
   }
+  // 로컬스토리지에 액세스 토큰 저장
+  console.log(localStorage.getItem('access_token'));
+
+  // 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
 
   // 카카오 소셜 로그인
   const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
   const REDIRECT_URI = import.meta.env.KAKAO_REDIRECT_URI;
+
   
   return(
     <>
@@ -73,9 +81,13 @@ const Login = () => {
             </div>
           </form>
           <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
-            <button>비밀번호 찾기</button>
+            <Link to={"/findpw"}>
+              <button>비밀번호 찾기</button>
+            </Link>
             <span>|</span>
-            <button>회원가입</button>
+            <Link to={'/signup'}>
+              <button>회원가입</button>
+            </Link>
           </div>
           <div className="border h-0" />
           <div className="flex justify-center py-5 item-center w-full gap-14">
