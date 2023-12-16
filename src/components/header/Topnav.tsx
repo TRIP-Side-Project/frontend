@@ -7,8 +7,8 @@ interface navSelectType {
 const Topnav = ({ trip }: navSelectType) => {
 	//console.log(trip);
 	const navStyle =
-		"px-1 md:px-9 py-2 font-medium md:font-semibold text-BASIC_WHITE hover:text-MAIN_COLOR";
-	const navContainer = "px-2 flex justify-between md:justify-end w-full bg-BASIC_BLACK";
+		"px-1 md:px-9 py-2 font-medium md:font-semibold text-BASIC_WHITE hover:text-MAIN_COLOR dark:text-BASIC_BLACK dark:hover:text-MAIN_COLOR";
+	const navContainer = "px-2 flex justify-between md:justify-end w-full bg-BASIC_BLACK dark:bg-LIGHT_GRAY_COLOR";
 
 	return (
 		<div className={navContainer}>

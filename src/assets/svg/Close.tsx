@@ -1,7 +1,7 @@
 import { SVG } from "@/types/svg";
 
 const Close = ({ fillColor, width, height }: SVG) => {
-	fillColor = fillColor ? `${fillColor}` : "#222222";
+	fillColor = fillColor ? `${fillColor}` : ((localStorage.getItem("theme") === "dark") ? "#ffffff" : "#222222");
 	return (
 		<svg
 			width={width}

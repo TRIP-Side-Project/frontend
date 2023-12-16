@@ -8,6 +8,10 @@ html, body {
     background-color: #FAFAFA;
 }
 
+html.dark {
+    background-color: #333333;
+}
+
 @layer components {
     .blue_squareBtn {
         @apply py-2 px-5 my-3 mx-2 text-center bg-MAIN_COLOR text-BASIC_WHITE hover:bg-BTN_HOVER_COLOR rounded-lg font-medium;
