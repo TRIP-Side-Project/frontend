@@ -5,7 +5,16 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 import SignupInfo from "@/components/signup/SignupInput";
 
 const Signup = () => {
-  // 버튼
+
+  // 스타일클래스
+  const sendEmailStyle = "mt-2 text-right flex justify-between";
+  const notSendEmailStyle = "mt-2 text-right";
+
+  const [sendEmail, setSendEmail] = useState(false);
+
+  const handleSendEmail = () => {
+    setSendEmail(true);
+  }
 
   // Input 에 글 작성을 감지해서 퍼센트 바 width 값 설정
 
@@ -111,7 +120,7 @@ const Signup = () => {
         const response = await axios.post(`${BASE_URL}/api/members/send-email/${signupInfo.email}`);
         setIsVaildEmail(true);
         console.log(response);
-        
+        handleSendEmail();
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -228,7 +237,8 @@ const Signup = () => {
                     placeholder={"이메일"}
                     changeValue={changeNameValue}
                   />
-                  <div className="mt-2 text-right">
+                  <div className={sendEmail ? sendEmailStyle : notSendEmailStyle}>
+                    {sendEmail && <p className="text-sm text-POINT_COLOR">작성한 이메일의 메일함 속 링크를 클릭해주세요.</p>}
                     <button onClick={handleEmailCheck} className="px-2 py-1 rounded-md bg-BTN_COLOR text-BASIC_WHITE">
                       이메일 인증하기
                     </button>
