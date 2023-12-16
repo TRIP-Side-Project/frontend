@@ -23,7 +23,7 @@ export default function ProductListDetail () {
   }
 
   // style
-  const locationStyle = "ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1 font-light focus:outline-MAIN_COLOR";
+  const locationStyle = " ml-10 md:ml-2 bg-LINE_POINT_COLOR rounded-md w-2/3 px-2 py-1 font-light focus:outline-MAIN_COLOR";
 
   // 달력
   const today = new Date();
@@ -95,26 +95,29 @@ export default function ProductListDetail () {
 
   return (
     <>
-    <div className="px-28 pt-20 bg-BASIC_WHITE w-full">
+    <div className="px-10 md:px-28 pt-20 bg-BASIC_WHITE w-full">
       <div className="flex gap-1 mb-5 cursor-pointer items-top" onClick={backButton}>
         <p>목록 돌아가기</p>
         <BackToList fillColor="#333333" width="20px" height="20px" />
       </div>
-      <div className="border-b pb-10 border-LIGHT_GRAY_COLOR mb-20 flex h-[400px] items-center relative gap-10">
-        <div className="w-[400px] h-[300px] bg-rose-300 rounded-md">
+      <div className="border-b pb-10 border-LIGHT_GRAY_COLOR mb-20 flex flex-col md:flex-row md:h-[400px] items-start md:items-center relative gap-10">
+        <div className="w-full md:w-[400px] h-[300px] bg-rose-300 rounded-md relative">
           {/* 이미지 들어갈 자리 */}
+          <div className="absolute top-3 right-3">
+            <Bookmark />
+          </div>
         </div>
-        <div className="h-full flex flex-col justify-between items-center">
+        <div className="w-full h-full flex flex-col gap-5 md:gap-0 justify-between md:items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-5">여행 상품명</h1>
-            <p className="text-2xl mb-5">여행 상품 내용 어쩌구 쿵냐쿵 쿵냐리 쿵쿵</p>
-            <div className="text-xl flex gap-5 mb-5">
+            <h1 className="text-2xl md:text-3xl font-bold mb-5">여행 상품명</h1>
+            <p className="text-lg md:text-2xl mb-5">여행 상품 내용 어쩌구 쿵냐쿵 쿵냐리 쿵쿵</p>
+            <div className="text-lg md:text-xl flex gap-5 mb-5">
               <span>#대분류</span>
               <span>#중분류</span>
               <span>#소분류</span>
             </div>
           </div>
-          <div className="pb-3 flex flex-col gap-5">
+          <div className="pb-3 flex flex-col gap-3 md:gap-5">
             <div>
               <span className="w-[100px] inline-block">판매자</span>
               <span>노랑풍선</span>
@@ -124,17 +127,16 @@ export default function ProductListDetail () {
               <span>1,000,000원</span>
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center">
             <Button btnInfo={buyBtnInfo} />
           </div>
         </div>
         <div className="">
         </div>
-        <Bookmark />
       </div>
       <div className="mb-20">
-        <h1 className="text-3xl font-bold mb-5">관련 교통편</h1>
-        <div className="flex justify-between items-start text-lg font-bold">
+        <h1 className="text-2xl md:text-3xl font-bold mb-5">관련 교통편</h1>
+        <div className="flex flex-col md:flex-row gap-10 md:gap-0 justify-between items-start text-lg font-bold">
           <div className="text-center cursor-pointer w-[120px] flex flex-row rounded-md h-fit overflow-hidden bg-LINE_POINT_COLOR">
             <span className={(isTrain ? selectVehicle : normalVehicle)} onClick={handleisTrain}>기차</span>
             <span className={(isBus ? selectVehicle : normalVehicle)} onClick={handleisBus}>버스</span>
@@ -159,7 +161,7 @@ export default function ProductListDetail () {
             <div>
               <span>시간</span>
               <input type="text" className={locationStyle} />
-              <div className={locationStyle}>
+              {/* <div className={locationStyle}>
                 {currentHour + ' 시'}
               </div>
               <div>
@@ -169,10 +171,12 @@ export default function ProductListDetail () {
                   <li>2 시</li>    
                   <li>3 시</li>    
                 </ul>    
-              </div>
+              </div> */}
             </div>
           </div>
-          <Button btnInfo={searchBtnInfo} />
+          <div className="w-full md:w-fit flex justify-center items-center">
+            <Button btnInfo={searchBtnInfo} />
+          </div>
         </div>
         <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center items-center">
           <div className="flex flex-col justify-around">
@@ -184,8 +188,8 @@ export default function ProductListDetail () {
         </div>
       </div>
       <div className="pb-20">
-        <h1 className="text-3xl font-bold mb-5">관련상품</h1>
-        <div className="w-full flex justify-between">
+        <h1 className="text-2xl md:text-3xl font-bold mb-5">관련상품</h1>
+        <div className="w-full flex flex-col gap-10 md:gap-10 md:flex-row justify-between items-center">
           {Array.from(Array(3), (_, index) => (
             <ProductCardItems key={index} />
           ))}

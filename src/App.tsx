@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import Test from "./components/Test";
+import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 
 function App() {
 	window.localStorage.setItem("memberId", "1");
@@ -30,6 +31,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/test" element={<Test />} />
+					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
 				</Routes>
 			</Layout>
 			<Footer />

@@ -29,6 +29,7 @@ const Header = () => {
 			setIsOpen(true);
 		}
 	};
+	console.log(isOpen);
 
 	//알림 모달 창 toggle
 	const handleNotification = () => {
@@ -99,7 +100,7 @@ const Header = () => {
 					</Link>
 
 					{/* 여행 대 메뉴 탭 */}
-					<Mmenu openNav={openNav} />
+					<Mmenu openNav={openNav} onSubMenuClose={onSubMenuClose}/>
 					<div className="items-center hidden h-full md:block whitespace-nowrap">
 						<button
 							className={navBtn}
