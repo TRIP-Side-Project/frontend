@@ -10,9 +10,9 @@ export default function ProductListItems () {
       <Link to={'/products/detail'}>
         <div className="flex flex-col justify-start items-start md:justify-normal md:items-stretch md:flex-row relative my-24 cursor-pointer">
           <div className="w-full md:w-1/3 h-[250px] bg-rose-300 rounded-md"></div>
-          <div className="md:pl-5 flex flex-col md:justify-between">
+          <div className="md:pl-5 flex flex-col md:justify-between dark:text-BASIC_WHITE">
             <div>
-              <h2 className="text-2xl md:text-3xl mb-5 mt-5 md:mt-0 font-bold">여행 상품명</h2>
+              <h2 className="text-2xl md:text-3xl mb-5 mt-5 md:mt-0 font-bold ">여행 상품명</h2>
               <div className="text-base md:text-xl flex gap-5 mb-5">
                 <span>#대분류</span>
                 <span>#중분류</span>

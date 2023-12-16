@@ -1,6 +1,6 @@
 const Footer = () => {
 	return (
-		<div className="w-full items-center py-8 md:py-0 md:h-[200px] border-t-2 border-LIGHT_GRAY_COLOR flex flex-col gap-7 md:gap-0 md:flex-row whitespace-nowrap">
+		<div className="w-full items-center py-8 md:py-0 md:h-[200px] border-t-2 border-LIGHT_GRAY_COLOR flex flex-col gap-7 md:gap-0 md:flex-row whitespace-nowrap dark:bg-BASIC_BLACK">
 			<div className="text-3xl md:text-4xl font-bold text-MAIN_COLOR px-9">TRIPTRIP</div>
 			<div className="flex-1 font-light text-center text-LIGHT_GRAY_COLOR">
 				©TRIPTRIP. All Rights Reserved.

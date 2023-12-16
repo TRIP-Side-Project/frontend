@@ -24,14 +24,14 @@ const ProductList = () => {
     setIsSort(!isSort);
   }
 
-  const viewSortClass = "cursor-pointer px-2 text-BASIC_BLACK";
+  const viewSortClass = "cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
   const nonViewSortClass = "cursor-pointer px-2 text-LIGHT_GRAY_COLOR";
   
 
   return (
-    <div className="px-10 md:px-0 md:px-28 bg-BASIC_WHITE w-full">
+    <div className="px-10 md:px-0 md:px-28 bg-BASIC_WHITE w-full dark:bg-BASIC_BLACK">
       <div className="md:flex md:justify-between md:items-end my-14 md:py-20">
-        <h1 className="my-7 md:my-0 text-2xl md:text-4xl font-bold">눈꽃여행</h1>
+        <h1 className="my-7 md:my-0 text-2xl md:text-4xl font-bold dark:text-BASIC_WHITE">눈꽃여행</h1>
         {innerWidth > 768 &&
           <>
             <Search />

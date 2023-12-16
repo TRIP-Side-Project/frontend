@@ -95,7 +95,7 @@ export default function ProductListDetail () {
 
   return (
     <>
-    <div className="px-10 md:px-28 pt-20 bg-BASIC_WHITE w-full">
+    <div className="px-10 md:px-28 pt-20 bg-BASIC_WHITE w-full dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
       <div className="flex gap-1 mb-5 cursor-pointer items-top" onClick={backButton}>
         <p>목록 돌아가기</p>
         <BackToList fillColor="#333333" width="20px" height="20px" />

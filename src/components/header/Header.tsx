@@ -15,7 +15,7 @@ const Header = () => {
 	const tempLogin = true; //임시 로그인 상태 설정
 
 	const navBtn =
-		"h-full hover:bg-BASIC_BLACK hover:text-BASIC_WHITE px-9 focus:bg-BASIC_BLACK focus:text-BASIC_WHITE ";
+		"h-full hover:bg-BASIC_BLACK hover:text-BASIC_WHITE px-9 focus:bg-BASIC_BLACK focus:text-BASIC_WHITE dark:text-BASIC_WHITE dark:hover:bg-BASIC_WHITE dark:hover:text-BASIC_BLACK dark:focus:bg-BASIC_WHITE dark:focus:text-BASIC_BLACK";
 
 	//메뉴 바 세부 드롭다운 toggle
 	const openNav = (trip: null | string) => {
@@ -38,11 +38,20 @@ const Header = () => {
 
 	// 세부메뉴탭 보여질 때 border bottom 선과 메뉴탭 배경 색상 일치시키는 클래스
 	let headerWrapperClass =
-		"w-full h-[130px] bg-BASIC_WHITE border-b-2 border-LIGHT_GRAY_COLOR flex flex-col";
+		"w-full h-[130px] bg-BASIC_WHITE border-LIGHT_GRAY_COLOR flex flex-col dark:bg-BASIC_BLACK";
 	if (isOpen) {
 		headerWrapperClass =
-			"w-full h-[130px] bg-BASIC_WHITE border-b-2 border-BASIC_BLACK flex flex-col";
+			"w-full h-[130px] bg-BASIC_WHITE dark:bg-BASIC_BLACK border-BASIC_BLACK flex flex-col";
 	}
+
+	// 다크모드
+	// useEffect(() => {
+  //   // 처음에 다크모드인지 판단해서 뿌려주기 !! ( 나중에는 상태관리를 해도 괜찮습니다 ! )
+  //   if (localStorage.getItem("theme") === "dark") {
+  //     document.documentElement.classList.add("dark");
+	// 		console.log(localStorage);
+  //   }
+  // }, []);
 
 	return (
 		<>
