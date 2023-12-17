@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Button, { btnAttributes } from "@/common/button/Button";
 import TextEditor from "@/components/TextEditor";
+import { useMutation } from "@tanstack/react-query";
+// import axios from "axios";
 
 type Inputs = {
 	title: string;
@@ -9,34 +10,60 @@ type Inputs = {
 };
 
 const EditForum = () => {
+	// const BASE_URL = import.meta.env.VITE_BASE_URL;
+	// const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const {
 		register,
 		handleSubmit,
-		// watch,
+		setValue,
 		formState: { errors },
 	} = useForm<Inputs>();
-	const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-	// console.log(watch("title"));
+
+
+	//mutation 새 게시글 등록 
+	const sendNewForumMutation = useMutation<void, Error, Inputs>({
+		mutationFn: async (data) => {
+			try {
+				// const res = await axios.post(`${BASE_URL}/api/articles`, {
+				// 	data: data,
+				// 	headers: { Authorization: ACCESS_TOKEN }
+				// });
+				console.log(`데이터 전달 성공 ${data}`);
+			} catch (err) {
+				throw new Error(`데이터 전달 실패 ${err}`);
+			}
+		}
+	});
+
+	const onSubmit: SubmitHandler<Inputs> = async (data) =>{ 
+		console.log(`리액트 훅 로직 시작`);
+		try {
+			await sendNewForumMutation.mutateAsync(data);
+			console.log("새 게시글 등록 성공");
+			//작성 된 게시글로 링크 이동 구현 필요 
+			//응답으로 생성된 게시글 아이디 받아야 함. 
+			//굳이 iniital value 처리 할 필요 없다. 
+			console.log(data);
+
+		} catch (err) {
+			console.error("데이터 전달 실패 ", err);
+		}
+
+	};
+
+
+	//ckeditor5에서 본문 가져오기 
+	const handleEditorData = (data:string) => {
+		setValue("content", data);
+	}
+
 
 	const titleStyle = "font-bold text-lg my-1";
 	const inputStyle =
 		"bg-BASIC_WHITE rounded-xl border px-3 py-1 font-semibold text-sm border-BASIC_BLACK h-9 w-full";
-	const submitBtn: btnAttributes = {
-		width: "123px",
-		text: "등록",
-		type: "square",
-	};
 
-	const cancelBtn: btnAttributes = {
-		width: "123px",
-		bgColor: "LINE_POINT_COLOR",
-		// border: "MAIN_COLOR",
-		text: "취소",
-		textColor: "BAISC_BLACK",
-		type: "square",
-	};
 	return (
-		<div className="flex flex-col w-full text-BASIC_BLACK ">
+		<div className="flex flex-col w-full px-5 text-BASIC_BLACK">
 			<div className="">
 				<div className="my-5 text-3xl font-bold">여행 후기</div>
 				<p className="my-3 text-sm font-base">
@@ -52,14 +79,15 @@ const EditForum = () => {
 					</select>
 				</div> */}
 				<div className="mb-8 ">
-					<div className={titleStyle}>제목</div>
+					<div className={titleStyle}>제목{errors.title && <span className="ml-2 text-xs font-normal text-POINT_COLOR"> ! 제목은 8자 이상 작성하셔야 합니다.  </span>}</div>
 					<input
 						type="text"
 						placeholder="제목을 입력해주세요."
 						className={inputStyle}
 						defaultValue=""
-						{...register("title")}
+						{...register("title", {required: true, minLength:8})}
 					/>
+					
 				</div>
 				<div className="mb-8">
 					<div className={titleStyle}>태그</div>
@@ -70,23 +98,20 @@ const EditForum = () => {
 						{...register("tag", { required: true })}
 					/>
 				</div>
-				<div className="mb-8 bg-yellow-200">
+				<div className="mb-8 h-96">
 					<div id="editor" className={titleStyle}>
 						본문
 					</div>
-					<TextEditor />
+					<TextEditor handleEditorData={handleEditorData}/>
+					<input type="text" {...register("content", { required: true, minLength:20 })} className="hidden"/>
 				</div>
 
-				{errors.title && <span>This failed is required </span>}
-				<input
-					type="submit"
-					className="px-3 py-2 bg-pink-400 cursor-pointer hover:bg-pink-200 "
-				/>
+				<div className="flex justify-end">
+					<button className="blue_squareBtn w-[123px] bg-LINE_POINT_COLOR cursor-pointer">취소</button>
+					<input type="submit" value="등록" className="blue_squareBtn w-[123px] cursor-pointer"/>
+				</div>
+
 			</form>
-			<div className="flex flex-row justify-end">
-				<Button btnInfo={cancelBtn} />
-				<Button btnInfo={submitBtn} />
-			</div>
 		</div>
 	);
 };
