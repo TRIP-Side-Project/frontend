@@ -4,13 +4,21 @@ import Temp from "@/assets/img/temp.png";
 import Setting from "@/assets/svg/Setting";
 
 const EditProfile = () => {
-	const [isClick, setIsClick] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const [activeBtn, setActiveBtn] = useState("merchan");
 	const summaryTitle = "mx-5";
-	const navWrapStyle = "mr-10";
+	const navWrapStyle = "relative mr-10 inline-block";
+	const clickStyle =
+		"absolute w-full left-0 top-4 p-1 h-2 opacity-75 bg-[#A3CCA2] ";
 
 	const handleClick = () => {
-		setIsClick(!isClick);
+		setIsOpen(!isOpen);
 		// console.log("클릭");
+	};
+
+	//마이프로필 관심 상품 선택
+	const handleMineItems = (item: string) => {
+		setActiveBtn(item);
 	};
 
 	return (
@@ -43,14 +51,38 @@ const EditProfile = () => {
 					</div>
 				</div>
 				<div className="">
-					<button className={navWrapStyle}>관심 상품</button>
-					<button className={navWrapStyle}>작성 글</button>
-					<button className={navWrapStyle}>작성 댓글</button>
-					<button className={navWrapStyle}>알림함</button>
+					<button
+						className={navWrapStyle}
+						onClick={() => handleMineItems("merchan")}
+					>
+						<p className="relative z-20 ">관심 상품</p>
+						<span className={activeBtn === "merchan" ? clickStyle : ""}></span>
+					</button>
+					<button
+						className={navWrapStyle}
+						onClick={() => handleMineItems("forum")}
+					>
+						<p className="relative z-20 ">작성 글</p>
+						<span className={activeBtn === "forum" ? clickStyle : ""}></span>
+					</button>
+					<button
+						className={navWrapStyle}
+						onClick={() => handleMineItems("comment")}
+					>
+						<p className="relative z-20 ">작성 댓글</p>
+						<span className={activeBtn === "comment" ? clickStyle : ""}></span>
+					</button>
+					<button
+						className={navWrapStyle}
+						onClick={() => handleMineItems("alram")}
+					>
+						<p className="relative z-20 ">알림함</p>
+						<span className={activeBtn === "alram" ? clickStyle : ""}></span>
+					</button>
 				</div>
 			</div>
 
-			{isClick && <MyPageModal isClick={handleClick} />}
+			{isOpen && <MyPageModal isClick={handleClick} />}
 		</>
 	);
 };

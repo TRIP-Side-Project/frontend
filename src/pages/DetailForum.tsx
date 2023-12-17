@@ -12,7 +12,7 @@ const DetailForum = () => {
 		// <div className="flex flex-col lg:min-w-[1200px] md:min-w-[900px] text-BASIC_BLACK mb-20">
 		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK bg-BASIC_WHITE">
 			<div className="flex flex-row justify-between py-2 mt-20 border-b border-BASIC_BLACK">
-				<Category isEditor={"editor"} />
+				<Category isEditor={"EDITOR"} />
 
 				<div className="flex flex-row divide-x divide-LIGHT_GRAY_COLOR">
 					<p className="px-5">MD.Ari</p>
