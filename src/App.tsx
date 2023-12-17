@@ -15,7 +15,7 @@ import Test from "./components/Test";
 import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 
 function App() {
-	window.localStorage.setItem("memberId", "1");
+	//window.localStorage.setItem("memberId", "1");
 	return (
 		<BrowserRouter>
 			<Header />
