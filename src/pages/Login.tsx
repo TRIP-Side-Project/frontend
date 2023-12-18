@@ -4,21 +4,22 @@ import naver from "@/assets/img/naver.png";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
 
 
 const Login = () => {
   // 스타일 클래스
   const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
-  
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // 로그인 정보
-  interface loginData {
+  interface LoginData {
     email: string,
     password: string,
   }
 
-  const [loginInfo, setLoginInfo] = useState<loginData>({
+  const [loginInfo, setLoginInfo] = useState<LoginData>({
     email: "",
     password: ""
   });
@@ -31,40 +32,43 @@ const Login = () => {
   }
 
   // 로그인 요청
-  const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const fetchData = async () => {
-      const bodyData = {
-        "email": loginInfo.email,
-        "password": loginInfo.password,
-      }
-				try {
-					const response = await axios.post(`${BASE_URL}/api/members/login`, 
-					bodyData,
-          {
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					});
-					// console.log(response);
-          const token = response.data.accessToken;
-          if (token) {
-            localStorage.setItem("access_token", token);
-          }
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
-			};
-			fetchData();
+  
+  const bodyData: LoginData = {
+    "email": loginInfo.email,
+    "password": loginInfo.password,
   }
+
+  const mutation = useMutation({
+        mutationFn: () => {
+            return axios.post(
+                `${BASE_URL}/api/members/login`,
+                bodyData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+        },
+    });
+
+  const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+      try {
+        const response = await mutation.mutateAsync();
+        const token = response.data.accessToken;
+        if (token) {
+          localStorage.setItem("access_token", token);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  };
+
   // 로컬스토리지에 액세스 토큰 저장
   console.log(localStorage.getItem('access_token'));
 
   // 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
-
-  // 카카오 소셜 로그인
-  const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
-  const REDIRECT_URI = import.meta.env.KAKAO_REDIRECT_URI;
 
   
   return(
@@ -77,7 +81,7 @@ const Login = () => {
             <div className="w-full flex flex-col items-center justify-between gap-5">
               <input type="text" value={loginInfo.email} name="email" onChange={changeLoginValue} placeholder="이메일" className={loginInputClass}></input>
               <input type="password" value={loginInfo.password} name="password" placeholder="비밀번호" onChange={changeLoginValue} className={loginInputClass}></input>
-              <button className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
+              <button type="submit" className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
             </div>
           </form>
           <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
@@ -91,13 +95,17 @@ const Login = () => {
           </div>
           <div className="border h-0" />
           <div className="flex justify-center py-5 item-center w-full gap-14">
-            <div className="cursor-pointer">
-              <Google width="35px" height="35px" />
-            </div>
-            <div className="w-[35px] h-[35px] cursor-pointer">
-              <img src={naver} alt="naver oauth" />
-            </div>
-            <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_API_KEY}&redirect_uri=${REDIRECT_URI}`}>
+            <a href={`${BASE_URL}/oauth2/authorization/google`}>
+              <div className="cursor-pointer">
+                <Google width="35px" height="35px" />
+              </div>
+            </a>
+            <a href={`${BASE_URL}/oauth2/authorization/naver`}>
+              <div className="w-[35px] h-[35px] cursor-pointer">
+                <img src={naver} alt="naver oauth" />
+              </div>
+            </a>
+            <a href={`${BASE_URL}/oauth2/authorization/kakao`}>
               <div className="w-[35px] h-[35px] cursor-pointer">
                 <img src={kakao} alt="kakao oauth" />
               </div>
