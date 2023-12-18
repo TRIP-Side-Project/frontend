@@ -28,15 +28,14 @@ const DarkToggle = () => {
       setIsDark(true);
     }
   };
-	// console.log(isDark);
+
 	useEffect(() => {
-    // 처음에 다크모드인지 판단해서 뿌려주기 !! ( 나중에는 상태관리를 해도 괜찮습니다 ! )
+    // 처음에 다크모드인지 판단
     if (localStorage.getItem("theme") === "dark") {
       document.documentElement.classList.add("dark");
-			
+			setIsDark(true);
     }
   }, [isDark]);
-	console.log(localStorage);
 
 	return (
 		<div className="relative w-[77px] h-[29px] rounded-full bg-LINE_POINT_COLOR flex-row flex items-center justify-between ">
