@@ -7,6 +7,7 @@ import EditComment from "./EditComment";
 import CommentItem from "./CommentItem";
 
 import ArrowComment from "@/assets/svg/ArrowComment";
+import { useParams } from "react-router-dom";
 
 export interface CommentReTypes {
 	articleId: number;
@@ -32,19 +33,23 @@ export interface CommentTypes {
 
 const Comment = () => {
 	const [isHide, setIsHide] = useState<boolean>(false);
-	//props로 articleId 넘겨 받아야 함
-	const TarticleId = 1;
+	const [showComment, setShowComment] = useState<number | null>(null);
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const { articleId } = useParams();
 
 	//대댓글 숨김 관리 -> Props -> CommentItem
-	const handleHideComment = () => {
+	const handleHideComment = (commentId: number) => {
 		setIsHide(!isHide);
+		setShowComment(commentId);
 	};
 
 	const getComments = async () => {
 		try {
-			const response = await axios.get("http://localhost:5000/comments");
+			const response = await axios.get(
+				`${BASE_URL}/api/comments?articleId=${articleId}`,
+			);
 			// setCommentData(response.data);
-			return response.data;
+			return response.data.comments;
 		} catch (err) {
 			throw new Error(`Err getComments ${err}`);
 		}
@@ -53,11 +58,11 @@ const Comment = () => {
 		queryKey: ["comments"],
 		queryFn: getComments,
 	});
-	console.log(data);
+	//console.log(data); //comments: []
 
 	//중복 데이터 메모이제이션
 	const memoizedData = useMemo(() => data, [data]);
-
+	console.log(memoizedData);
 	if (isPending)
 		return (
 			<span className="h-full mx-auto mt-5 text-xl font-semibol">
@@ -69,20 +74,22 @@ const Comment = () => {
 	return (
 		<div className="py-5 ">
 			{/* 새 댓글 등록 파트  */}
-			<EditComment parentInfo={[TarticleId, null, null]} />
+			<EditComment parentInfo={[Number(articleId), null, null]} />
 			{/* 댓글 내용 파트 */}
 			<div className="py-3 mt-10 border-y-2 border-LIGHT_GRAY_COLOR">
-				{memoizedData &&
+				{memoizedData.length !== 0 &&
 					memoizedData.map((comment: CommentTypes) => (
 						<>
 							<CommentItem
 								datas={comment}
 								key={comment.commentId}
 								isHide={isHide}
-								setIsHide={handleHideComment}
+								setIsHide={() => handleHideComment(comment.commentId)}
 								type={"origin"}
 							/>
-							{isHide && comment.children !== null
+							{isHide &&
+							comment.children !== null &&
+							showComment === comment.commentId
 								? comment.children.map((childComment: CommentTypes) => (
 										<div
 											key={`child-comment-${childComment.commentId}`}

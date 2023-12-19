@@ -1,25 +1,28 @@
-// import { useMutation } from "@tanstack/react-query";
-// import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 type DeleteCommentTypes = {
 	commentId: number;
 };
 
 const DeleteBtn = ({ commentId }: DeleteCommentTypes) => {
-	// const mutation = useMutation({
-	// 	mutationFn: () => {
-	// 		return axios.delete(`http://localhost:5000/comments/${commentId}`, {
-	// 	headers: {
-	// 		Authorization: `Bearer ${authToken}`   //쿠키나 전역에서 가져올 예정
-	// 	}
-	// });
-	// 	},
-	// });
+	const ACCESS_TOLEN = window.localStorage.getItem("access_token");
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const mutation = useMutation({
+		mutationFn: () => {
+			return axios.delete(`${BASE_URL}/api/comments/${commentId}`, {
+				headers: {
+					"Content-Type": "application/json",
+					accessToken: `Bearer ${ACCESS_TOLEN}`, //쿠키나 전역에서 가져올 예정
+				},
+			});
+		},
+	});
 
 	//댓글 삭제 버튼
 	const handleDelete = async () => {
 		try {
-			// await mutation.mutateAsync();
+			await mutation.mutateAsync();
 			console.log(`댓글 삭제 버튼 작덩 ${commentId}`);
 		} catch (error) {
 			throw new Error(`댓글 삭제 파트 ${error}`);

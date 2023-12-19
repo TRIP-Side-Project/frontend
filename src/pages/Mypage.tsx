@@ -16,7 +16,7 @@ const Mypage = () => {
 	//회원 탈퇴 모달 온오프
 	const [isDeleteMem, setIsDeleteMem] = useState(false);
 	const sectionStyle =
-		"border border-BASIC_BLACK p-5 flex flex-col text-center w-72 text-start mb-5 h-52";
+		"border border-BASIC_BLACK dark:border-BASIC_WHITE p-5 flex flex-col text-center w-72 text-start mb-5 h-52";
 	const titleStyle = "font-bold mb-3 text-lg";
 
 	const handlePwd = () => {
@@ -24,7 +24,7 @@ const Mypage = () => {
 	};
 
 	return (
-		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK">
+		<div className="flex flex-col w-full px-2 mb-20 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 			{/* <div className="inset-x-0 top-0 z-0 w-screen h-44 bg-POINT_COLOR"></div> */}
 			<EditProfile />
 			<div className="flex flex-row mt-5 ">
@@ -68,7 +68,7 @@ const Mypage = () => {
 							onClick={handlePwd}
 						>
 							<Lock width={"20px"} height={"20px"} />
-							<p className="ml-2">비밀번호 변경</p>
+							<p className="ml-2 dark:text-BASIC_BLACK">비밀번호 변경</p>
 						</button>
 						<button
 							className="hover:text-MAIN_COLOR"
