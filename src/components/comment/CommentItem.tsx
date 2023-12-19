@@ -20,7 +20,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 	const [is2CHide, setIs2CHide] = useState(false);
 	const [editCommitId, setEditCommentId] = useState<number | null>(null);
 	// const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
-	const MEMBER_ID = 5;
+	const MEMBER_ID = 8; //임시
 	//console.log(datas);
 	const formattedDate = useFormatDate(datas.createdAt);
 
@@ -70,13 +70,13 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 										onClick={() => {
 											setIsEdit(!isEdit), console.log("수정 버튼 클릭");
 										}}
-										parentInfo={[
-											datas.articleId,
-											datas.parentId,
-											datas.commentId,
-										]}
+										// parentInfo={[
+										// 	datas.articleId,
+										// 	datas.parentId,
+										// 	datas.commentId,
+										// ]}
 									/>
-									<DeleteBtn commentId={datas.commentId} />
+									<DeleteBtn itemId={datas.commentId} type={"comment"} />
 								</>
 							) : null}
 						</div>
