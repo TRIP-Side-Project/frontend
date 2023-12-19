@@ -6,6 +6,7 @@ import DeleteBtn from "@/common/button/DeleteBtn";
 import Temp from "@/assets/img/temp.png";
 import EditComment from "./EditComment";
 import HideComment from "./HideComment";
+import useFormatDate from "@/hooks/useFormatDate";
 
 interface CommentItems {
 	datas: CommentTypes;
@@ -21,6 +22,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 	// const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
 	const MEMBER_ID = 5;
 	//console.log(datas);
+	const formattedDate = useFormatDate(datas.createdAt);
 
 	const handle2CHide = (commentId: number) => {
 		setEditCommentId(commentId);
@@ -60,7 +62,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 						</div>
 						<div className="flex flex-row ">
 							<div className="mx-3 text-sm text-DARK_GRAY_COLOR">
-								{datas.createdAt}
+								{formattedDate}
 							</div>
 							{datas.writerId === MEMBER_ID ? (
 								<>
