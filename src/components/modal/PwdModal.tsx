@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
-// import { useMutation } from "@tanstack/react-query";
-// import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 import Close from "@/assets/svg/Close";
 import { ToggleTypes } from "@/types/toggle";
 
 const PwdModal = ({ isClick }: ToggleTypes) => {
-	// const BASE_URL = import.meta.env.VITE_BASE_URL;
-	// const ACCESS_TOKEN = "Bearer TempToken";
-	const tempOriginPwd = "hima19185!"; //기존 비밀번호
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
+
+	//const tempOriginPwd = "hima19185!"; //기존 비밀번호
 
 	const [checkOriginPwd, setCheckOriginPwd] = useState("");
 	const [amendPwd, setAmendPwd] = useState(""); // 변경 비밀번호
 	const [spanText, setSpanText] = useState(""); // 변경 비밀번호 내부 경고 문구
 	const [reAmendPwd, setReAmendPwd] = useState(""); // 변경 비밀번호 확인용
 
-	const isOriginValid = tempOriginPwd === checkOriginPwd;
-	const isSamePwd = tempOriginPwd === amendPwd;
+	// const isOriginValid = tempOriginPwd === checkOriginPwd;
+	// const isSamePwd = tempOriginPwd === amendPwd;
 	const isRePwdValid = amendPwd === reAmendPwd;
 	console.log(`변경 뉴 비번 : ${amendPwd}`);
-	console.log(isSamePwd);
+	//console.log(isSamePwd);
 
 	////^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 	const [isAmendValid, setISAmendValid] = useState(true);
@@ -31,11 +32,11 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 		const inputData = e.target.value;
 		console.log(`원래 비번 : ${inputData}`);
 		setCheckOriginPwd(inputData);
-		if (tempOriginPwd === checkOriginPwd) {
-			console.log("Origin 비밀번호와 일치합니다. ");
-		} else {
-			console.log("Origin 비밀번호와 틀립니다. ");
-		}
+		// if (tempOriginPwd === checkOriginPwd) {
+		// 	console.log("Origin 비밀번호와 일치합니다. ");
+		// } else {
+		// 	console.log("Origin 비밀번호와 틀립니다. ");
+		// }
 	};
 
 	//변경 비밀번호 유효성 검사
@@ -60,14 +61,14 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 				"* 비밀번호는 최소 8자 이상, 영문과 숫자를 포함해야 하며 공백이 없어야 합니다.";
 		}
 
-		if (isSamePwd) {
-			//기존 비밀번호와 동일한 경우 isSamePwd - true 에러
-			setISAmendValid(false);
-			message = "* 기존 비밀번호를 사용하실 수 없습니다.";
-		}
+		// if (isSamePwd) {
+		// 	//기존 비밀번호와 동일한 경우 isSamePwd - true 에러
+		// 	setISAmendValid(false);
+		// 	message = "* 기존 비밀번호를 사용하실 수 없습니다.";
+		// }
 
 		setSpanText(message);
-	}, [amendPwd, isSamePwd]);
+	}, [amendPwd]);
 
 	//변경 비밀번호 재확인 유효성 검사
 	const handleReAmendValidPwd:
@@ -84,20 +85,29 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 	};
 
 	//최종 비밀번호 변경 요청
-	// const mutation = useMutation({
-	// 	mutationFn: () => {
-	// 		return axios.patch(`${BASE_URL}/api/members/password`, {
-	// 			data: {currentPassword: checkOriginPwd,
-	// 			newPassword: amendPwd,
-	// 			newPasswordConfirm: reAmendPwd},
-	// 			headers: {accessToken: ACCESS_TOKEN}
-	// 		});
-	// 	},
-	// });
+	const mutation = useMutation({
+		mutationFn: () => {
+			return axios.patch(
+				`${BASE_URL}/api/members/password`,
+				{
+					currentPassword: checkOriginPwd,
+					newPassword: amendPwd,
+					newPasswordConfirm: reAmendPwd,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
+					},
+				},
+			);
+		},
+	});
 
 	const sendChangePwd = async () => {
-		if (isOriginValid && isOriginValid && !isSamePwd) {
-			// await mutation.mutateAsync();
+		//isOriginValid && isOriginValid && !isSamePwd
+		if (isRePwdValid) {
+			await mutation.mutateAsync();
 			console.log("비밀번호 변경 성공 가능 ");
 			isClick();
 		} else {
@@ -118,7 +128,7 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 				<form className="my-10">
 					<div className={titleStyle}>
 						현재 비밀번호
-						{checkOriginPwd ? (
+						{/* {checkOriginPwd ? (
 							<span
 								className={`ml-2 font-normal text-ETC_COLOR text-[14px] ${
 									isOriginValid ? "text-ETC_COLOR" : "text-POINT_COLOR"
@@ -128,7 +138,7 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 									? "* 비밀번호를 맞게 입력했습니다. "
 									: "* 비밀번호가 일치하지 않습니다. "}
 							</span>
-						) : null}
+						) : null} */}
 					</div>
 					<input
 						className={inputStyle}
@@ -172,7 +182,8 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 					<button
 						className="blue_squareBtn w-[178px]"
 						onClick={sendChangePwd}
-						disabled={!isOriginValid || !isRePwdValid || isSamePwd}
+						//disabled={!isOriginValid || !isRePwdValid || isSamePwd}
+						disabled={!isRePwdValid}
 					>
 						비밀번호 변경
 					</button>

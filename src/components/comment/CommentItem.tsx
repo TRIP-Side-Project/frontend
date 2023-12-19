@@ -6,8 +6,6 @@ import DeleteBtn from "@/common/button/DeleteBtn";
 import Temp from "@/assets/img/temp.png";
 import EditComment from "./EditComment";
 import HideComment from "./HideComment";
-// import { useState } from "react";
-// import HideComment from "./HideComment";
 
 interface CommentItems {
 	datas: CommentTypes;
@@ -18,14 +16,11 @@ interface CommentItems {
 
 const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 	const [isEdit, setIsEdit] = useState(false);
-	// const [isHide, setIsHide] = useState(false);
 	const [is2CHide, setIs2CHide] = useState(false);
 	const [editCommitId, setEditCommentId] = useState<number | null>(null);
-	const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
-
-	// const handleHideComment = () => {
-	// 	setIsHide(!isHide);
-	// };
+	// const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
+	const MEMBER_ID = 5;
+	//console.log(datas);
 
 	const handle2CHide = (commentId: number) => {
 		setEditCommentId(commentId);
@@ -93,6 +88,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 									isHide={isHide as boolean}
 									onClick={setIsHide as () => void}
 									isLength={datas.children.length}
+									key={`comment-showComment-${datas.commentId}`}
 								/>
 							) : (
 								<></>
@@ -110,7 +106,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 					) : null}
 					{is2CHide && editCommitId === datas.commentId ? (
 						<EditComment
-							parentInfo={[datas.articleId, datas.parentId, datas.commentId]}
+							parentInfo={[datas.articleId, editCommitId, datas.commentId]}
 						/>
 					) : (
 						<></>

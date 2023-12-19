@@ -23,7 +23,7 @@ const EditProfile = () => {
 
 	return (
 		<>
-			<div className="p-3 mt-10 font-bold border border-BASIC_BLACK border_LIGHT_GRAY_COLOR">
+			<div className="p-3 mt-10 font-bold border border-BASIC_BLACK dark:border-BASIC_WHITE">
 				<div className="flex flex-row justify-between">
 					<div>여행을 좋아하는 에디터 아리입니다.</div>
 
@@ -31,7 +31,7 @@ const EditProfile = () => {
 						onClick={handleClick}
 						className="flex flex-row px-4 py-1 text-sm font-semibold border rounded-lg bg-BASIC_WHITE border-LIGHT_GRAY_COLOR hover:bg-LINE_POINT_COLOR"
 					>
-						<p className="mr-2">프로필 수정</p>
+						<p className="mr-2 dark:text-BASIC_BLACK">프로필 수정</p>
 						<Setting width={"20px"} height={"20px"} />
 					</button>
 				</div>

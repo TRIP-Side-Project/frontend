@@ -1,4 +1,6 @@
 import Category from "@/common/category/Category";
+import useFormatDate from "@/hooks/useFormatDate";
+import useFormatTitle from "@/hooks/useFormatTitle";
 
 export interface ForumList {
 	articleId: number;
@@ -16,28 +18,32 @@ interface ForumItemTypes {
 }
 
 const ForumItem = ({ data }: ForumItemTypes) => {
+	console.log(data);
 	const propsBg = "BAISC_WHITE";
 	const itemWrapper = `w-full whitespace-nowrap h-[70px] py-3 items-center flex flex-row 
-	justify-between text-lg font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-${propsBg} 
-	hover:font-bold hover:cursor-pointer`;
+	justify-between font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-${propsBg} 
+	hover:text-black hover:cursor-pointer`;
+
+	const formatDate = useFormatDate(data.createdAt);
+	const formatTitle = useFormatTitle(data.title, 20);
 
 	return (
 		<div className={itemWrapper}>
-			<div className="grid place-items-center basis-1/6 bg-text-POINT_COLOR">
+			<div className="grid bg-red-300 place-items-center basis-1/6">
 				<Category isEditor={data.writerRole} />
 			</div>
-			<div className="px-3 basis-3/6">
-				{data.title}
-				<span className="text-sm">(5)</span>
+			<div className="px-3 font-semibold bg-yellow-300 text-[12px] sm:text-sm basis-3/6">
+				{formatTitle}
+				{/* <span className="text-sm"></span> */}
 				{/* PS. 혹시 댓글 갯수도 받을 수 있을까..? 12/14 혜진 고민*/}
 			</div>
-			<div className="basis-1/6 ">
+			<div className="font-semibold bg-green-300 sm:text-sm basis-1/6">
 				{/* <Editor fillColor={""} width={"5px"} height={"5px"} /> */}
 				{data.writerNickname}
 			</div>
-			<div className="basis-1/6 ">{data.createdAt}</div>
-			<div className="basis-1/6 ">{data.viewCount}</div>
-			<div className="basis-1/6 ">{data.likeCount}</div>
+			<div className="text-sm bg-pink-200 basis-1/6 ">{formatDate}</div>
+			<div className="text-sm bg-blue-400 basis-1/6">{data.viewCount}</div>
+			<div className="text-sm bg-orange-300 basis-1/6">{data.likeCount}</div>
 		</div>
 	);
 };

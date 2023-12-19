@@ -11,8 +11,8 @@ const Pagenation = () => {
 		setActiveBtn(index);
 	};
 	return (
-		<div className="flex flex-row justify-center my-5 text-xl font-bold text-BASIC_BLACK">
-			<button className="mr-2">
+		<div className="flex flex-row justify-center my-5 text-sm font-bold sm:text-xl text-BASIC_BLACK dark:text-BASIC_WHITE">
+			<button className="mr-2 rounded-md dark:bg-MAIN_COLOR bg-LINE_POINT_COLOR">
 				<ArrowLeft fillColor={""} width={"20px"} height={"20px"} />
 			</button>
 			{Array.from(Array(5), (_, index) => (
@@ -26,7 +26,7 @@ const Pagenation = () => {
 					{index + 1}
 				</button>
 			))}
-			<button className="ml-2">
+			<button className="ml-2 rounded-md dark:bg-MAIN_COLOR bg-LINE_POINT_COLOR">
 				<ArrowRight fillColor={""} width={"20px"} height={"20px"} />
 			</button>
 		</div>
