@@ -1,6 +1,7 @@
 import Heart from "@/assets/svg/Heart";
 import Category from "@/common/category/Category";
 import Comment from "@/components/comment/Comment";
+import useFormatDate from "@/hooks/useFormatDate";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,6 +30,7 @@ const DetailForum = () => {
 		queryFn: getForumData,
 	});
 	console.log(data);
+	const formattedDate = useFormatDate(data.createdAt);
 
 	if (isPending) return <span>데이터 불러오는 중</span>;
 	if (isError) return <span>Erros : {error.message}</span>;
@@ -41,7 +43,7 @@ const DetailForum = () => {
 
 				<div className="flex flex-row divide-x divide-LIGHT_GRAY_COLOR">
 					<p className="px-5">{data.writerNickname}</p>
-					<p className="px-5">{data.createdAt}</p>
+					<p className="px-5">{formattedDate}</p>
 					<p className="pl-5">조회 {data.viewCount}</p>
 				</div>
 			</div>
