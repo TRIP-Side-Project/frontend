@@ -25,7 +25,6 @@ const Mypage = () => {
 
 	return (
 		<div className="flex flex-col w-full px-2 mb-20 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
-			{/* <div className="inset-x-0 top-0 z-0 w-screen h-44 bg-POINT_COLOR"></div> */}
 			<EditProfile />
 			<div className="flex flex-row mt-5 ">
 				{/* 왼쪽 섹션 */}

@@ -9,6 +9,8 @@ import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
 import FindList from "@/assets/svg/FindList";
 import { useMemo } from "react";
+import Loading from "@/components/Loading/Loading";
+import ErrState from "@/components/Loading/ErrState";
 
 const Forum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -46,8 +48,8 @@ const Forum = () => {
 	const memoizedForumData = useMemo(() => data, [data]);
 	//console.log(memoizedForumData);
 
-	if (isPending) return <span>데이터를 불러오는 중!</span>;
-	if (isError) return <span>Error: {error.message}</span>;
+	if (isPending) return <Loading />;
+	if (isError) return <ErrState err={error.message} />;
 
 	return (
 		<div className="flex flex-col w-full px-2 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
