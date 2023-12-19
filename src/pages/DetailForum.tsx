@@ -2,6 +2,7 @@ import Heart from "@/assets/svg/Heart";
 import Category from "@/common/category/Category";
 import Comment from "@/components/comment/Comment";
 import useFormatDate from "@/hooks/useFormatDate";
+import useFormatTitle from "@/hooks/useFormatTitle";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,12 +32,13 @@ const DetailForum = () => {
 	});
 	console.log(data);
 	const formattedDate = useFormatDate(data.createdAt);
+	const formattedTitle = useFormatTitle(data.title, 15);
+	console.log(formattedDate);
 
 	if (isPending) return <span>데이터 불러오는 중</span>;
 	if (isError) return <span>Erros : {error.message}</span>;
 
 	return (
-		// <div className="flex flex-col lg:min-w-[1200px] md:min-w-[900px] text-BASIC_BLACK mb-20">
 		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK bg-BASIC_WHITE">
 			<div className="flex flex-row justify-between py-2 mt-20 border-b border-BASIC_BLACK">
 				<Category isEditor={data.writerRole} />
@@ -49,10 +51,10 @@ const DetailForum = () => {
 			</div>
 			<div className="flex flex-row items-center justify-between py-2">
 				<div
-					className="cursor-pointer font-sm text-BASIC_BLACK hover:font-bold"
+					className="text-xs cursor-pointer text-BASIC_BLACK hover:font-bold"
 					onClick={backButton}
 				>
-					여행 후기 &gt; 에디터 소개하는 강릉 여행
+					{`여행 후기  >  ${formattedTitle}`}
 				</div>
 				<div className="flex flex-row items-center">
 					<Heart width={"42px"} height={"42px"} />
