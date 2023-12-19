@@ -88,9 +88,11 @@ const Forum = () => {
 						<li className="basis-1/6">좋아요</li>
 					</ul>
 					{memoizedForumData.articles.length !== 0 ? (
-						<div className="flex flex-col items-center justify-center h-24 bg-ITEM_BG_COLOR">
+						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{memoizedForumData.articles.map((list: ForumList) => (
-								<ForumItem key={list.articleId} data={list} />
+								<Link to={`/forum/detail/${list.articleId}`}>
+									<ForumItem key={list.articleId} data={list} />
+								</Link>
 							))}
 						</div>
 					) : (
