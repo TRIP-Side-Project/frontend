@@ -1,8 +1,7 @@
-import { ParentInfo } from "@/components/comment/EditComment";
+// import { ParentInfo } from "@/components/comment/EditComment"; extends delete
 
-interface AmendCommentTypes extends ParentInfo {
+interface AmendCommentTypes {
 	onClick: () => void;
-	// parentInfo: [number, number | null, number | null];
 }
 
 const AmendBtn = ({ onClick }: AmendCommentTypes) => {
