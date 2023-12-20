@@ -1,40 +1,26 @@
 # 🏖️ TRIPTRIP
-**`프로젝트 소개`** : 네이버 쇼핑 여행 상품을 소개 및 연결하고 여행지 후기 커뮤니티를 이용할 수 있는 서비스를 제공하는 사이트입니다.
+**`프로젝트 소개`**  네이버 쇼핑 여행 상품을 소개 및 연결하고 여행지 후기 커뮤니티를 이용할 수 있는 서비스를 제공하는 사이트입니다.
 
-**`개발기간`** : 🗓️ 2023.11.27 - 2023.12.22
+**`개발기간`**  2023.11.27 - 2023.12.22
 
-**`배포링크`** : <https://dkoqktaeu3tic.cloudfront.net/>
+**`배포링크`**  <https://dkoqktaeu3tic.cloudfront.net/>
 
 
 <br/>
 
 ## ⚒️ 기술 스택
 
-**언어**
-
-<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
-
-<br/>
-
-**프레임워크**
-
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
-
-<br/>
-
-**빌드**
-
-<img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white"/>
-
-
-<br/>
-
-**라이브러리**
-
-<img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/>
-<img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/>
-<img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white"/>
-<img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white"/>
+<div>
+  <img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white"/>
+</div>
+<div>
+  <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white"/>
+</div>
 
 
 <br/>
