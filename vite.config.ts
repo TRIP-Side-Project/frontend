@@ -20,7 +20,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/proxy": {
-				target: "http://49.50.165.53",
+				target: "https://apigw.tmoney.co.kr:5556/gateway/koIbtList/v1",
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/proxy/, ""),
 			},

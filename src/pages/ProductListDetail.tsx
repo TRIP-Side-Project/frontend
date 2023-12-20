@@ -3,7 +3,8 @@ import Train from "@/assets/svg/Train";
 import Button, { btnAttributes } from "@/common/button/Button";
 import Bookmark from "@/components/Bookmark/Bookmark";
 import ProductCardItems from "@/components/productCardItems/ProductCardItems";
-import { ChangeEvent, useState } from "react";
+import axios from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductListDetail () {
@@ -92,6 +93,29 @@ export default function ProductListDetail () {
   const selectVehicle: string = "w-1/2 px-3 py-1 text-BASIC_WHITE bg-MAIN_COLOR";
   const normalVehicle: string = "w-1/2 px-3 py-1";
 
+  // 교통편 조회
+  const handleVehicle = () => {
+    const fetchData = async () => {
+      try{
+        const response = await axios.get(
+          `/proxy/ibt_list/20231219/1530/010/710/0/0/9`,
+          {
+            headers: {
+              "x-Gateway-APIKey": "f7f4cfab-c6e5-4c2d-ba83-283349af63e4"
+            }
+          }
+        )
+        console.log(response);
+      } catch (error) {
+        console.log("Error : " + error);
+      }
+    }
+    fetchData();
+  }
+
+  useEffect(() => {
+    handleVehicle();
+  }, []);
 
   return (
     <>
