@@ -79,7 +79,7 @@ const Tag = ({ setSelectTag, handleSelectTag }: TagTypes) => {
 	};
 
 	return (
-		<div className="relative z-30 flex flex-row flex-wrap p-2 text-sm font-semibold rounded-lg shadow-2xl -top-7 bg-zinc-200">
+		<div className="relative z-30 flex flex-row flex-wrap p-2 text-sm font-semibold rounded-lg shadow-2xl top-1 bg-zinc-200">
 			{tempTags.map((tag: string, idx: number) => (
 				<TagItem
 					key={idx}

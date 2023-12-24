@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import EditorLexical from "@/components/lexical/EditorLexical";
 import Tag, { TagItem } from "@/common/tag/Tag";
-// import useOutsideClick from "@/hooks/useOutsideClick";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 type Inputs = {
 	title: string;
@@ -30,6 +30,9 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 	const navigation = useNavigate();
 	const { articleId } = useParams();
 	//새글 등록은 editData === undefined
+
+	//본문 유효성
+	const [isValid, setValid] = useState(true);
 
 	//태그 드롭다운 & 태그 담을 데이터
 	const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
@@ -55,11 +58,11 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 		setIsTagOpen(!isTagOpen);
 	};
 
-	// const ref = useOutsideClick({
-	// 	onClickOutside: () => {
-	// 		setIsTagOpen(!isTagOpen);
-	// 	},
-	// });
+	const ref = useOutsideClick({
+		onClickOutside: () => {
+			setIsTagOpen(false);
+		},
+	});
 
 	console.log(getValues("tags"));
 	// setValue("tags", ["테스트중"]);
@@ -74,67 +77,71 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 	}, [editData, selectTag, setValue]);
 
 	//태그 선택 함수
-	// const handleSelectTag = (tag: string) => {
-	// 	console.log("폼: ", tag); //--ok 입력 확인
-	// 	const currentTags = getValues("tags");
-	// 	if (currentTags.includes(tag)) {
-	// 		const updatedTags = currentTags.filter((e) => e! == tag);
-	// 		setValue("tags", updatedTags);
-	// 	} else {
-	// 		const updatedTags = [...currentTags, tag];
-	// 		setValue("tags", updatedTags);
-	// 	}
-	// };
+	const handleSelectTag = (tag: string) => {
+		console.log("폼: ", tag); //--ok 입력 확인
+		const currentTags = getValues("tags");
+		if (currentTags.includes(tag)) {
+			const updatedTags = currentTags.filter((e) => e! == tag);
+			setValue("tags", updatedTags);
+		} else {
+			const updatedTags = [...currentTags, tag];
+			setValue("tags", updatedTags);
+		}
+	};
 
 	//태그 제외 함수
-	// const handleDeleteTag = (tagIdx: number) => {
-	// 	console.log("폼: ", tagIdx); //--Ok 입력 확인
-	// 	const currentTags = getValues("tags");
-	// 	currentTags.splice(tagIdx, 1);
-	// 	setValue("tags", currentTags);
-	// };
+	const handleDeleteTag = (tagIdx: number) => {
+		console.log("폼: ", tagIdx); //--Ok 입력 확인
+		const currentTags = getValues("tags");
+		currentTags.splice(tagIdx, 1);
+		setValue("tags", currentTags);
+	};
 
-	// const showDeleteTag = (tagIdx: number) => {
-	// 	setSelectTag((prevTag) => {
-	// 		const tagArr = [...prevTag];
-	// 		tagArr.splice(tagIdx, 1);
-	// 		return tagArr;
-	// 	});
-	// };
+	const showDeleteTag = (tagIdx: number) => {
+		setSelectTag((prevTag) => {
+			const tagArr = [...prevTag];
+			tagArr.splice(tagIdx, 1);
+			return tagArr;
+		});
+	};
 
 	//태그 유효성 검증
 	const isDisableTag = selectTag.length <= 3;
-	// console.log(isDisableTag);
-	//게시글 본문 유효성 검증
-	// const isDisableContent = getValues("content").length >= 20;
+	//console.log(isDisableTag);
+	//게시글 본문 유효성 검증 - true : 무조건 true 만 나옴
+	//const isDisableContent = getValues("content").length >= 20;
 
 	//mutation 새 게시글 등록
 	const sendNewForumMutation = useMutation<void, Error, Inputs>({
 		mutationFn: async (data) => {
-			try {
-				const res = await axios.post(
-					`${BASE_URL}/api/articles`,
+			if (data.content.length >= 20) {
+				try {
+					const res = await axios.post(
+						`${BASE_URL}/api/articles`,
 
-					data,
-					{
-						headers: {
-							"Content-Type": "application/json",
-							accessToken: `Bearer ${ACCESS_TOKEN}`,
+						data,
+						{
+							headers: {
+								"Content-Type": "application/json",
+								accessToken: `Bearer ${ACCESS_TOKEN}`,
+							},
 						},
-					},
-				);
-				console.log(`데이터 전달 성공 ${res}`);
-				return res.data;
-			} catch (err) {
-				throw new Error(`데이터 전달 실패 ${err}`);
+					);
+					console.log(`데이터 전달 성공 ${res}`);
+					return res.data;
+				} catch (err) {
+					throw new Error(`데이터 전달 실패 ${err}`);
+				}
+			} else {
+				setValid(false);
 			}
 		},
 	});
 
 	//새 게시글 등록
 	const onSubmitNewForum: SubmitHandler<Inputs> = async (data) => {
-		console.log(data);
-		console.log(`리액트 훅 로직 시작`);
+		// console.log(data);
+		// console.log(`리액트 훅 로직 시작`);
 		try {
 			const newArticleId = await sendNewForumMutation.mutateAsync(data);
 			console.log(`새 ${newArticleId} 게시글 등록!`);
@@ -230,7 +237,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 						{...register("title", { required: true, minLength: 8 })}
 					/>
 				</div>
-				<div className="mb-8 ">
+				<div className="mb-8 " ref={ref}>
 					<div className={titleStyle}>
 						태그
 						{!isDisableTag && (
@@ -245,35 +252,36 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 								key={idx}
 								tagData={el}
 								tagIdx={idx}
-								// handleDeleteTag={() => handleDeleteTag(idx)}
-								// showDeleteTag={() => showDeleteTag(idx)}
+								handleDeleteTag={() => handleDeleteTag(idx)}
+								showDeleteTag={() => showDeleteTag(idx)}
 							/>
 						))}
 						<input
 							type="text"
 							placeholder={selectTag.length === 0 ? "태그를 선택해주세요" : ""}
-							className="w-full outline-none "
+							className="w-full outline-none bg-BASIC_WHITE"
 							onClick={onOffTag}
 							autoComplete="off"
 							defaultValue={editData ? editData.tags : []}
 							{...register("tags")}
 						/>
 					</div>
+					{isTagOpen && (
+						<Tag
+							setSelectTag={setSelectTag}
+							handleSelectTag={handleSelectTag}
+						/>
+					)}
 				</div>
-				{isTagOpen && (
-					<Tag
-						setSelectTag={setSelectTag}
-						// handleSelectTag={handleSelectTag}
-					/>
-				)}
+
 				<div className="mb-8 ">
 					<div id="editor" className={titleStyle}>
 						본문
-						{/* {!isDisableContent && (
+						{!isValid && (
 							<span className="ml-2 text-xs font-normal text-POINT_COLOR">
 								! 본문은 최소 20자 이상 작성해야 합니다.
 							</span>
-						)} */}
+						)}
 					</div>
 
 					<EditorLexical
@@ -291,6 +299,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 						type="submit"
 						value="등록"
 						className="blue_squareBtn w-[123px] cursor-pointer"
+						disabled={!isDisableTag}
 					/>
 				</div>
 			</form>
