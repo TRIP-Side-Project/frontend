@@ -16,7 +16,6 @@ import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 import FindPw from "./pages/FindPw";
 
 function App() {
-	//window.localStorage.setItem("memberId", "1");
 	return (
 		<BrowserRouter>
 			<Header />
@@ -31,9 +30,9 @@ function App() {
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/test" element={<Test />} />
 					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
 					<Route path="/findpw" element={<FindPw />} />
+					<Route path="/test" element={<Test />} />
 				</Routes>
 			</Layout>
 			<Footer />
