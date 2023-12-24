@@ -6,11 +6,13 @@ import Comment from "@/components/comment/Comment";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Dompurify from "dompurify";
 import AmendBtn from "@/common/button/AmendBtn";
 import DeleteBtn from "@/common/button/DeleteBtn";
 import { useState } from "react";
 import EditForum from "./EditForum";
+import ReadLexical from "@/components/lexical/ReadLexical";
+import Loading from "@/components/Loading/Loading";
+import ErrState from "@/components/Loading/ErrState";
 
 const DetailForum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -47,16 +49,20 @@ const DetailForum = () => {
 	// const formattedDate = useFormatDate(data.createdAt);
 	// const formattedTitle = useFormatTitle(data.title, 15);
 	// console.log(formattedDate); -> 고민(12/19)
-
-	if (isPending) return <span>데이터 불러오는 중</span>;
-	if (isError) return <span>Erros : {error.message}</span>;
+	if (isPending) return <Loading />;
+	if (isError) return <ErrState err={error.message} />;
 
 	return (
-		<div className="flex flex-col w-full mb-20 text-BASIC_BLACK bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
+		<div className="flex w-[860px] flex-col mx-auto  px-5 mb-20 text-BASIC_BLACK bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 			{isEdit ? (
 				<EditForum
-					editData={{ title: data.title, content: data.content }}
+					editData={{
+						title: data.title,
+						tags: data.tags,
+						content: data.content,
+					}}
 					handleEditMode={handleEditMode}
+					isEdit={isEdit}
 				/>
 			) : (
 				<>
@@ -69,33 +75,39 @@ const DetailForum = () => {
 							<p className="pl-5">조회 {data.viewCount}</p>
 						</div>
 					</div>
-					<div className="flex flex-row items-center justify-between py-2">
+					<div className="flex flex-row items-center justify-between py-2 mb-3">
 						<div
 							className="text-xs font-light cursor-pointer text-BASIC_BLACK dark:text-BASIC_WHITE"
 							onClick={backButton}
 						>
-							<span className="hover:text-MAIN-COLOR">
-								<Link to="/forum">
+							<Link to={"/forum"}>
+								<span className="hover:text-MAIN-COLOR">
 									{data.writerRole === "EDITOR"
 										? "여행 후기 > "
 										: "에디터 추천 > "}
-								</Link>
-							</span>
+								</span>{" "}
+							</Link>
 							<span className="hover:text-MAIN_COLOR"> {data.title}</span>
 						</div>
 						<div className="flex flex-row items-center">
-							<Heart width={"42px"} height={"42px"} />
+							<Heart width={"28px"} height={"28px"} />
 							<span className="ml-2 text-base font-semibold text-BASIC_BLACK dark:text-BASIC_WHITE">
 								{data.likeCount}
 							</span>
 						</div>
 					</div>
-					<div
-						className="pt-2 pb-10 bg-LINE_POINT_COLOR h-fit"
-						dangerouslySetInnerHTML={{
-							__html: Dompurify.sanitize(data.content),
-						}}
-					></div>
+					<div className="pt-2 pb-10 bg-LINE_POINT_COLOR h-fit dark:text-BASIC_BLACK">
+						<ReadLexical content={data.content} />
+					</div>
+					<div className="flex flex-row">
+						{data.tags &&
+							data.tags.map((tag: string, idx: number) => (
+								<div className="mr-3 text-sm text-LIGHT_GRAY_COLOR" key={idx}>
+									# {tag}
+								</div>
+							))}
+					</div>
+
 					<div className="flex flex-row justify-end my-2 text-sm border-b-2 border-BASIC_BLACK dark:border-BASIC_WHITE">
 						{data.writerId === MEMBER_ID && (
 							<>
