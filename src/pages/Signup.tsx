@@ -153,7 +153,7 @@ const Signup = () => {
   formData.append('email', signupInfo.email);
   formData.append('password', signupInfo.password);
   formData.append('nickname', signupInfo.userName);
-  formData.append('imageFile', signupInfo.imageFile);
+  formData.append('profileImg', signupInfo.imageFile);
   console.log(formData);
 
   const submitMutation = useMutation({
