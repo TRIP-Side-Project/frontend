@@ -2,20 +2,21 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-import Pagenation from "@/components/Pagenation";
+import Pagenation from "@/components/Pagination";
 import Button, { btnAttributes } from "@/common/button/Button";
-import HotItem from "@/components/cardItems/HotItem";
+// import HotItem from "@/components/cardItems/HotItem";
 import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
 import FindList from "@/assets/svg/FindList";
-import { useMemo } from "react";
+import { useState } from "react";
 import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
 
 const Forum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const navigate = useNavigate();
-	//새 글 등록하기 버튼 navigator 연결
+	const [activeBtn, setActiveBtn] = useState<number>(1);
+
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
 	};
@@ -33,7 +34,10 @@ const Forum = () => {
 
 	const getForumLists = async () => {
 		try {
-			const response = await axios.get(`${BASE_URL}/api/articles`);
+			console.log("페이지네이션 조회 ", activeBtn);
+			const response = await axios.get(
+				`${BASE_URL}/api/articles?page=${activeBtn}`,
+			);
 			return response.data;
 		} catch (err) {
 			throw new Error(`게시판 목록 에러 ${err}`);
@@ -41,12 +45,9 @@ const Forum = () => {
 	};
 
 	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["forumLists"],
+		queryKey: ["forumLists", activeBtn],
 		queryFn: getForumLists,
 	});
-
-	const memoizedForumData = useMemo(() => data, [data]);
-	//console.log(memoizedForumData);
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
@@ -56,11 +57,11 @@ const Forum = () => {
 			{/* 상단 인기 여행 아이템 섹션 */}
 			<div className="my-5 text-3xl font-bold">여행 후기</div>
 			<div className="grid grid-cols-3 m-auto gap-x-36">
-				{Array.from(Array(3), (_, index) => (
+				{/* {Array.from(Array(3), (_, index) => (
 					<Link to={"/forum/detail"}>
 						<HotItem key={`hot-item-${index}`} />
 					</Link>
-				))}
+				))} */}
 			</div>
 
 			{/* 게시판 목록 및 검색 창 섹션 */}
@@ -89,9 +90,9 @@ const Forum = () => {
 						<li className="basis-1/6">조회수</li>
 						<li className="basis-1/6">좋아요</li>
 					</ul>
-					{memoizedForumData.articles.length !== 0 ? (
+					{data.articles.length !== 0 ? (
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
-							{memoizedForumData.articles.map((list: ForumList) => (
+							{data.articles.map((list: ForumList) => (
 								<Link to={`/forum/detail/${list.articleId}`}>
 									<ForumItem key={list.articleId} data={list} />
 								</Link>
@@ -107,7 +108,11 @@ const Forum = () => {
 					)}
 				</div>
 				<Button btnInfo={btnInfo} />
-				<Pagenation />
+				<Pagenation
+					pageInfo={data.pagination}
+					activeBtn={activeBtn}
+					setActiveBtn={setActiveBtn}
+				/>
 			</div>
 		</div>
 	);
