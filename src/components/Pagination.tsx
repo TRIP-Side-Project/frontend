@@ -20,7 +20,7 @@ const Pagination = ({ pageInfo, activeBtn, setActiveBtn }: PaginationTypes) => {
 	const [currPageArr, setCurrPageArr] = useState<number[]>([]);
 	const page = pageInfo.page; // 현재 페이지 ex. 1
 	const totalPages = pageInfo.totalPages; //18
-	const limit = pageInfo.articleSize; //8
+	const limit = 5; // 한번에 표시할 버튼의 갯수
 
 	const sliceArrayByLimit = (totalPage: number, limit: number) => {
 		// 0부터 시작하는 페이지 번호 배열 생성

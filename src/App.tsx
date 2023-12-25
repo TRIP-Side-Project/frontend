@@ -11,14 +11,15 @@ import DetailForum from "./pages/DetailForum";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
-import Test from "./components/Test";
 import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 import FindPw from "./pages/FindPw";
+// import Notification from "./components/notification/Notification";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Header />
+			{/* <Notification /> */}
 			<Layout>
 				<Routes>
 					<Route path="/" element={<Home />} />
@@ -32,7 +33,6 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
 					<Route path="/findpw" element={<FindPw />} />
-					<Route path="/test" element={<Test />} />
 				</Routes>
 			</Layout>
 			<Footer />

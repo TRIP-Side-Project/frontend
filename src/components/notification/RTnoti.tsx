@@ -9,7 +9,7 @@ const RTnoti = () => {
 		return (
 			<div
 				id="Reac-Time-Notification"
-				className="absolute right-0 z-50 w-full max-w-xs p-4 text-gray-900 bg-pink-200 rounded-lg shadow-xl top-7 dark:bg-gray-800 dark:text-gray-300"
+				className="absolute right-0 z-50 w-full max-w-xs p-4 text-gray-900 rounded-lg shadow-xl bg-ITEM_BG_COLOR top-7 dark:bg-gray-800 dark:text-gray-300"
 				role="alert"
 			>
 				<div className="flex mb-3">
@@ -28,7 +28,7 @@ const RTnoti = () => {
 				<div className="flex items-center">
 					<div className="relative">
 						{/* relative inline-flex  */}
-						<span className="flex items-center justify-center w-6 h-6 z-20 bg-blue-600 rounded-full">
+						<span className="z-20 flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
 							<Alarm fillColor={"#ffffff"} width={"15px"} height={"15px"} />
 							<span className="sr-only">Message icon</span>
 						</span>
