@@ -1,12 +1,19 @@
-import { useState } from "react";
 import SearchIcon from "@/assets/svg/SearchIcon";
 
-const Search = () => {
-	const [search, setSearch] = useState("");
+type SearchTypes = {
+	setSearch: React.Dispatch<React.SetStateAction<string>>;
+};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearch(event.target.value);
+//상위 컴포넌트에서 const [search, setSearch] = useState(""); 선언 후 props 로 전달
+const Search = ({ setSearch }: SearchTypes) => {
+	//Enter 키 발동 시 검색 keyword 전달
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		const target = event.target as HTMLInputElement;
+		if (event.key === "Enter") {
+			setSearch(target.value);
+		}
 	};
+
 	return (
 		<div className="relative flex flex-row items-center px-2 py-1 border rounded-xl bg-BASIC_WHITE md:w-96 w-36 h-fit border-BASIC_BLACK">
 			<div className="relative">
@@ -15,10 +22,10 @@ const Search = () => {
 			<input
 				type="text"
 				id="searchInput"
-				value={search}
 				className="w-full px-2 py-1 outline-none bg-BASIC_WHITE"
 				placeholder="게시글 검색"
-				onChange={handleChange}
+				onKeyDown={handleKeyDown}
+				autoComplete="off"
 			></input>
 		</div>
 	);

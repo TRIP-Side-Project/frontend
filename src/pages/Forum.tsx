@@ -16,6 +16,7 @@ const Forum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const navigate = useNavigate();
 	const [activeBtn, setActiveBtn] = useState<number>(1);
+	const [search, setSearch] = useState("");
 
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
@@ -32,11 +33,13 @@ const Forum = () => {
 		onClick: () => navigateNewForum,
 	};
 
+	//단순 페이지 조회
 	const getForumLists = async () => {
 		try {
-			console.log("페이지네이션 조회 ", activeBtn);
 			const response = await axios.get(
-				`${BASE_URL}/api/articles?page=${activeBtn}`,
+				search
+					? `${BASE_URL}/api/articles?title=${search}`
+					: `${BASE_URL}/api/articles?page=${activeBtn}`,
 			);
 			return response.data;
 		} catch (err) {
@@ -45,7 +48,7 @@ const Forum = () => {
 	};
 
 	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["forumLists", activeBtn],
+		queryKey: ["forumLists", activeBtn, search],
 		queryFn: getForumLists,
 	});
 
@@ -67,7 +70,7 @@ const Forum = () => {
 			{/* 게시판 목록 및 검색 창 섹션 */}
 			<div className="flex flex-col mt-10">
 				<div className="mx-auto my-5">
-					<Search />
+					<Search setSearch={setSearch} />
 				</div>
 				<div className="">
 					<div className="flex flex-row justify-between my-3 text-LIGHT_GRAY_COLOR">
@@ -93,7 +96,10 @@ const Forum = () => {
 					{data.articles.length !== 0 ? (
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{data.articles.map((list: ForumList) => (
-								<Link to={`/forum/detail/${list.articleId}`}>
+								<Link
+									to={`/forum/detail/${list.articleId}`}
+									key={`link-${list.articleId}`}
+								>
 									<ForumItem key={list.articleId} data={list} />
 								</Link>
 							))}
