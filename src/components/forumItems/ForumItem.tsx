@@ -18,7 +18,7 @@ interface ForumItemTypes {
 }
 
 const ForumItem = ({ data }: ForumItemTypes) => {
-	console.log(data);
+	// console.log(data);
 	const propsBg = "BAISC_WHITE";
 	const itemWrapper = `w-full whitespace-nowrap h-[70px] py-3 items-center flex flex-row 
 	justify-between font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-${propsBg} 
@@ -29,21 +29,21 @@ const ForumItem = ({ data }: ForumItemTypes) => {
 
 	return (
 		<div className={itemWrapper}>
-			<div className="grid bg-red-300 place-items-center basis-1/6">
+			<div className="grid place-items-center basis-1/6">
 				<Category isEditor={data.writerRole} />
 			</div>
-			<div className="px-3 font-semibold bg-yellow-300 text-[12px] sm:text-sm basis-3/6">
+			<div className="px-3 font-semiboldtext-[12px] sm:text-sm basis-3/6">
 				{formatTitle}
 				{/* <span className="text-sm"></span> */}
 				{/* PS. 혹시 댓글 갯수도 받을 수 있을까..? 12/14 혜진 고민*/}
 			</div>
-			<div className="font-semibold bg-green-300 sm:text-sm basis-1/6">
+			<div className="font-semibold sm:text-sm basis-1/6">
 				{/* <Editor fillColor={""} width={"5px"} height={"5px"} /> */}
 				{data.writerNickname}
 			</div>
-			<div className="text-sm bg-pink-200 basis-1/6 ">{formatDate}</div>
-			<div className="text-sm bg-blue-400 basis-1/6">{data.viewCount}</div>
-			<div className="text-sm bg-orange-300 basis-1/6">{data.likeCount}</div>
+			<div className="text-sm basis-1/6 ">{formatDate}</div>
+			<div className="text-sm basis-1/6">{data.viewCount}</div>
+			<div className="text-sm basis-1/6">{data.likeCount}</div>
 		</div>
 	);
 };
