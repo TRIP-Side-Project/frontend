@@ -17,6 +17,8 @@ const Forum = () => {
 	const navigate = useNavigate();
 	const [activeBtn, setActiveBtn] = useState<number>(1);
 	const [search, setSearch] = useState("");
+	const [filter, setFilter] = useState<number>(1);
+	const [category, setCategory] = useState<"EDITOR" | "MEMBER">("MEMBER");
 
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
@@ -24,7 +26,6 @@ const Forum = () => {
 
 	const btnInfo: btnAttributes = {
 		width: "172px",
-		// height: "50px",
 		position: "right",
 		text: "새 글 등록하기",
 		type: "square",
@@ -39,8 +40,8 @@ const Forum = () => {
 			const response = await axios.get(
 				search
 					? `${BASE_URL}/api/articles?title=${search}`
-					: `${BASE_URL}/api/articles?page=${activeBtn}`,
-			);
+					: `${BASE_URL}/api/articles?page=${activeBtn}&sortCode=${filter}`,
+			); //category 부분은 어떻게 연계되는지 확인 필요 12/25 혜진 &category=MEMBER&sortCode=2??
 			return response.data;
 		} catch (err) {
 			throw new Error(`게시판 목록 에러 ${err}`);
@@ -54,6 +55,17 @@ const Forum = () => {
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
+
+	//좋아요 | 인기순 필터링
+	const clickStyle = "text-MAIN_COLOR font-semibold";
+	const handleFilterClick = (sort: number) => {
+		setFilter(sort);
+	};
+
+	//에디터 | 여행후기 카테고리 필터링
+	const handleCategoryClick = (sort: "MEMBER" | "EDITOR") => {
+		setCategory(sort);
+	};
 
 	return (
 		<div className="flex flex-col w-full px-2 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
@@ -75,14 +87,48 @@ const Forum = () => {
 				<div className="">
 					<div className="flex flex-row justify-between my-3 text-LIGHT_GRAY_COLOR">
 						<div className="divide-x divide-solid divide-BASIC_BLACK">
-							<button className="pr-3 text-esm sm:text-base ">
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									category === "EDITOR" ? clickStyle : ""
+								}`}
+								onClick={() => handleCategoryClick("EDITOR")}
+							>
 								에디터 추천
 							</button>
-							<button className="px-3 text-esm sm:text-base ">여행 후기</button>
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									category === "MEMBER" ? clickStyle : ""
+								}`}
+								onClick={() => handleCategoryClick("MEMBER")}
+							>
+								여행 후기
+							</button>
 						</div>
 						<div className="divide-x divide-solidv divide-BASIC_BLACK">
-							<button className="px-3 text-esm sm:text-base ">좋아요 순</button>
-							<button className="pl-3 text-esm sm:text-base ">최신 순</button>
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									filter === 2 ? clickStyle : ""
+								}`}
+								onClick={() => handleFilterClick(2)}
+							>
+								인기 높은 순
+							</button>
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									filter === 3 ? clickStyle : ""
+								}`}
+								onClick={() => handleFilterClick(3)}
+							>
+								인기 낮은 순
+							</button>
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									filter === 1 ? clickStyle : ""
+								}`}
+								onClick={() => handleFilterClick(1)}
+							>
+								최신 순
+							</button>
 						</div>
 					</div>
 					<ul className="flex flex-row justify-between w-full py-1 font-semibold text-esm sm:text-sm text-BASIC_BLACK bg-MAIN_COLOR">
