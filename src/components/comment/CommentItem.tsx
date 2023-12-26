@@ -3,7 +3,6 @@ import AmendBtn from "@/common/button/AmendBtn";
 import { CommentTypes } from "./Comment";
 import DeleteBtn from "@/common/button/DeleteBtn";
 
-import Temp from "@/assets/img/temp.png";
 import EditComment from "./EditComment";
 import HideComment from "./HideComment";
 import useFormatDate from "@/hooks/useFormatDate";
@@ -50,7 +49,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 						className="flex flex-row justify-between px-2 py-3"
 					>
 						<img
-							src={Temp}
+							src={datas.writerProfileImg}
 							alt="userImage"
 							className="rounded-full w-14 h-14"
 						/>
