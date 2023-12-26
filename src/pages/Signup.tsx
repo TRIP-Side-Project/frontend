@@ -4,6 +4,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 import SignupInfo from "@/components/signup/SignupInput";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
 
@@ -72,10 +73,8 @@ const Signup = () => {
   // 비밀번호 유효성 검사
   const [vaildPw, setVaildPw] = useState(false);
   const regex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
-  // const signupInfoPw = signupInfo.password;
   const isValidPassword = regex.test(signupInfo.password);
   useEffect(() => {
-    // const { password } = signupInfo;
     if (isValidPassword) {
       setVaildPw(true);
     } else {
@@ -132,29 +131,14 @@ const Signup = () => {
       }
     };
 
-  // const handleEmailCheck: MouseEventHandler<HTMLButtonElement> = (event) => {
-  //   event.preventDefault();
-
-  //   const sendEmail = async () => {
-  //     try {
-  //       const response = await axios.post(`${BASE_URL}/api/members/send-email/${signupInfo.email}`);
-  //       setIsVaildEmail(true);
-  //       console.log(response);
-  //       handleSendEmail();
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-  //   sendEmail();
-  // }
-
   // 회원가입 제출
   const formData = new FormData();
   formData.append('email', signupInfo.email);
   formData.append('password', signupInfo.password);
   formData.append('nickname', signupInfo.userName);
   formData.append('profileImg', signupInfo.imageFile);
-  console.log(formData);
+
+    const navigator = useNavigate();
 
   const submitMutation = useMutation({
     mutationFn: () => {
@@ -170,35 +154,13 @@ const Signup = () => {
     if(isVaildEmail && isValidPassword && isCorrectPw){
       try {
         const response = await submitMutation.mutateAsync();
+        navigator('/login');
         console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
   };
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append('email', signupInfo.email);
-  //   formData.append('password', signupInfo.password);
-  //   formData.append('nickname', signupInfo.userName);
-
-  //   if(isVaildEmail && isValidPassword && isCorrectPw){
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.post(
-  //           `${BASE_URL}/api/members/join`, 
-  //           formData
-  //         );
-  //         console.log(response);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     };
-  //     fetchData();
-  //   }
-  // };
 
   return (
     <>

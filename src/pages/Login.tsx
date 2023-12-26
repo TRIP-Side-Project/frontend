@@ -3,14 +3,13 @@ import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 // import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
 	// 스타일 클래스
-	const loginInputClass =
-		"pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
+	const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 	// 로그인 정보
@@ -32,6 +31,8 @@ const Login = () => {
 	};
 
 	// 로그인 요청
+
+	const navigator = useNavigate();
 
 	const bodyData: LoginData = {
 		email: loginInfo.email,
@@ -55,14 +56,12 @@ const Login = () => {
 			const token = response.data.accessToken;
 			if (token) {
 				localStorage.setItem("access_token", token);
+				navigator('/');
 			}
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
 	};
-
-	// 로컬스토리지에 액세스 토큰 저장
-	console.log(localStorage.getItem("access_token"));
 
 	// 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
 
