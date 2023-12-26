@@ -5,22 +5,45 @@ import { ChangeEvent, FormEventHandler, useCallback, useEffect, useState } from 
 
 const SearchVehicle = () => {
 
+  interface locationInfo {
+    depature: string;
+    arrival: string;
+  }
+
+  interface LineListInfo {
+    depatureTime: string | null;
+    grade: string | null;
+    busCorName: string | null;
+    remainingSeats: string | null;
+  }
+
+  interface LineListData {
+    lineData: LineListInfo[]; 
+  }
+
+  interface locationNumInfo {
+    depature: number | null;
+    arrival: number | null;
+  }
+
   const searchBtnInfo: btnAttributes = {
     width: "100px",
     position: "center",
     text: "검색",
     type: "square"
   }
-
+  
   // style
   const locationStyle = "ml-10 md:ml-2 bg-LINE_POINT_COLOR rounded-md w-[150px] px-2 py-1 font-light focus:outline-MAIN_COLOR";
-
+  const selectVehicle: string = "px-3 py-1 text-BASIC_WHITE bg-MAIN_COLOR";
+  
   // 달력
   const today = new Date();
   const todayDate = today.toISOString().substring(0, 10);
   const todayTime = today.toTimeString().substring(0, 5);
   const [selectedDate, setSelectedDate] = useState(todayDate);
   const [selectedTime, setSelectedTime] = useState(todayTime);
+
   const handleDateChange = (event:ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value)
   }
@@ -28,20 +51,10 @@ const SearchVehicle = () => {
     setSelectedTime(event.target.value)
   }
 
-  interface locationInfo {
-    depature: string;
-    arrival: string;
-  }
-
   const [location, setLocation] = useState<locationInfo>({
     depature: "",
     arrival: "",
   });
-
-  interface locationNumInfo {
-    depature: number | null;
-    arrival: number | null;
-  }
 
   const [numLocation, setNumLocation] = useState<locationNumInfo>({
     depature: null,
@@ -55,26 +68,34 @@ const SearchVehicle = () => {
     })
   }
 
-
-  const selectVehicle: string = "px-3 py-1 text-BASIC_WHITE bg-MAIN_COLOR";
-
   // 교통편 조회
-
-
-  interface LineListInfo {
-  depatureTime: string | null;
-  grade: string | null;
-  busCorName: string | null;
-  remainingSeats: string | null;
-}
-
-  interface LineListData {
-    lineData: LineListInfo[]; 
-  }
-
   const [lineList, setLineList] = useState(false); // 조회했을때 리스트가 있는지
   const [noLineMessage, setNoLineMessage] = useState(null); // 조회했을때 리스트가 없을 때 안내 문구
   const [lineListData, setLineListData] = useState<LineListData>({lineData: []})
+
+
+  interface DepatureDataInfo {
+    depatureTerminal: string, 
+    arrivalTerminal: string, 
+  }
+
+  interface DepatureData {
+    terminalData: DepatureDataInfo[]; 
+  }
+
+  interface ListItem {
+    TER_NAM: string;
+  }
+
+  interface LineListItem {
+    tim_tim: string;
+    bus_gra_o: string;
+    cor_nam: string;
+    rem_cnt: string;
+  }
+
+  const [depatureDataArray, setDepatureDataArray] = useState<DepatureData>({terminalData: []});
+
 
   const findTerNum = useCallback(async () => {
     const fetchData = async () => {
@@ -87,27 +108,43 @@ const SearchVehicle = () => {
             }
           }
         );
-        // console.log(ter_numResponse)
         const listData = ter_numResponse.data.response.ter_list;
-        const depatureData = listData.filter((item) => item.TER_NAM.includes(location.depature));
-        const arrivalData = listData.filter((item) => item.TER_NAM.includes(location.arrival));
+        const depatureData = [listData.filter((item: ListItem) => item.TER_NAM.includes(location.depature))];
+        const arrivalData = [listData.filter((item: ListItem) => item.TER_NAM.includes(location.arrival))];
+        // console.log(depatureData[0][0].TER_COD);
+        const depatureTerminalData = depatureData[0].map((item: ListItem) => ({
+          depatureTerminal: item.TER_NAM,
+        }));
+
+        const arrivalTerminalData = arrivalData[0].map((item: ListItem) => ({
+          arrivalTerminal: item.TER_NAM,
+        }));
+
+        console.log(depatureTerminalData[0]);
+        console.log(arrivalTerminalData[0]);
+        setDepatureDataArray(prevState => ({
+            ...prevState,
+            terminalData: [...depatureTerminalData, ...arrivalTerminalData],
+          }));
+
         setNumLocation({
           ...numLocation,
-          depature: depatureData[0].TER_COD,
-          arrival: arrivalData[0].TER_COD
+          depature: depatureData[0][0].TER_COD,
+          arrival: arrivalData[0][0].TER_COD
         });
       } catch (error) {
         console.log("Error : " + error);
-        alert("시스템 점검 중 입니다!");
+        // alert("시스템 점검 중 입니다!");
       }
     };
 
     fetchData();
   }, [location, setNumLocation]); // 함수 내부에서 사용되는 의존성 추가
-
   useEffect(() => {
     findTerNum();
   }, [location])
+  console.log(depatureDataArray);
+  // console.log(numLocation);
   // 청주가 들어가는 검색어로 입력 *청주* 이런 느낌으로 해야함
   // 검색어 드롭다운으로 미리 보여주고 선택하게 해도 좋을 듯
 
@@ -118,7 +155,6 @@ const SearchVehicle = () => {
       try{
         const searchDate = selectedDate.split("-").join("");
         const searchTime = selectedTime.split(":").join("");
-        // console.log(numLocation);
         const searchResponse = await axios.get(
           `/proxy/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
           {
@@ -131,7 +167,7 @@ const SearchVehicle = () => {
           const data = searchResponse.data.response.line_list;
           setLineListData(prevState => ({
             ...prevState,
-            lineData: data.map(item => ({
+            lineData: data.map((item: LineListItem) => ({
               depatureTime: item.tim_tim,
               grade: item.bus_gra_o,
               busCorName: item.cor_nam,
@@ -141,16 +177,12 @@ const SearchVehicle = () => {
         }else {
           setNoLineMessage(searchResponse.data.message);
         }
-        // console.log(searchResponse.data);
       } catch (error) {
         console.log("Error : " + error);
       }
     }
     fetchData();
   }
-
-  // console.log( lineList);
-  console.log(lineListData.lineData);
 
   return (
     <div className="mb-20">
@@ -187,11 +219,11 @@ const SearchVehicle = () => {
             </div>
           </form>
         </div>
-        <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center items-center relatvive overflow-y-scroll">
+        <div className={`w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center items-center relatvive ${lineList && "overflow-y-scroll"}`}>
           <div className="w-full h-full">
             {!lineList && noLineMessage && <h3 className="flex justify-center items-center">{noLineMessage}</h3>}
             {!lineList && !noLineMessage && 
-              <div className="flex flex-col justify-around items-center">
+              <div className="w-full h-full flex flex-col justify-center items-center">
                 <h3 className="text-xl font-bold">여행 일정을 공유해주세요!</h3>
                 <div className="w-fit mx-auto">
                   <Train width="130px" height="130px" />
@@ -199,7 +231,7 @@ const SearchVehicle = () => {
               </div>
             }
             {lineList && 
-              <table className="table-auto w-full h-full text-center">
+              <table className="table-auto w-full h-full text-center text-sm md:text-base">
                 <thead className="sticky top-0 z-1 bg-MAIN_COLOR">
                   <tr className="">
                     <th>고속회사명</th>
@@ -209,8 +241,8 @@ const SearchVehicle = () => {
                   </tr>
                 </thead>
                 <tbody>
-              {lineListData.lineData.map((item) => (
-                  <tr>
+              {lineListData.lineData.map((item, index) => (
+                  <tr key={index}>
                     <td>{item.busCorName}</td>
                     <td>{item.depatureTime?.slice(0, 2) + "시 " + item.depatureTime?.slice(2, 4) + "분"}</td>
                     <td>{(Number(item.grade) === 1 ? "우등" 
