@@ -40,7 +40,7 @@ import {
 	$isImageNode,
 	ImagePayload,
 } from "../\bCustomNode/ImageNode";
-// import axios from "axios";
+import axios from "axios";
 
 //타입 추가
 export type InsertImagePayload = Readonly<ImagePayload>;
@@ -65,7 +65,8 @@ export function InsertImageUploadedDialogBody({
 	const [src, setSrc] = useState("");
 	const [altText, setAltText] = useState("");
 	const [showCaption, setShowCaption] = useState(false);
-	const [formData, setFormData] = useState<FormData | null>(null);
+	const [formData, setFormData] = useState(new FormData());
+	// const [formData, setFormData] = useState<FileList | Blob | null>(null);
 
 	const isDisabled = src === "";
 
@@ -75,19 +76,27 @@ export function InsertImageUploadedDialogBody({
 
 	const loadImage = (files: FileList | Blob[] | null) => {
 		if (files && files.length > 0) {
+			console.log(files[0]);
+			const newFormData = new FormData();
+			newFormData.append("file", files[0]);
+			setFormData(newFormData);
+
 			const reader = new FileReader();
 			reader.onload = function () {
 				if (typeof reader.result === "string") {
 					setSrc(reader.result);
 
 					//새로운 formData 객체 생성
-					const newFormData = new FormData();
-					newFormData.append("imageFile", files[0]);
-					setFormData(newFormData);
-					console.log(formData);
+					// const newFormData = new FormData();
+					// newFormData.append("imageFile", files[0]);
+					// setFormData(newFormData);
+					// console.log(formData);
 				}
+				return "";
 			};
-			reader.readAsDataURL(files[0]);
+			if (files !== null) {
+				reader.readAsDataURL(files[0]);
+			}
 		}
 		// const reader = new FileReader();
 		// reader.onload = function () {
@@ -114,26 +123,28 @@ export function InsertImageUploadedDialogBody({
 	}, [activeEditor]);
 
 	//handleOnClick으로 서버에 이미지 전달 후 응답으로 url
-	// const BASE_URL = import.meta.env.VITE_BASE_URL;
-	// const ACCESS_TOKEN = window.localStorage.getItem("access-token");
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const handleOnClick = async () => {
 		try {
-			// 	const response = await axios.post(
-			// 		`${BASE_URL}/api/article-files`,
-			// 		formData,
-			// 		{
-			// 			headers: {
-			// 				"Content-Type": "multipart/form-data",
-			// 				accessToken: `Bearer ${ACCESS_TOKEN}`,
-			// 			},
-			// 		},
-			// 	);
-			// 	console.log(response.data);
+			const response = await axios.post(
+				`${BASE_URL}/api/article-files`,
+				formData,
+				{
+					headers: {
+						// "Content-Type": "multipart/form-data",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
+					},
+				},
+			);
+			console.log(response.data);
+			setSrc(response.data); //-> s3 url
 
-			// const payload = { altText, src: response.data, showCaption };
-			// activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-			const payload = { altText, src, showCaption };
+			const payload = { altText, src: response.data, showCaption };
+			console.log(payload);
 			activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+			// const payload = { altText, src, showCaption };
+			// activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
 			onClose();
 		} catch (err) {
 			console.log(`이미지 서버 전달 부분 에러 ${err}`);
@@ -192,7 +203,10 @@ export function InsertImageUploadedDialogBody({
 					className="px-5 py-1 rounded-lg bg-LINE_POINT_COLOR"
 					// data-test-id="image-modal-confirm-btn"
 					disabled={isDisabled}
-					onClick={() => handleOnClick()}
+					onClick={(event: React.MouseEvent) => {
+						event.preventDefault();
+						handleOnClick();
+					}}
 					// variant="outlined"
 				>
 					확인

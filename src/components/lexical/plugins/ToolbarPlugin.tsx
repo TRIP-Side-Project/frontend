@@ -127,7 +127,8 @@ function BlockFormatDropDown({
 	editor: LexicalEditor;
 	disabled?: boolean;
 }): JSX.Element {
-	const formatParagraph = () => {
+	const formatParagraph = (event: React.MouseEvent<HTMLDivElement>) => {
+		event.preventDefault();
 		editor.update(() => {
 			const selection = $getSelection();
 			if (
@@ -225,7 +226,7 @@ function BlockFormatDropDown({
 		>
 			<DropDownItem
 				className={"item " + dropDownActiveClass(blockType === "paragraph")}
-				onClick={formatParagraph}
+				onClick={() => formatParagraph}
 			>
 				<i className="icon paragraph" />
 				<span className="text">Normal</span>
@@ -606,7 +607,8 @@ export default function ToolbarPlugin(): JSX.Element {
 						editor={editor}
 					/>
 					<button
-						onClick={() => {
+						onClick={(event: React.MouseEvent) => {
+							event.preventDefault();
 							showModal("Insert Image", (onClose) => (
 								<InsertImageUploadedDialogBody
 									activeEditor={activeEditor}
@@ -694,7 +696,8 @@ export default function ToolbarPlugin(): JSX.Element {
 						buttonAriaLabel="Formatting options for text alignment"
 					>
 						<DropDownItem
-							onClick={() => {
+							onClick={(event: React.MouseEvent) => {
+								event.preventDefault();
 								activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
 							}}
 							className="item"
