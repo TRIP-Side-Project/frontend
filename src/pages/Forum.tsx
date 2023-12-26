@@ -144,7 +144,7 @@ const Forum = () => {
 						<li className="basis-1/6">조회수</li>
 						<li className="basis-1/6">좋아요</li>
 					</ul>
-					{data.articles.length !== 0 ? (
+					{data.articles ? (
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{data.articles.map((list: ForumList) => (
 								<Link
