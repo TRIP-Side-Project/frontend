@@ -41,7 +41,7 @@ const Button = ({ btnInfo }: btnTypes) => {
 	} = btnInfo;
 	let { modal } = btnInfo;
 
-	//console.log(btnInfo);
+	// console.log(btnInfo);
 	const basicStyle = type === "circle" ? "blue_circleBtn" : `blue_squareBtn`;
 	const bg = bgColor ? `bg-${bgColor}` : "";
 	const borderStyle = border ? `border border-${border}` : "";

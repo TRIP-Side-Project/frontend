@@ -64,7 +64,7 @@ const Comment = () => {
 
 	//중복 데이터 메모이제이션
 	const memoizedData = useMemo(() => data, [data]);
-	console.log(memoizedData);
+	// console.log(memoizedData);
 	if (isPending)
 		return (
 			<span className="h-full mx-auto mt-5 text-xl font-semibol">
