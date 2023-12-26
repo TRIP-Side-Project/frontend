@@ -55,18 +55,18 @@ const Forum = () => {
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
-
+	console.log(data);
 	//좋아요 | 인기순 필터링
 	const clickStyle = "text-MAIN_COLOR font-semibold";
 	const handleFilterClick = (sort: number) => {
-		console.log(sort);
+		// console.log(sort);
 		if (sort === 0) {
 			setFilter("");
 		} else {
 			setFilter(`&sortCode=${sort}`);
 		}
 	};
-	console.log(filter);
+	// console.log(filter);
 	//에디터 | 여행후기 카테고리 필터링
 	const handleCategoryClick = (sort: "MEMBER" | "EDITOR") => {
 		setCategory(sort);
