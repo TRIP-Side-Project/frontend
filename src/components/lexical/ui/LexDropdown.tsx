@@ -208,7 +208,10 @@ export default function DropDown({
 				disabled={disabled}
 				aria-label={buttonAriaLabel || buttonLabel}
 				className={buttonClassName}
-				onClick={() => setShowDropDown(!showDropDown)}
+				onClick={(event: React.MouseEvent) => {
+					event.preventDefault();
+					setShowDropDown(!showDropDown);
+				}}
 				ref={buttonRef}
 			>
 				{buttonIconClassName && <span className={buttonIconClassName} />}
