@@ -101,7 +101,8 @@ const SearchVehicle = () => {
     const fetchData = async () => {
       try {
         const ter_numResponse = await axios.get(
-          `/proxy/koLoadInfo/v1/load_info/010`,
+          `https://apigw.tmoney.co.kr:5556/gateway/koLoadInfo/v1/load_info/010`,
+          // 개발환경에서는 /proxy 로
           {
             headers: {
               "x-Gateway-APIKey": "d2338a0c-d836-421f-aaa3-0679c3884a4a"
@@ -156,7 +157,7 @@ const SearchVehicle = () => {
         const searchDate = selectedDate.split("-").join("");
         const searchTime = selectedTime.split(":").join("");
         const searchResponse = await axios.get(
-          `/proxy/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
+          `https://apigw.tmoney.co.kr:5556/gateway/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
           {
           headers: {
             "x-Gateway-APIKey": "f7f4cfab-c6e5-4c2d-ba83-283349af63e4"
