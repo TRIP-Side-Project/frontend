@@ -40,6 +40,7 @@ import {
 	$isImageNode,
 	ImagePayload,
 } from "../\bCustomNode/ImageNode";
+// import axios from "axios";
 
 //타입 추가
 export type InsertImagePayload = Readonly<ImagePayload>;
@@ -51,47 +52,6 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
 export const INSERT_IMAGE_COMMAND: LexicalCommand<ImagePayload> = createCommand(
 	"INSERT_IMAGE_COMMAND",
 );
-
-// **** url 로 이미지 넣기  ******* //
-// export function InsertImageUriDialogBody({ onClick }: {onClick: () => void}): JSX.Element {
-// 	const [src] = useState(""); //setSrc
-// 	const [altText, setAltText] = useState("");
-
-// 	const isDisabled = src === "";
-
-// 	return (
-// 		<>
-// 			<div
-// 				className="p-3 bg-purple-300 border-2 rounded-lg"
-// 				// label="Alt Text"
-// 				// placeholder="Random unsplash image"
-// 				// onChange={(e) => setAltText(e.target.value)}
-// 				// sx={{ mb: 7, height: 10 }}
-// 				// fullWidth
-// 				// value={altText}
-// 				// data-test-id="image-modal-alt-text-input"
-// 			/>
-// 			<input
-// 				className="px-2 py-2 border-2 border-LIGHT_GRAY_COLOR"
-// 				value={altText}
-// 				onChange={(e) => setAltText(e.target.value)}
-// 			/>
-// 			<div className="flex flex-end">
-// 				<button
-// 					// data-test-id="image-modal-confirm-btn"
-// 					disabled={isDisabled}
-// 					onClick={() => onClick({ altText, src })}
-// 					// variant="outlined"
-// 				>
-// 					Confirm
-// 				</button>
-// 			</div>
-// 		</>
-// 	);
-// }
-
-//파일 업로드 하는 부분
-//*********************************************** 파일 업로드 하는 부분 ************************************ *//
 
 export function InsertImageUploadedDialogBody({
 	activeEditor,
@@ -105,6 +65,7 @@ export function InsertImageUploadedDialogBody({
 	const [src, setSrc] = useState("");
 	const [altText, setAltText] = useState("");
 	const [showCaption, setShowCaption] = useState(false);
+	const [formData, setFormData] = useState<FormData | null>(null);
 
 	const isDisabled = src === "";
 
@@ -113,16 +74,32 @@ export function InsertImageUploadedDialogBody({
 	};
 
 	const loadImage = (files: FileList | Blob[] | null) => {
-		const reader = new FileReader();
-		reader.onload = function () {
-			if (typeof reader.result === "string") {
-				setSrc(reader.result);
-			}
-			return "";
-		};
-		if (files !== null) {
+		if (files && files.length > 0) {
+			const reader = new FileReader();
+			reader.onload = function () {
+				if (typeof reader.result === "string") {
+					setSrc(reader.result);
+
+					//새로운 formData 객체 생성
+					const newFormData = new FormData();
+					newFormData.append("imageFile", files[0]);
+					setFormData(newFormData);
+					console.log(formData);
+				}
+			};
 			reader.readAsDataURL(files[0]);
 		}
+		// const reader = new FileReader();
+		// reader.onload = function () {
+		// 	if (typeof reader.result === "string") {
+		// 		setSrc(reader.result);
+
+		// 	}
+		// 	return "";
+		// };
+		// if (files !== null) {
+		// 	reader.readAsDataURL(files[0]);
+		// }
 	};
 
 	useEffect(() => {
@@ -136,12 +113,34 @@ export function InsertImageUploadedDialogBody({
 		};
 	}, [activeEditor]);
 
-	const handleOnClick = () => {
-		const payload = { altText, src, showCaption };
-		activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-		onClose();
+	//handleOnClick으로 서버에 이미지 전달 후 응답으로 url
+	// const BASE_URL = import.meta.env.VITE_BASE_URL;
+	// const ACCESS_TOKEN = window.localStorage.getItem("access-token");
+	const handleOnClick = async () => {
+		try {
+			// 	const response = await axios.post(
+			// 		`${BASE_URL}/api/article-files`,
+			// 		formData,
+			// 		{
+			// 			headers: {
+			// 				"Content-Type": "multipart/form-data",
+			// 				accessToken: `Bearer ${ACCESS_TOKEN}`,
+			// 			},
+			// 		},
+			// 	);
+			// 	console.log(response.data);
+
+			// const payload = { altText, src: response.data, showCaption };
+			// activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+			const payload = { altText, src, showCaption };
+			activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+			onClose();
+		} catch (err) {
+			console.log(`이미지 서버 전달 부분 에러 ${err}`);
+		}
+
+		// onClose();
 	};
-	//handleOnClick으로 axios 요청 버튼?
 
 	return (
 		<>

@@ -17,7 +17,7 @@ const Forum = () => {
 	const navigate = useNavigate();
 	const [activeBtn, setActiveBtn] = useState<number>(1);
 	const [search, setSearch] = useState("");
-	const [filter, setFilter] = useState<number>(1);
+	const [filter, setFilter] = useState("");
 	const [category, setCategory] = useState<"EDITOR" | "MEMBER">("MEMBER");
 
 	const navigateNewForum = () => {
@@ -40,7 +40,7 @@ const Forum = () => {
 			const response = await axios.get(
 				search
 					? `${BASE_URL}/api/articles?title=${search}`
-					: `${BASE_URL}/api/articles?page=${activeBtn}&sortCode=${filter}`,
+					: `${BASE_URL}/api/articles?page=${activeBtn}${filter}`,
 			); //category 부분은 어떻게 연계되는지 확인 필요 12/25 혜진 &category=MEMBER&sortCode=2??
 			return response.data;
 		} catch (err) {
@@ -59,7 +59,7 @@ const Forum = () => {
 	//좋아요 | 인기순 필터링
 	const clickStyle = "text-MAIN_COLOR font-semibold";
 	const handleFilterClick = (sort: number) => {
-		setFilter(sort);
+		setFilter(`&sortCode=${sort}`);
 	};
 
 	//에디터 | 여행후기 카테고리 필터링
@@ -107,7 +107,7 @@ const Forum = () => {
 						<div className="divide-x divide-solidv divide-BASIC_BLACK">
 							<button
 								className={`px-3 text-esm sm:text-base ${
-									filter === 2 ? clickStyle : ""
+									filter === "&sortCode=2" ? clickStyle : ""
 								}`}
 								onClick={() => handleFilterClick(2)}
 							>
@@ -115,7 +115,7 @@ const Forum = () => {
 							</button>
 							<button
 								className={`px-3 text-esm sm:text-base ${
-									filter === 3 ? clickStyle : ""
+									filter === "&sortCode=3" ? clickStyle : ""
 								}`}
 								onClick={() => handleFilterClick(3)}
 							>
@@ -123,7 +123,7 @@ const Forum = () => {
 							</button>
 							<button
 								className={`px-3 text-esm sm:text-base ${
-									filter === 1 ? clickStyle : ""
+									filter === "" ? clickStyle : ""
 								}`}
 								onClick={() => handleFilterClick(1)}
 							>

@@ -18,6 +18,7 @@ export interface CommentReTypes {
 	parentId: number;
 	writerId: number;
 	writerNickname: string;
+	writerProfileImg: string;
 }
 
 export interface CommentTypes {
@@ -29,6 +30,7 @@ export interface CommentTypes {
 	parentId: null | number;
 	writerId: number;
 	writerNickname: string;
+	writerProfileImg: string;
 }
 
 const Comment = () => {
