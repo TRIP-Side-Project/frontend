@@ -29,9 +29,9 @@ const Forum = () => {
 		position: "right",
 		text: "새 글 등록하기",
 		type: "square",
-		isLogin: false,
+		isLogin: window.localStorage.getItem("access_token") ? true : false,
 		loginBtnType: true,
-		onClick: () => navigateNewForum,
+		onClick: () => navigateNewForum(),
 	};
 
 	//단순 페이지 조회
@@ -59,9 +59,14 @@ const Forum = () => {
 	//좋아요 | 인기순 필터링
 	const clickStyle = "text-MAIN_COLOR font-semibold";
 	const handleFilterClick = (sort: number) => {
-		setFilter(`&sortCode=${sort}`);
+		console.log(sort);
+		if (sort === 0) {
+			setFilter("");
+		} else {
+			setFilter(`&sortCode=${sort}`);
+		}
 	};
-
+	console.log(filter);
 	//에디터 | 여행후기 카테고리 필터링
 	const handleCategoryClick = (sort: "MEMBER" | "EDITOR") => {
 		setCategory(sort);
@@ -125,7 +130,7 @@ const Forum = () => {
 								className={`px-3 text-esm sm:text-base ${
 									filter === "" ? clickStyle : ""
 								}`}
-								onClick={() => handleFilterClick(1)}
+								onClick={() => handleFilterClick(0)}
 							>
 								최신 순
 							</button>

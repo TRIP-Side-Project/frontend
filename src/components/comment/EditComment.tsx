@@ -20,8 +20,8 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const tempLogin = true; //임시 전역 로그인 상태
 	console.log(parentInfo[0], parentInfo[1], parentInfo[2]);
-	console.log(editData);
-	console.log(isComment);
+	// console.log(editData);
+	// console.log(isComment);
 
 	//새 댓글 등록하는 함수
 	const sendNewComment = async () => {

@@ -72,7 +72,7 @@ export function ReadOnlyContentEditable(props: any): JSX.Element {
 		};
 
 		applyServerData();
-	}, [editor, props.initialContent]);
+	}, [editor, props.initialContent, isEdit]);
 
 	return (
 		<div
