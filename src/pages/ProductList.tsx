@@ -7,6 +7,7 @@ import ProductListItems from "@/components/productListItems/ProductListItems";
 const ProductList = () => {
 	// 동적 화면 상태
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+	const [, setSearch] = useState("");
 	useEffect(() => {
 		const resizeListener = () => {
 			setInnerWidth(window.innerWidth);
@@ -35,7 +36,7 @@ const ProductList = () => {
 				</h1>
 				{innerWidth > 768 && (
 					<>
-						<Search />
+						<Search  setSearch={setSearch} />
 						<div className="flex gap-2 px-3 pb-1 text-base border-b border-DARK_GRAY_COLOR">
 							<span
 								className={isSort ? viewSortClass : nonViewSortClass}
@@ -54,7 +55,7 @@ const ProductList = () => {
 				)}
 				{innerWidth <= 768 && (
 					<div className="flex items-center justify-between">
-						<Search />
+						<Search  setSearch={setSearch} />
 						<div className="flex pb-1 text-sm border-b border-DARK_GRAY_COLOR">
 							<span
 								className={isSort ? viewSortClass : nonViewSortClass}
