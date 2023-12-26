@@ -3,11 +3,9 @@ import AmendBtn from "@/common/button/AmendBtn";
 import { CommentTypes } from "./Comment";
 import DeleteBtn from "@/common/button/DeleteBtn";
 
-import Temp from "@/assets/img/temp.png";
 import EditComment from "./EditComment";
 import HideComment from "./HideComment";
-// import { useState } from "react";
-// import HideComment from "./HideComment";
+import useFormatDate from "@/hooks/useFormatDate";
 
 interface CommentItems {
 	datas: CommentTypes;
@@ -18,14 +16,12 @@ interface CommentItems {
 
 const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 	const [isEdit, setIsEdit] = useState(false);
-	// const [isHide, setIsHide] = useState(false);
 	const [is2CHide, setIs2CHide] = useState(false);
 	const [editCommitId, setEditCommentId] = useState<number | null>(null);
-	const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
-
-	// const handleHideComment = () => {
-	// 	setIsHide(!isHide);
-	// };
+	// const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
+	const MEMBER_ID = 8; //임시
+	//console.log(datas);
+	const formattedDate = useFormatDate(datas.createdAt);
 
 	const handle2CHide = (commentId: number) => {
 		setEditCommentId(commentId);
@@ -53,7 +49,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 						className="flex flex-row justify-between px-2 py-3"
 					>
 						<img
-							src={Temp}
+							src={datas.writerProfileImg}
 							alt="userImage"
 							className="rounded-full w-14 h-14"
 						/>
@@ -65,7 +61,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 						</div>
 						<div className="flex flex-row ">
 							<div className="mx-3 text-sm text-DARK_GRAY_COLOR">
-								{datas.createdAt}
+								{formattedDate}
 							</div>
 							{datas.writerId === MEMBER_ID ? (
 								<>
@@ -73,13 +69,13 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 										onClick={() => {
 											setIsEdit(!isEdit), console.log("수정 버튼 클릭");
 										}}
-										parentInfo={[
-											datas.articleId,
-											datas.parentId,
-											datas.commentId,
-										]}
+										// parentInfo={[
+										// 	datas.articleId,
+										// 	datas.parentId,
+										// 	datas.commentId,
+										// ]}
 									/>
-									<DeleteBtn commentId={datas.commentId} />
+									<DeleteBtn itemId={datas.commentId} type={"comment"} />
 								</>
 							) : null}
 						</div>
@@ -93,6 +89,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 									isHide={isHide as boolean}
 									onClick={setIsHide as () => void}
 									isLength={datas.children.length}
+									key={`comment-showComment-${datas.commentId}`}
 								/>
 							) : (
 								<></>
@@ -110,7 +107,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 					) : null}
 					{is2CHide && editCommitId === datas.commentId ? (
 						<EditComment
-							parentInfo={[datas.articleId, datas.parentId, datas.commentId]}
+							parentInfo={[datas.articleId, editCommitId, datas.commentId]}
 						/>
 					) : (
 						<></>

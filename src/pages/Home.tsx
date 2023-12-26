@@ -32,7 +32,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE">
+			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE dark:bg-BASIC_BLACK  dark:text-BASIC_WHITE">
 				<div className="w-full h-[750px] relative">
 					<div>
 						<img
@@ -64,7 +64,7 @@ export default function Home() {
 								></input>
 							</div>
 							<div className="text-center">
-								<button className="w-1/2 h-10 mt-4 rounded-md bg-BASIC_WHITE">
+								<button className="w-1/2 h-10 mt-4 rounded-md bg-BASIC_WHITE dark:text-BASIC_BLACK">
 									검색하기
 								</button>
 							</div>
@@ -173,7 +173,7 @@ export default function Home() {
 						}
 					</div>
 				</div>
-				<div className="flex flex-col justify-between w-full px-16 pt-10 pb-16 mb-10 bg-cyan-100">
+				<div className="flex flex-col justify-between w-full px-16 pt-10 pb-16 mb-10 bg-cyan-100 dark:bg-LINE_POINT_COLOR">
 					<h1 className={sectionTitle}>여행후기</h1>
 					<div className="md:flex md:justify-between">
 						<div className="w-full md:w-2/5">

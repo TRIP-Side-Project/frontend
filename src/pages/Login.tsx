@@ -3,110 +3,131 @@ import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
-  // 스타일 클래스
-  const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
-  
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+	// 스타일 클래스
+	const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-  // 로그인 정보
-  interface loginData {
-    email: string,
-    password: string,
-  }
+	// 로그인 정보
+	interface LoginData {
+		email: string;
+		password: string;
+	}
 
-  const [loginInfo, setLoginInfo] = useState<loginData>({
-    email: "",
-    password: ""
-  });
+	const [loginInfo, setLoginInfo] = useState<LoginData>({
+		email: "",
+		password: "",
+	});
 
-  const changeLoginValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setLoginInfo({
-      ...loginInfo,
-      [event.target.name]: event.target.value,
-    })
-  }
+	const changeLoginValue = (event: ChangeEvent<HTMLInputElement>) => {
+		setLoginInfo({
+			...loginInfo,
+			[event.target.name]: event.target.value,
+		});
+	};
 
-  // 로그인 요청
-  const submitLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const fetchData = async () => {
-      const bodyData = {
-        "email": loginInfo.email,
-        "password": loginInfo.password,
-      }
-				try {
-					const response = await axios.post(`${BASE_URL}/api/members/login`, 
-					bodyData,
-          {
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					});
-					// console.log(response);
-          const token = response.data.accessToken;
-          if (token) {
-            localStorage.setItem("access_token", token);
-          }
-				} catch (error) {
-					console.error("Error fetching data:", error);
-				}
-			};
-			fetchData();
-  }
-  // 로컬스토리지에 액세스 토큰 저장
-  console.log(localStorage.getItem('access_token'));
+	// 로그인 요청
 
-  // 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
+	const navigator = useNavigate();
 
-  // 카카오 소셜 로그인
-  const KAKAO_API_KEY = import.meta.env.KAKAO_REST_API_KEY;
-  const REDIRECT_URI = import.meta.env.KAKAO_REDIRECT_URI;
+	const bodyData: LoginData = {
+		email: loginInfo.email,
+		password: loginInfo.password,
+	};
 
-  
-  return(
-    <>
-    <div className="h-screen flex justify-center items-center w-full h-screen">
-      <div className="w-[700px] h-[600px] border border-BASIC_BLACK text-center flex flex-col items-center justify-center">
-        <div className="w-1/2 flex flex-col justify-between items-center">
-          <h1 className="text-2xl font-bold mb-7">로그인</h1>
-          <form className="w-full" onSubmit={submitLogin}>
-            <div className="w-full flex flex-col items-center justify-between gap-5">
-              <input type="text" value={loginInfo.email} name="email" onChange={changeLoginValue} placeholder="이메일" className={loginInputClass}></input>
-              <input type="password" value={loginInfo.password} name="password" placeholder="비밀번호" onChange={changeLoginValue} className={loginInputClass}></input>
-              <button className="text-xl font-bold w-full border h-12 rounded-md bg-BTN_COLOR text-BASIC_WHITE">로그인</button>
-            </div>
-          </form>
-          <div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
-            <Link to={"/findpw"}>
-              <button>비밀번호 찾기</button>
-            </Link>
-            <span>|</span>
-            <Link to={'/signup'}>
-              <button>회원가입</button>
-            </Link>
-          </div>
-          <div className="border h-0" />
-          <div className="flex justify-center py-5 item-center w-full gap-14">
-            <div className="cursor-pointer">
-              <Google width="35px" height="35px" />
-            </div>
-            <div className="w-[35px] h-[35px] cursor-pointer">
-              <img src={naver} alt="naver oauth" />
-            </div>
-            <a href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_API_KEY}&redirect_uri=${REDIRECT_URI}`}>
-              <div className="w-[35px] h-[35px] cursor-pointer">
-                <img src={kakao} alt="kakao oauth" />
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  )
-}
+	const mutation = useMutation({
+		mutationFn: () => {
+			return axios.post(`${BASE_URL}/api/members/login`, bodyData, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+		},
+	});
+
+	const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		try {
+			const response = await mutation.mutateAsync();
+			const token = response.data.accessToken;
+			if (token) {
+				localStorage.setItem("access_token", token);
+				navigator('/');
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+
+	// 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
+
+	return (
+		<>
+			<div className="flex items-center justify-center w-full h-screen">
+				<div className="w-[700px] h-[600px] border border-BASIC_BLACK text-center flex flex-col items-center justify-center">
+					<div className="flex flex-col items-center justify-between w-1/2">
+						<h1 className="text-2xl font-bold mb-7">로그인</h1>
+						<form className="w-full" onSubmit={submitLogin}>
+							<div className="flex flex-col items-center justify-between w-full gap-5">
+								<input
+									type="text"
+									value={loginInfo.email}
+									name="email"
+									onChange={changeLoginValue}
+									placeholder="이메일"
+									className={loginInputClass}
+								></input>
+								<input
+									type="password"
+									value={loginInfo.password}
+									name="password"
+									placeholder="비밀번호"
+									onChange={changeLoginValue}
+									className={loginInputClass}
+								></input>
+								<button
+									type="submit"
+									className="w-full h-12 text-xl font-bold border rounded-md bg-BTN_COLOR text-BASIC_WHITE"
+								>
+									로그인
+								</button>
+							</div>
+						</form>
+						<div className="text-sm text-LIGHT_GRAY_COLOR w-full h-[50px] flex items-center justify-center gap-5">
+							<Link to={"/findpw"}>
+								<button>비밀번호 찾기</button>
+							</Link>
+							<span>|</span>
+							<Link to={"/signup"}>
+								<button>회원가입</button>
+							</Link>
+						</div>
+						<div className="h-0 border" />
+						<div className="flex justify-center w-full py-5 item-center gap-14">
+							<a href={`${BASE_URL}/oauth2/authorization/google`}>
+								<div className="cursor-pointer">
+									<Google width="35px" height="35px" />
+								</div>
+							</a>
+							<a href={`${BASE_URL}/oauth2/authorization/naver`}>
+								<div className="w-[35px] h-[35px] cursor-pointer">
+									<img src={naver} alt="naver oauth" />
+								</div>
+							</a>
+							<a href={`${BASE_URL}/oauth2/authorization/kakao`}>
+								<div className="w-[35px] h-[35px] cursor-pointer">
+									<img src={kakao} alt="kakao oauth" />
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
 export default Login;

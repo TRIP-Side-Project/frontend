@@ -16,7 +16,7 @@ const MyPageModal = ({ isClick }: ToggleTypes) => {
 	};
 
 	return (
-		<div className="fixed inset-0 z-10 flex items-end justify-center w-screen min-h-full p-4 overflow-y-auto text-center transition-opacity bg-gray-500 bg-opacity-75 sm:items-center sm:p-0">
+		<div className="fixed inset-0 z-50 flex items-end justify-center w-screen min-h-full p-4 overflow-y-auto text-center transition-opacity bg-gray-500 bg-opacity-75 sm:items-center sm:p-0">
 			<div className="relative px-10 py-5 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl w-[560px]">
 				<button className="float-right px-3 pb-2 mt-2" onClick={isClick}>
 					<Close fillColor={"#333333"} width={"18px"} height={"18px"} />

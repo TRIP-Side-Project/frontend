@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 import Temp2 from "@/assets/img/seeallareas.png";
 import Button, { btnAttributes } from "@/common/button/Button";
@@ -16,18 +16,30 @@ export interface ParentInfo {
 
 const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	const [isComment, setIsComment] = useState(editData ? editData : "");
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const tempLogin = true; //임시 전역 로그인 상태
-	console.log(parentInfo[0], parentInfo[1]);
-	console.log(editData);
+	console.log(parentInfo[0], parentInfo[1], parentInfo[2]);
+	// console.log(editData);
+	// console.log(isComment);
 
 	//새 댓글 등록하는 함수
 	const sendNewComment = async () => {
 		try {
-			// axios.post("http://localhost:5000/comments", {
-			// 	articleId: parentInfo[0],
-			// 	parentId: parentInfo[1],
-			// 	content: isComment,
-			// });
+			axios.post(
+				`${BASE_URL}/api/comments`,
+				{
+					articleId: parentInfo[0],
+					parentId: parentInfo[1],
+					content: isComment,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
+					},
+				},
+			);
 			console.log("새 댓글 등록 기능 작동!");
 			console.log(`등록 : ${isComment}`);
 			setIsComment("");
@@ -39,14 +51,19 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	//댓글 수정 전달하는 함수
 	const amendComment = async () => {
 		try {
-			// axios.patch(`/api/comments/${commentId}`, {
-			// 	body: {
-			// 		content: 받아야 함 어디선가
-			// 	}
-			// });
+			axios.patch(
+				`${BASE_URL}/api/comments/${parentInfo[2]}`,
+				{ content: isComment },
+				{
+					headers: {
+						"Content-Type": "application/json",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
+					},
+				},
+			);
 			console.log("댓글 수정하는 기능 작동!");
 			console.log(`수정 : ${isComment}`);
-			//이거 하고 페이지 리랜더링 되는지 확인 필요.
+			//페이지 리랜덜이 확인 필요
 		} catch (err) {
 			throw new Error(`댓글 수정 버튼 에러 ${err}`);
 		}

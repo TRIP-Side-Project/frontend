@@ -10,7 +10,6 @@ export interface hideTypes {
 const HideComment = ({ isHide, onClick, isLength }: hideTypes) => {
 	const textStyle =
 		"text-sm text-ETC_COLOR hover:font-semibold cursor-pointer flex flex-row items-center";
-	console.log(isHide);
 
 	if (isHide === true) {
 		return (

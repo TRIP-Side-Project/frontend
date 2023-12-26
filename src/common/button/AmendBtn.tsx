@@ -1,13 +1,11 @@
-import { ParentInfo } from "@/components/comment/EditComment";
+// import { ParentInfo } from "@/components/comment/EditComment"; extends delete
 
-interface AmendCommentTypes extends ParentInfo {
+interface AmendCommentTypes {
 	onClick: () => void;
-	parentInfo: [number, number | null, number | null];
 }
 
-const AmendBtn = ({ onClick, parentInfo }: AmendCommentTypes) => {
+const AmendBtn = ({ onClick }: AmendCommentTypes) => {
 	//본인 확인 여부
-	console.log(`${parentInfo}`);
 	return (
 		<div
 			className="mx-2 text-sm cursor-pointer text-DARK_GRAY_COLOR"
