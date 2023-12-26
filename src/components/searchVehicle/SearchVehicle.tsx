@@ -28,34 +28,6 @@ const SearchVehicle = () => {
     setSelectedTime(event.target.value)
   }
 
-  // 관련상품
-  // 상태 타입 지정 해야함
-
-  // const [isTrain, setIsTrain] = useState(true);
-  // const [isBus, setIsBus] = useState(false);
-  
-  // const handleisTrain = (): void => {
-  //   if(!isTrain && !isBus){
-  //     setIsTrain(!isTrain);
-  //   }
-  //   if(isBus && !isTrain){
-  //     setIsBus(!isBus);
-  //     setIsTrain(!isTrain);
-  //   }
-  //   setIsTrain(!isTrain);
-  // }
-
-  // const handleisBus = (): void => {
-  //   if(isTrain && !isBus){
-  //     setIsBus(!isBus);
-  //     setIsTrain(!isTrain);
-  //   }
-  //   if(!isBus && !isTrain){
-  //     setIsBus(!isBus);
-  //   }
-  //   setIsBus(!isBus);
-  // }
-  
   interface locationInfo {
     depature: string;
     arrival: string;
@@ -85,27 +57,24 @@ const SearchVehicle = () => {
 
 
   const selectVehicle: string = "px-3 py-1 text-BASIC_WHITE bg-MAIN_COLOR";
-  // const normalVehicle: string = "w-1/2 px-3 py-1";
-
 
   // 교통편 조회
 
+
   interface LineListInfo {
-    depatureTime: string | null,
-    grade: string | null,
-    busCorName: string | null,
-    remainingSeats: string | null,
+  depatureTime: string | null;
+  grade: string | null;
+  busCorName: string | null;
+  remainingSeats: string | null;
+}
+
+  interface LineListData {
+    lineData: LineListInfo[]; 
   }
 
   const [lineList, setLineList] = useState(false); // 조회했을때 리스트가 있는지
   const [noLineMessage, setNoLineMessage] = useState(null); // 조회했을때 리스트가 없을 때 안내 문구
-  const [lineListData, setLineListData] = useState<LineListInfo>({
-    depatureTime: null,
-    grade: null,
-    busCorName: null,
-    remainingSeats: null,
-
-  })
+  const [lineListData, setLineListData] = useState<LineListData>({lineData: []})
 
   const findTerNum = useCallback(async () => {
     const fetchData = async () => {
@@ -118,6 +87,7 @@ const SearchVehicle = () => {
             }
           }
         );
+        // console.log(ter_numResponse)
         const listData = ter_numResponse.data.response.ter_list;
         const depatureData = listData.filter((item) => item.TER_NAM.includes(location.depature));
         const arrivalData = listData.filter((item) => item.TER_NAM.includes(location.arrival));
@@ -128,6 +98,7 @@ const SearchVehicle = () => {
         });
       } catch (error) {
         console.log("Error : " + error);
+        alert("시스템 점검 중 입니다!");
       }
     };
 
@@ -135,10 +106,7 @@ const SearchVehicle = () => {
   }, [location, setNumLocation]); // 함수 내부에서 사용되는 의존성 추가
 
   useEffect(() => {
-
-  // 'findTerNum' 함수 실행
-  findTerNum();
-
+    findTerNum();
   }, [location])
   // 청주가 들어가는 검색어로 입력 *청주* 이런 느낌으로 해야함
   // 검색어 드롭다운으로 미리 보여주고 선택하게 해도 좋을 듯
@@ -150,7 +118,7 @@ const SearchVehicle = () => {
       try{
         const searchDate = selectedDate.split("-").join("");
         const searchTime = selectedTime.split(":").join("");
-        console.log(numLocation);
+        // console.log(numLocation);
         const searchResponse = await axios.get(
           `/proxy/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
           {
@@ -161,36 +129,35 @@ const SearchVehicle = () => {
         if(searchResponse.data.message === "정상"){
           setLineList(true);
           const data = searchResponse.data.response.line_list;
-          data.map((item) => {
-            setLineListData({
-              ...lineListData,
+          setLineListData(prevState => ({
+            ...prevState,
+            lineData: data.map(item => ({
               depatureTime: item.tim_tim,
               grade: item.bus_gra_o,
               busCorName: item.cor_nam,
               remainingSeats: item.rem_cnt,
-            })
-          })
+            })),
+          }));
         }else {
           setNoLineMessage(searchResponse.data.message);
         }
-
-        console.log(searchResponse.data);
+        // console.log(searchResponse.data);
       } catch (error) {
         console.log("Error : " + error);
       }
     }
     fetchData();
   }
-  console.log(lineList);
-  console.log(noLineMessage);
-  console.log(lineListData);
+
+  // console.log( lineList);
+  console.log(lineListData.lineData);
+
   return (
     <div className="mb-20">
         <h1 className="text-2xl md:text-3xl font-bold mb-5">관련 교통편</h1>
         <div className="">
           <form onSubmit={handleVehicle} className="flex flex-col md:flex-row gap-10 md:gap-0 justify-between items-start text-lg font-bold">
             <div className="text-center cursor-pointer rounded-md overflow-hidden">
-              {/* <span className={(isTrain ? selectVehicle : normalVehicle)} onClick={handleisTrain}>기차</span> */}
               <span className={selectVehicle}>버스</span>
             </div>
             <div className="flex flex-col gap-5">
@@ -220,16 +187,43 @@ const SearchVehicle = () => {
             </div>
           </form>
         </div>
-        <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center items-center">
-          <div className="flex flex-col justify-around">
-            {!lineList && noLineMessage && <h3>{noLineMessage}</h3>}
+        <div className="w-full h-[200px] bg-LINE_POINT_COLOR rounded-md mt-5 flex justify-center items-center relatvive overflow-y-scroll">
+          <div className="w-full h-full">
+            {!lineList && noLineMessage && <h3 className="flex justify-center items-center">{noLineMessage}</h3>}
             {!lineList && !noLineMessage && 
-              <>
+              <div className="flex flex-col justify-around items-center">
                 <h3 className="text-xl font-bold">여행 일정을 공유해주세요!</h3>
                 <div className="w-fit mx-auto">
                   <Train width="130px" height="130px" />
                 </div>
-              </>
+              </div>
+            }
+            {lineList && 
+              <table className="table-auto w-full h-full text-center">
+                <thead className="sticky top-0 z-1 bg-MAIN_COLOR">
+                  <tr className="">
+                    <th>고속회사명</th>
+                    <th>출발시간</th>
+                    <th>좌석등급</th>
+                    <th>잔여좌석</th>
+                  </tr>
+                </thead>
+                <tbody>
+              {lineListData.lineData.map((item) => (
+                  <tr>
+                    <td>{item.busCorName}</td>
+                    <td>{item.depatureTime?.slice(0, 2) + "시 " + item.depatureTime?.slice(2, 4) + "분"}</td>
+                    <td>{(Number(item.grade) === 1 ? "우등" 
+                    : (Number(item.grade) === 2 ? "고속" 
+                    : (Number(item.grade) === 3 ? "심야우등" 
+                    : (Number(item.grade) === 7 ? "프리미엄" 
+                    : (Number(item.grade) === 8 ? "심야프리미엄" : "")
+                    ))))}</td>
+                    <td>{item.remainingSeats + "개"}</td>
+                  </tr>
+              ))}
+              </tbody>
+              </table>
             }
           </div>
         </div>
