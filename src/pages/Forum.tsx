@@ -18,7 +18,7 @@ const Forum = () => {
 	const [activeBtn, setActiveBtn] = useState<number>(1);
 	const [search, setSearch] = useState("");
 	const [filter, setFilter] = useState("");
-	const [category, setCategory] = useState<"EDITOR" | "MEMBER">("MEMBER");
+	const [category, setCategory] = useState("");
 
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
@@ -39,8 +39,8 @@ const Forum = () => {
 		try {
 			const response = await axios.get(
 				search
-					? `${BASE_URL}/api/articles?title=${search}`
-					: `${BASE_URL}/api/articles?page=${activeBtn}${filter}`,
+					? `${BASE_URL}/api/articles?title=${search}${category}`
+					: `${BASE_URL}/api/articles?page=${activeBtn}${filter}${category}`,
 			); //category 부분은 어떻게 연계되는지 확인 필요 12/25 혜진 &category=MEMBER&sortCode=2??
 			return response.data;
 		} catch (err) {
@@ -49,12 +49,13 @@ const Forum = () => {
 	};
 
 	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["forumLists", activeBtn, search],
+		queryKey: ["forumLists", activeBtn, search, category],
 		queryFn: getForumLists,
 	});
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
+	// console.log(data);
 
 	//좋아요 | 인기순 필터링
 	const clickStyle = "text-MAIN_COLOR font-semibold";
@@ -66,9 +67,9 @@ const Forum = () => {
 			setFilter(`&sortCode=${sort}`);
 		}
 	};
-	console.log(filter);
+
 	//에디터 | 여행후기 카테고리 필터링
-	const handleCategoryClick = (sort: "MEMBER" | "EDITOR") => {
+	const handleCategoryClick = (sort: string) => {
 		setCategory(sort);
 	};
 
@@ -94,17 +95,25 @@ const Forum = () => {
 						<div className="divide-x divide-solid divide-BASIC_BLACK">
 							<button
 								className={`px-3 text-esm sm:text-base ${
-									category === "EDITOR" ? clickStyle : ""
+									category === "" ? clickStyle : ""
 								}`}
-								onClick={() => handleCategoryClick("EDITOR")}
+								onClick={() => handleCategoryClick("")}
+							>
+								전체
+							</button>
+							<button
+								className={`px-3 text-esm sm:text-base ${
+									category === "&category=EDITOR" ? clickStyle : ""
+								}`}
+								onClick={() => handleCategoryClick("&category=EDITOR")}
 							>
 								에디터 추천
 							</button>
 							<button
 								className={`px-3 text-esm sm:text-base ${
-									category === "MEMBER" ? clickStyle : ""
+									category === "&category=MEMBER" ? clickStyle : ""
 								}`}
-								onClick={() => handleCategoryClick("MEMBER")}
+								onClick={() => handleCategoryClick("&category=MEMBER")}
 							>
 								여행 후기
 							</button>
@@ -144,7 +153,7 @@ const Forum = () => {
 						<li className="basis-1/6">조회수</li>
 						<li className="basis-1/6">좋아요</li>
 					</ul>
-					{data.articles.length !== 0 ? (
+					{data?.articles?.length !== 0 ? (
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{data.articles.map((list: ForumList) => (
 								<Link

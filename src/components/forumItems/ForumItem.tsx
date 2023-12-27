@@ -19,10 +19,10 @@ interface ForumItemTypes {
 
 const ForumItem = ({ data }: ForumItemTypes) => {
 	// console.log(data);
-	const propsBg = "BAISC_WHITE";
+	// const propsBg = "BAISC_WHITE";
 	const itemWrapper = `w-full whitespace-nowrap h-[70px] py-3 items-center flex flex-row 
-	justify-between font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-${propsBg} 
-	hover:text-black hover:cursor-pointer`;
+	justify-between font-base text-BASIC_BLACK border-b border-LIGHT_GRAY_COLOR bg-BASIC_WHITE dark:bg-BASIC_BLACK
+	dark:text-BASIC_WHITE hover:text-black hover:cursor-pointer`;
 
 	const formatDate = useFormatDate(data.createdAt);
 	const formatTitle = useFormatTitle(data.title, 20);
