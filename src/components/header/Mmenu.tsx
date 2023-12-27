@@ -10,11 +10,11 @@ type NavTypes = {
 
 const Mmenu = ({ openNav, onSubMenuClose }: NavTypes) => {
 	const [isOpen, setIsOpen] = useState(false);
-	
+
 	const navigator = useNavigate();
 	const moveToForum = () => {
-		navigator('/forum');
-	}
+		navigator("/forum");
+	};
 
 	return (
 		<div className="md:hidden">
@@ -28,7 +28,7 @@ const Mmenu = ({ openNav, onSubMenuClose }: NavTypes) => {
 				</button>
 			</div>
 			{isOpen && (
-				<div className="z-10 absolute left-0 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
+				<div className="absolute left-0 z-10 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 					<button
 						className="py-8 border-b font-xl border-LIGHT_GRAY_COLOR"
 						onClick={() => {
@@ -48,13 +48,14 @@ const Mmenu = ({ openNav, onSubMenuClose }: NavTypes) => {
 						테마별 여행
 					</button>
 					<button
-						className="py-8 font-xl" 
+						className="py-8 font-xl"
 						onClick={() => {
 							// openNav("/forum");
 							setIsOpen(!isOpen);
 							onSubMenuClose();
 							moveToForum();
-						}}>
+						}}
+					>
 						여행 포럼
 					</button>
 				</div>

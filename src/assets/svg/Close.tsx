@@ -1,7 +1,11 @@
+import { darkState } from "@/store/loginState";
 import { SVG } from "@/types/svg";
+import { useRecoilValue } from "recoil";
 
 const Close = ({ fillColor, width, height }: SVG) => {
-	fillColor = fillColor ? `${fillColor}` : ((localStorage.getItem("theme") === "dark") ? "#ffffff" : "#222222");
+	const darkMode = useRecoilValue(darkState);
+	fillColor = darkMode.darkState === true ? "#ffffff" : "#222222";
+
 	return (
 		<svg
 			width={width}

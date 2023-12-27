@@ -1,5 +1,6 @@
 export default function useFormatDate(date: string): string | null {
 	const inputDate = new Date(date);
+	// console.log(typeof date);
 
 	//유효성 검사
 	if (isNaN(inputDate.getTime())) {

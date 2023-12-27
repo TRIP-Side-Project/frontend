@@ -100,8 +100,10 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 
 	//유효성 검증
 	const isDisableTag = tagList.length <= 3;
-	const isDisableTitle = editorData.title.length >= 8;
+	const isDisableTitle =
+		editorData.title.length >= 5 && editorData.title.length <= 20;
 	const isDisableContent = editorData.content.length >= 20;
+	const isOverContent = editorData.content.length <= 15000;
 
 	//mutation 새 게시글 등록
 	const sendNewForumMutation = useMutation<void, Error, Inputs>({
@@ -114,6 +116,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							withCredentials: true,
 							accessToken: `Bearer ${ACCESS_TOKEN}`,
 						},
 					},
@@ -156,6 +159,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 				await axios.patch(`${BASE_URL}/api/articles/${articleId}`, data, {
 					headers: {
 						"Content-Type": "application/json",
+						withCredentials: true,
 						accessToken: `Bearer ${ACCESS_TOKEN}`,
 					},
 				});
@@ -189,6 +193,12 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 	const titleStyle = "font-bold text-lg my-1";
 	const inputStyle =
 		"bg-BASIC_WHITE rounded-xl border px-3 py-1 font-semibold text-sm border-BASIC_BLACK h-9 w-full";
+	//유효성 버튼 설정
+	const validBtnStyle =
+		isDisableTag && isDisableTitle && isDisableContent && isOverContent
+			? "blue_squareBtn"
+			: "py-2 px-5 my-3 mx-2 text-center bg-LIGHT_GRAY_COLOR text-BASIC_WHITE rounded-lg font-medium";
+	// console.log(validBtnStyle);
 
 	return (
 		<div className="flex flex-col mx-auto w-full px-5 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE max-w-[870px]">
@@ -217,7 +227,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 						{/* {errors.title && ( */}
 						{editorData.title && !isDisableTitle && (
 							<span className="ml-2 text-xs font-normal text-POINT_COLOR">
-								! 제목은 8자 이상 작성하셔야 합니다.
+								! 제목은 5자 이상 20자 미만으로 작성해주세요.
 							</span>
 						)}
 					</div>
@@ -247,7 +257,12 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 						본문
 						{editorData.content && !isDisableContent && (
 							<span className="ml-2 text-xs font-normal text-POINT_COLOR">
-								! 본문은 최소 20자 이상 작성해야 합니다.
+								! 본문은 최소 30자 이상 작성해야 합니다.
+							</span>
+						)}
+						{editorData.content && !isOverContent && (
+							<span className="ml-2 text-xs font-normal text-POINT_COLOR">
+								! 본문은 최대 15,000자 까지 작성 간으합니다.
 							</span>
 						)}
 					</div>
@@ -269,16 +284,22 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 						className="blue_squareBtn w-[123px] cursor-pointer"
 						disabled={!isDisableTag}
 					/> */}
-					<div
-						className="blue_squareBtn w-[123px] cursor-pointer"
-						onClick={() => {
+					<button
+						className={`${validBtnStyle} w-[123px] cursor-pointer`}
+						onClick={(event: React.MouseEvent) => {
+							event.preventDefault();
 							editData ? onSubmitAmendForum() : onSubmitNewForum();
 							console.log("최종 버튼 클릭", editData);
 						}}
-						// disabled={!isDisableTag || !isDisableTitle || !isDisableContent}
+						disabled={
+							!isDisableTag ||
+							!isDisableTitle ||
+							!isDisableContent ||
+							!isOverContent
+						}
 					>
 						등록
-					</div>
+					</button>
 				</div>
 			</form>
 		</div>

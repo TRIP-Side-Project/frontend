@@ -19,7 +19,7 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const tempLogin = true; //임시 전역 로그인 상태
-	console.log(parentInfo[0], parentInfo[1], parentInfo[2]);
+	//console.log(parentInfo[0], parentInfo[1], parentInfo[2]);
 	// console.log(editData);
 	// console.log(isComment);
 

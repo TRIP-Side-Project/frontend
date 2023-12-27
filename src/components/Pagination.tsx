@@ -65,17 +65,18 @@ const Pagination = ({ pageInfo, activeBtn, setActiveBtn }: PaginationTypes) => {
 			>
 				<ArrowLeft fillColor={""} width={"20px"} height={"20px"} />
 			</button>
-			{currPageArr.map((pageNum, idx) => (
-				<button
-					key={idx}
-					className={`mx-2 ${
-						activeBtn === idx + 1 ? "font-bold text-BTN_HOVER_COLOR" : ""
-					}`}
-					onClick={() => setActiveBtn(pageNum)}
-				>
-					{pageNum}
-				</button>
-			))}
+			{currPageArr &&
+				currPageArr.map((pageNum, idx) => (
+					<button
+						key={idx}
+						className={`mx-2 ${
+							activeBtn === idx + 1 ? "font-bold text-BTN_HOVER_COLOR" : ""
+						}`}
+						onClick={() => setActiveBtn(pageNum)}
+					>
+						{pageNum}
+					</button>
+				))}
 			<button
 				className="ml-2 rounded-md dark:bg-MAIN_COLOR bg-LINE_POINT_COLOR"
 				onClick={handleNext}
