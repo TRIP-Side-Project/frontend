@@ -13,6 +13,7 @@ import EditForum from "./EditForum";
 import ReadLexical from "@/components/lexical/ReadLexical";
 import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
+import userImg from "@/assets/img/userImg.png";
 
 const DetailForum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -23,10 +24,12 @@ const DetailForum = () => {
 		navigator(-1);
 	};
 	const [isEdit, setIsEdit] = useState(false);
+	const [formatDate, setFormatDate] = useState("");
+	const [formatTitle, setFormatTitle] = useState("");
 
 	const handleEditMode = () => {
 		setIsEdit(!isEdit);
-		console.log(isEdit, "에딭ㅅ보트 클릭 ");
+		// console.log(isEdit, "수정 버튼  클릭 ");
 	};
 
 	//게시글 데이터 조회
@@ -34,6 +37,12 @@ const DetailForum = () => {
 		try {
 			const response = await axios.get(`${BASE_URL}/api/articles/${articleId}`);
 			// console.log(response.data);
+
+			if (response.data) {
+				setFormatDate(response.data.createdAt);
+				setFormatTitle(response.data.title);
+			}
+
 			return response.data;
 		} catch (err) {
 			throw new Error(`게시글 상세 조회 에러 ${err}`);
@@ -44,16 +53,18 @@ const DetailForum = () => {
 		queryKey: ["detailForum"],
 		queryFn: getForumData,
 	});
-	console.log(data);
+	// console.log(data);
 
-	const formattedDate = useFormatDate(data.createdAt);
-	const formattedTitle = useFormatTitle(data.title, 15);
+	const formattedDate = useFormatDate(formatDate);
+	const formattedTitle = useFormatTitle(formatTitle, 15);
+	// console.log(formattedDate);
+	// console.log(formattedTitle);
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
 
 	return (
-		<div className="flex w-full sm:w-[860px] flex-col mx-auto  px-5 mb-20 text-BASIC_BLACK bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
+		<div className="flex w-full md:w-[860px] flex-col mx-auto  px-5 mb-20 text-BASIC_BLACK bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 			{isEdit ? (
 				<EditForum
 					editData={{
@@ -71,7 +82,7 @@ const DetailForum = () => {
 
 						<div className="flex flex-row justify-between mt-2 text-xs sm:mt-0 sm:divide-x sm:justify-normal sm:text-sm divide-LIGHT_GRAY_COLOR">
 							<p className="pl-1 sm:px-5">{data.writerNickname}</p>
-							<p className="sm:px-5">{formattedDate ? formattedDate : ""}</p>
+							<p className="sm:px-5">{formattedDate}</p>
 							<p className="sm:pl-5">조회 {data.viewCount}</p>
 						</div>
 					</div>
@@ -87,9 +98,7 @@ const DetailForum = () => {
 										: "에디터 추천 > "}
 								</span>
 							</Link>
-							<span className="hover:text-MAIN_COLOR">
-								{formattedTitle ? formattedTitle : data.title}
-							</span>
+							<span className="hover:text-MAIN_COLOR">{formattedTitle}</span>
 						</div>
 						<div className="flex flex-row items-center">
 							<Heart width={"28px"} height={"28px"} />
@@ -111,9 +120,9 @@ const DetailForum = () => {
 					</div>
 					<div className="flex flex-row items-center p-2 my-1 bg-LINE_POINT_COLOR rounded-lg border-[1px] border-LINE_POINT_COLOR">
 						<img
-							src={data.writerProfileImg}
+							src={userImg}
 							alt="작성자 프로필 이미지"
-							className="border-[1px] rounded-lg h-24 w-24 text-sm border-LIGHT_GRAY_COLOR"
+							className="object-cover border-[1px] rounded-lg h-24 w-24 text-sm border-LIGHT_GRAY_COLOR"
 						/>
 						<div className="flex-1 ml-3 text-md text-BASIC_BLACK dark:text-BASIC_WHITE">
 							자기 소개 한 줄 작성 예정
