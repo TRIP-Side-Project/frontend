@@ -1,4 +1,5 @@
 [[redirects]]
-from = "https://triptrip.site"
-to = "/index.html"
+from = "/proxy/*"
+to = "https://apigw.tmoney.co.kr:5556/gateway"
 status = 200
+force = true
