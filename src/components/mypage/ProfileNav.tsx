@@ -4,7 +4,7 @@ import Calendar2 from "@/assets/svg/Calendar2";
 import Pencil from "@/assets/svg/Pencil";
 import User from "@/assets/svg/User";
 import Email from "@/assets/svg/Email";
-import { MyDataProps } from "@/pages/Mypage";
+import { MyDataProps } from "@/types/myProfile";
 import useFormatDate from "@/hooks/useFormatDate";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ const ProfileNav = ({ data }: MyDataProps) => {
 	const titleStyle = "font-bold mb-3 text-lg";
 
 	const parsedDate = useFormatDate(data.createdAt);
-	console.log("페이지랜더링 횟수 체크 ");
+	// console.log("페이지랜더링 횟수 체크 ");
 
 	useEffect(() => {
 		if (data && parsedDate) {
