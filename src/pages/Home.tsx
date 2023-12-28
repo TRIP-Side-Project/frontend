@@ -71,7 +71,7 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col gap-28">
+				<div className="flex flex-col gap-28 px-10">
 					<div className="flex flex-col justify-between w-full">
 						<h1 className={sectionTitle}>추천 상품</h1>
 						{innerWidth > 768 &&
