@@ -12,7 +12,7 @@ export interface MyPageTypes {
 }
 
 export interface MyDataProps {
-	data: MyPageTypes[];
+	data: MyPageTypes;
 }
 
 //보관 상품
