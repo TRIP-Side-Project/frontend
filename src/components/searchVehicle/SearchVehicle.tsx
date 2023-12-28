@@ -157,7 +157,7 @@ const SearchVehicle = () => {
         const searchDate = selectedDate.split("-").join("");
         const searchTime = selectedTime.split(":").join("");
         const searchResponse = await axios.get(
-          `https://apigw.tmoney.co.kr:5556/gateway/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
+          `/koIbtList/v1/ibt_list/${searchDate}/${searchTime}/${numLocation.depature}/${numLocation.arrival}/0/0/9`,
           {
           headers: {
             "x-Gateway-APIKey": "f7f4cfab-c6e5-4c2d-ba83-283349af63e4"
