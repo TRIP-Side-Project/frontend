@@ -1,63 +1,78 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import EditProfile from "@/components/mypage/EditProfile";
 import Mine from "@/components/mypage/Mine";
 import PwdModal from "@/components/modal/PwdModal";
 import Lock from "@/assets/svg/Lock";
-import Pencil from "@/assets/svg/Pencil";
-import User from "@/assets/svg/User";
-import Email from "@/assets/svg/Email";
+
 import DeleteMemModal from "@/components/modal/DeleteMemModal";
-import Calendar2 from "@/assets/svg/Calendar2";
+import ProfileNav from "@/components/mypage/profileNav";
+import MenuDot from "@/assets/svg/MenuDot";
+import ArrowDown from "@/assets/svg/ArrowDown";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import ErrState from "@/components/Loading/ErrState";
+import Loading from "@/components/Loading/Loading";
+import TokenModal from "@/components/modal/TokenModal";
 
 const Mypage = () => {
+	const BASER_URL = import.meta.env.VITE_BASE_URL;
+	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
+
 	//프로필 수정 모달 온오프
 	const [isChange, setIsChange] = useState(false);
 	//회원 탈퇴 모달 온오프
 	const [isDeleteMem, setIsDeleteMem] = useState(false);
-	const sectionStyle =
-		"border border-BASIC_BLACK dark:border-BASIC_WHITE p-5 flex flex-col text-center w-72 text-start mb-5 h-52";
-	const titleStyle = "font-bold mb-3 text-lg";
+	//모바일 환경 프로필 Nav 온오프
+	const [isOpenNav, setIsOpenNav] = useState(false);
+	//토큰 이동 모달 온오프
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handlePwd = () => {
 		setIsChange(!isChange);
 	};
 
+	const handleOpenNav = () => {
+		setIsOpenNav(!isOpenNav);
+	};
+
+	//마이 페이지 조회
+	const getMyProfile = async () => {
+		try {
+			const response = await axios.get(`${BASER_URL}/api/members/me`, {
+				headers: {
+					accessToken: `Bearer ${ACCESS_TOKEN}`,
+				},
+			});
+			return response.data;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (err: any) {
+			if (err.response.status === 401) {
+				//토큰 만료
+				setIsModalOpen(true);
+			}
+
+			// throw new Error(`마이페이지 데이터 GET 파트 : ${err}`);
+		}
+	};
+
+	const { isPending, isError, data, error } = useQuery({
+		queryKey: ["mayPage"],
+		queryFn: getMyProfile,
+	});
+
+	if (isPending) return <Loading />;
+	if (isError) return <ErrState err={error.message} />;
+
 	return (
 		<div className="flex flex-col w-full px-2 mb-20 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
-			<EditProfile />
-			<div className="flex flex-row mt-5 ">
+			<EditProfile data={data} />
+			<div className="flex flex-col-reverse mt-2 sm:mt-5 sm:flex-row ">
 				{/* 왼쪽 섹션 */}
-				<div className="flex flex-col mr-10">
-					<div className={sectionStyle}>
-						<div className={titleStyle}>프로필</div>
-						<div className="flex flex-row items-center mb-2">
-							<User width={"25px"} height={"17px"} />
-							<p className="ml-2">아리</p>
-						</div>
-						<div className="flex flex-row items-center mb-2">
-							<Email width={"22px"} height={"22px"} />
-							<p className="ml-3">Email@Email.com</p>
-						</div>
-						<div className="flex flex-row items-center">
-							<Calendar2 width={"22px"} height={"20px"} />
-							<p className="ml-2">2023년 11월 24일 가입</p>
-						</div>
+				<div className="flex flex-col sm:mr-10">
+					<div className="hidden sm:block">
+						<ProfileNav data={data} />
 					</div>
-					<div className={sectionStyle}>
-						<div className={titleStyle}>여행 경험을 공유해 주세요!</div>
-						<div className="flex flex-row items-center">
-							<Pencil width={"23px"} height={"23px"} />
-							<p className="ml-2">
-								<Link to="/forum/edit">포럼 작성하기</Link>
-							</p>
-						</div>
-					</div>
-					<div className={sectionStyle}>
-						<div className={titleStyle}>관심 태그 설정</div>
-						<div>#경주 #겨울여행</div>
-					</div>
-					<div className="flex justify-between text-sm ">
+					<div className="flex justify-between mt-5 text-sm sm:mt-0">
 						{isChange && <PwdModal isClick={handlePwd} />}
 						{isDeleteMem && (
 							<DeleteMemModal isClick={() => setIsDeleteMem(!isDeleteMem)} />
@@ -78,8 +93,27 @@ const Mypage = () => {
 					</div>
 				</div>
 				{/* 오른쪽 섹션 */}
-				<Mine />
+				{!isOpenNav && <Mine />}
+
+				<div className="mb-2 sm:hidden">
+					{isOpenNav ? (
+						<ArrowDown
+							width={"20px"}
+							height={"20px"}
+							onClick={() => handleOpenNav()}
+						/>
+					) : (
+						<MenuDot
+							width={"20px"}
+							height={"20px"}
+							onClick={() => handleOpenNav()}
+						/>
+					)}
+
+					{isOpenNav && <ProfileNav data={data} />}
+				</div>
 			</div>
+			{isModalOpen && <TokenModal noClick={() => setIsModalOpen(false)} />}
 		</div>
 	);
 };

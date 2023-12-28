@@ -1,7 +1,9 @@
 import Temp from "@/assets/img/jeju2.png";
 import Close from "@/assets/svg/Close";
+import { LikeMerchanProps } from "@/types/myProfile";
 
-const Likeitem = () => {
+const Likeitem = ({ data }: LikeMerchanProps) => {
+	console.log(data);
 	return (
 		<div className="flex flex-row w-full p-2 border rounded-lg whitespace-nowrap bg-BASIC_WHITE">
 			<img src={Temp} className="rounded-lg w-[130px] h-[100px] mr-3" />

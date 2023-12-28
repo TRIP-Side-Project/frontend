@@ -11,7 +11,7 @@ interface DarkTypes {
 export const loginState = atom<LoginTypes>({
 	key: "loginState",
 	default: {
-		loginState: false,
+		loginState: window.localStorage.getItem("access_token") ? true : false,
 	},
 });
 
@@ -19,6 +19,21 @@ export const darkState = atom<DarkTypes>({
 	key: "darkState",
 	default: {
 		darkState: false,
+	},
+});
+
+export const loginSelector = selector({
+	key: "loginSelector",
+	get: ({ get }) => {
+		const state = get(loginState);
+		return state.loginState;
+	},
+	set: ({ set }, newValue) => {
+		if (newValue instanceof DefaultValue) {
+			return;
+		}
+
+		set(loginState, { loginState: newValue });
 	},
 });
 

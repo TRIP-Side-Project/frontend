@@ -1,4 +1,4 @@
-import Heart from "@/assets/svg/Heart";
+// import Heart from "@/assets/svg/Heart";
 import Category from "@/common/category/Category";
 import Comment from "@/components/comment/Comment";
 import useFormatDate from "@/hooks/useFormatDate";
@@ -13,7 +13,8 @@ import EditForum from "./EditForum";
 import ReadLexical from "@/components/lexical/ReadLexical";
 import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
-import userImg from "@/assets/img/userImg.png";
+// import userImg from "@/assets/img/userImg.png";
+import Bookmark from "@/components/Bookmark/Bookmark";
 
 const DetailForum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -101,7 +102,8 @@ const DetailForum = () => {
 							<span className="hover:text-MAIN_COLOR">{formattedTitle}</span>
 						</div>
 						<div className="flex flex-row items-center">
-							<Heart width={"28px"} height={"28px"} />
+							{/* <Heart width={"28px"} height={"28px"} /> */}
+							<Bookmark />
 							<span className="ml-2 text-base font-semibold text-BASIC_BLACK dark:text-BASIC_WHITE">
 								{data.likeCount}
 							</span>
@@ -120,7 +122,7 @@ const DetailForum = () => {
 					</div>
 					<div className="flex flex-row items-center p-2 my-1 bg-LINE_POINT_COLOR rounded-lg border-[1px] border-LINE_POINT_COLOR">
 						<img
-							src={userImg}
+							src={data.writerProfileImg}
 							alt="작성자 프로필 이미지"
 							className="object-cover border-[1px] rounded-lg h-24 w-24 text-sm border-LIGHT_GRAY_COLOR"
 						/>

@@ -13,7 +13,7 @@ import { rtAlarmState } from "@/store/rtAlarmState";
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [navType, setNavType] = useState<boolean | undefined>(undefined);
-	const [isNotifi, setIsNotifi] = useState(true);
+	const [isNotifi, setIsNotifi] = useState(false);
 	const onSubMenuClose = () => setIsOpen(false);
 	const [isLogin, setIsLogin] = useRecoilState(loginState);
 	const isAlarm = useRecoilValue(rtAlarmState);
@@ -49,8 +49,9 @@ const Header = () => {
 
 	//로그아웃 클릭 핸들
 	const handleLogOut = () => {
-		localStorage.removeItem("access_token");
-		localStorage.removeItem("");
+		// localStorage.removeItem("access_token");
+		// localStorage.removeItem("");
+		localStorage.clear();
 		setIsLogin({ loginState: false });
 		window.location.href = "/";
 	};

@@ -1,12 +1,12 @@
 import Google from "@/assets/svg/Google";
 import kakao from "@/assets/img/kakao.png";
 import naver from "@/assets/img/naver.png";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "@/store/loginState";
+import { loginSelector } from "@/store/loginState";
 // import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
 		"pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-	const setIsLogin = useSetRecoilState(loginState);
+	const setIsLogin = useSetRecoilState(loginSelector);
 
 	// 로그인 정보
 	interface LoginData {
@@ -60,22 +60,16 @@ const Login = () => {
 			const response = await mutation.mutateAsync();
 			const token = response.data.accessToken;
 			const memberId = response.data.memberId;
-			const profileImg = response.data.profileImg;
+			const profileImgUrl = response.data.profileImgUrl;
 			if (token) localStorage.setItem("access_token", token);
 			if (memberId) localStorage.setItem("memberId", memberId);
-			if (profileImg) localStorage.setItem("profileImg", profileImg);
+			if (profileImgUrl) localStorage.setItem("profileImg", profileImgUrl);
+			setIsLogin(true);
+			navigator("/");
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
 	};
-
-	useEffect(() => {
-		//useEffect로 토큰 인식하고 로그인 상태로 바꾸는걸로 추가했다능 \( ' 1 ' )/
-		if (localStorage.getItem("access_token")) {
-			setIsLogin({ loginState: true });
-			navigator("/");
-		}
-	});
 
 	// 리프레시 토큰 쿠키 저장 확인 후에 액세스 토큰 만료시 재 요청하는 코드 작성 예정(12.15)
 
