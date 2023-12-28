@@ -117,7 +117,7 @@ const SearchVehicle = () => {
         const responseData = response.data.response.ter_list;
         const depatureData = [responseData.filter((item: ListItem) => item.TER_NAM.includes(location.depature))];
         const arrivalData = [responseData.filter((item: ListItem) => item.TER_NAM.includes(location.arrival))];
-        console.log(response.data.response.ter_list);
+        // console.log(response.data.response.ter_list);
         const depatureTerminalData = depatureData[0].map((item: ListItem) => ({
           depatureTerminal: item.TER_NAM,
         }));
@@ -126,8 +126,8 @@ const SearchVehicle = () => {
           arrivalTerminal: item.TER_NAM,
         }));
 
-        console.log(depatureTerminalData[0]);
-        console.log(arrivalTerminalData[0]);
+        // console.log(depatureTerminalData[0]);
+        // console.log(arrivalTerminalData[0]);
         setDepatureDataArray(prevState => ({
             ...prevState,
             terminalData: [...depatureTerminalData, ...arrivalTerminalData],
@@ -149,8 +149,8 @@ const SearchVehicle = () => {
   }, [location])
   // 청주가 들어가는 검색어로 입력 *청주* 이런 느낌으로 해야함
   // 검색어 드롭다운으로 미리 보여주고 선택하게 해도 좋을 듯
-  console.log(numLocation);
-  console.log(location);
+  // console.log(numLocation);
+  // console.log(location);
 
   const searchMutation = useMutation({
     mutationFn: () => {
