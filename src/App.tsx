@@ -11,8 +11,8 @@ import DetailForum from "./pages/DetailForum";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
-import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 import FindPw from "./pages/FindPw";
+import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
 // import Notification from "./components/notification/Notification";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
+					<Route path="/home" element={<OauthRedirect />} />
 					<Route path="/findpw" element={<FindPw />} />
 				</Routes>
 			</Layout>
