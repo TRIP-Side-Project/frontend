@@ -12,14 +12,14 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import FindPw from "./pages/FindPw";
-import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
-// import Notification from "./components/notification/Notification";
+// import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
+import Notification from "./components/notification/Notification";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Header />
-			{/* <Notification /> */}
+			<Notification />
 			<Layout>
 				<Routes>
 					<Route path="/" element={<Home />} />
@@ -31,7 +31,7 @@ function App() {
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/home" element={<OauthRedirect />} />
+					{/* <Route path="/home" element={<OauthRedirect />} /> */}
 					<Route path="/findpw" element={<FindPw />} />
 				</Routes>
 			</Layout>
