@@ -60,7 +60,7 @@ const Forum = () => {
 	//좋아요 | 인기순 필터링
 	const clickStyle = "text-MAIN_COLOR font-semibold";
 	const handleFilterClick = (sort: number) => {
-		console.log(sort);
+		// console.log(sort);
 		if (sort === 0) {
 			setFilter("");
 		} else {
@@ -154,6 +154,7 @@ const Forum = () => {
 						<li className="basis-1/6">좋아요</li>
 					</ul>
 					{data?.articles?.length !== 0 ? (
+
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{data.articles.map((list: ForumList) => (
 								<Link
