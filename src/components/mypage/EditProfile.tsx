@@ -2,7 +2,7 @@ import MyPageModal from "@/components/modal/MypageModal";
 import { useState } from "react";
 // import Temp from "@/assets/img/temp.png";
 import Setting from "@/assets/svg/Setting";
-import { MyDataProps } from "@/pages/Mypage";
+import { MyDataProps } from "@/types/myProfile";
 import { myPageSelector } from "@/store/mypageState";
 import { useSetRecoilState } from "recoil";
 import Pencil from "@/assets/svg/Pencil";
@@ -49,7 +49,7 @@ const EditProfile = ({ data }: MyDataProps) => {
 							</span>
 						) : (
 							data.intro
-						)}{" "}
+						)}
 					</div>
 
 					<button
@@ -134,7 +134,9 @@ const EditProfile = ({ data }: MyDataProps) => {
 				</div>
 			</div>
 
-			{isOpen && <MyPageModal isClick={handleClick} />}
+			{isOpen && (
+				<MyPageModal isClick={handleClick} data={data} setIsOpen={setIsOpen} />
+			)}
 		</>
 	);
 };
