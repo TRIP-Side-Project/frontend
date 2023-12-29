@@ -3,7 +3,12 @@ import Button, { btnAttributes } from "@/common/button/Button";
 import Bookmark from "@/components/Bookmark/Bookmark";
 import ProductCardItems from "@/components/productCardItems/ProductCardItems";
 import SearchVehicle from "@/components/searchVehicle/SearchVehicle";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ProductInfo } from "./ProductList";
+
 
 export default function ProductListDetail () {
 
@@ -20,6 +25,46 @@ export default function ProductListDetail () {
     navigate(-1);
   }
 
+  // 상품 Id 별 데이터 요청
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const productId = useParams();
+  // console.log(productId.id);
+
+  const [productItem, setProductItem] = useState<ProductInfo>({
+    id: null,
+    maxPrice: null,
+    minPrice: null,
+    productId: null,
+    shopName: null,
+    title: null,
+    buyUrl: null,
+    imageUrl: undefined,
+  });
+
+  const productMutation = useMutation({
+    mutationFn: () => {
+      return axios.get(
+        `${BASE_URL}/api/items/${productId.id}`,
+      )
+    }
+  });
+
+  const getProduct = async () => {
+    try{
+      const response = await productMutation.mutateAsync();
+      console.log(response.data);
+			setProductItem(response.data);
+    } catch (error) {
+      console.log("Error: " + error)
+    }
+  }
+
+	useEffect(() => {
+		getProduct();
+	}, [])
+
+  console.log(productItem);
+
   return (
     <>
     <div className="px-10 md:px-28 pt-20 bg-BASIC_WHITE w-full dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
@@ -28,16 +73,17 @@ export default function ProductListDetail () {
         <BackToList fillColor="#333333" width="20px" height="20px" />
       </div>
       <div className="border-b pb-10 border-LIGHT_GRAY_COLOR mb-20 flex flex-col md:flex-row md:h-[400px] items-start md:items-center relative gap-10">
-        <div className="w-full md:w-[400px] h-[300px] bg-rose-300 rounded-md relative">
-          {/* 이미지 들어갈 자리 */}
+        <div className="md:w-[400px] h-[300px] bg-rose-300 overflow-hidden rounded-md relative">
+          <div className="w-full h-full">
+            <img src={productItem.imageUrl} alt="Product image" className="w-full h-full" />
+          </div>
           <div className="absolute top-3 right-3">
             <Bookmark />
           </div>
         </div>
-        <div className="w-full h-full flex flex-col gap-5 md:gap-0 justify-between md:items-center">
+        <div className="w-full h-full flex flex-col gap-5 md:gap-0 justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-5">여행 상품명</h1>
-            <p className="text-lg md:text-2xl mb-5">여행 상품 내용 어쩌구 쿵냐쿵 쿵냐리 쿵쿵</p>
+            <h1 className="text-2xl md:text-3xl font-bold mb-5 dark:text-BASIC_WHITE">{productItem.title}</h1>
             <div className="text-lg md:text-xl flex gap-5 mb-5">
               <span>#대분류</span>
               <span>#중분류</span>
@@ -47,15 +93,17 @@ export default function ProductListDetail () {
           <div className="pb-3 flex flex-col gap-3 md:gap-5">
             <div>
               <span className="w-[100px] inline-block">판매자</span>
-              <span>노랑풍선</span>
+              <span>{productItem.shopName}</span>
             </div>
             <div>
               <span className="w-[100px] inline-block">상품 가격</span>
-              <span>1,000,000원</span>
+              <span>{String(productItem.minPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</span>
             </div>
           </div>
           <div className="flex justify-center items-center">
-            <Button btnInfo={buyBtnInfo} />
+            <a href={`${productItem.buyUrl}`}>
+              <Button btnInfo={buyBtnInfo} />
+            </a>
           </div>
         </div>
         <div className="">

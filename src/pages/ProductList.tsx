@@ -2,12 +2,28 @@ import { useEffect, useState } from "react";
 
 import Search from "@/components/search/Search";
 import ProductListItems from "@/components/productListItems/ProductListItems";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
 // import Pagination from "@/components/Pagination";
+
+export interface ProductInfo {
+  id: number | null;
+  maxPrice: number | null;
+  minPrice: number | null;
+  productId: number | null;
+  shopName: string | null;
+  title: string | null;
+  buyUrl: string | null;
+  imageUrl: string | undefined;
+}
 
 const ProductList = () => {
 	// 동적 화면 상태
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	const [, setSearch] = useState("");
+	const [isSort, setIsSort] = useState(false);
+
 	useEffect(() => {
 		const resizeListener = () => {
 			setInnerWidth(window.innerWidth);
@@ -17,8 +33,6 @@ const ProductList = () => {
 
 	// false -> 최신순 true -> 인기순
 	// 아무거나 눌러도 바뀌는 걸 만들어버렸다..
-	const [isSort, setIsSort] = useState(false);
-
 	const handleSort = () => {
 		setIsSort(!isSort);
 	};
@@ -26,6 +40,38 @@ const ProductList = () => {
 	const viewSortClass =
 		"cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
 	const nonViewSortClass = "cursor-pointer px-2 text-LIGHT_GRAY_COLOR";
+
+	// 상품 가져오기
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+	
+	const [productItem, setProductItem] = useState([]);
+
+  const productMutation = useMutation({
+    mutationFn: () => {
+      return axios.get(
+        `${BASE_URL}/api/items?page=1&size=5`,
+        )
+    }
+  });
+
+  const getProduct = async () => {
+    try{
+      const response = await productMutation.mutateAsync();
+			setProductItem(
+        response.data.itemList
+      );
+      // console.log(response.data.itemList);
+    } catch (error) {
+      console.log("Error: " + error)
+    }
+  }
+
+	useEffect(() => {
+		getProduct();
+	}, [])
+
+	// console.log(productItem);
 
 	return (
 		//md:px-0
@@ -73,9 +119,8 @@ const ProductList = () => {
 					</div>
 				)}
 			</div>
-			{Array.from(Array(5), (_, index) => (
-				<ProductListItems key={index} />
-			))}
+			{productItem.map(item => <ProductListItems item={item} /> )}
+			{/* <ProductListItems /> */}
 			{/* <Pagination  /> */}
 		</div>
 	);

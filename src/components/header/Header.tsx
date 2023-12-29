@@ -6,13 +6,17 @@ import Bell from "@/assets/svg/Bell";
 import StoreNoti from "../notification/StoreNoti";
 import { Link } from "react-router-dom";
 import Mmenu from "./Mmenu";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loginState } from "@/store/loginState";
+import { rtAlarmState } from "@/store/rtAlarmState";
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [navType, setNavType] = useState<boolean | undefined>(undefined);
 	const [isNotifi, setIsNotifi] = useState(false);
 	const onSubMenuClose = () => setIsOpen(false);
-	const tempLogin = true; //임시 로그인 상태 설정
+	const [isLogin, setIsLogin] = useRecoilState(loginState);
+	const isAlarm = useRecoilValue(rtAlarmState);
 
 	const navBtn =
 		"h-full hover:bg-BASIC_BLACK hover:text-BASIC_WHITE px-9 focus:bg-BASIC_BLACK focus:text-BASIC_WHITE dark:text-BASIC_WHITE dark:hover:bg-BASIC_WHITE dark:hover:text-BASIC_BLACK dark:focus:bg-BASIC_WHITE dark:focus:text-BASIC_BLACK";
@@ -29,7 +33,6 @@ const Header = () => {
 			setIsOpen(true);
 		}
 	};
-	console.log(isOpen);
 
 	//알림 모달 창 toggle
 	const handleNotification = () => {
@@ -44,14 +47,14 @@ const Header = () => {
 			"w-full h-[130px] bg-BASIC_WHITE dark:bg-BASIC_BLACK border-BASIC_BLACK flex flex-col";
 	}
 
-	// 다크모드
-	// useEffect(() => {
-  //   // 처음에 다크모드인지 판단해서 뿌려주기 !! ( 나중에는 상태관리를 해도 괜찮습니다 ! )
-  //   if (localStorage.getItem("theme") === "dark") {
-  //     document.documentElement.classList.add("dark");
-	// 		console.log(localStorage);
-  //   }
-  // }, []);
+	//로그아웃 클릭 핸들
+	const handleLogOut = () => {
+		// localStorage.removeItem("access_token");
+		// localStorage.removeItem("");
+		localStorage.clear();
+		setIsLogin({ loginState: false });
+		window.location.href = "/";
+	};
 
 	return (
 		<>
@@ -61,7 +64,7 @@ const Header = () => {
 						<DarkToggle />
 					</div>
 
-					{tempLogin ? (
+					{isLogin.loginState ? (
 						<>
 							<button
 								className="flex justify-end flex-1 md:flex-none ml-7"
@@ -69,17 +72,22 @@ const Header = () => {
 							>
 								<div className="flex realtive">
 									<Bell fillColor={"#575353"} width={"28px"} height={"28px"} />
-									<span className="relative top-0.5 flex w-2 h-2 right-3">
-										<span className="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
-										<span className="relative inline-flex w-2 h-2 rounded-full bg-POINT_COLOR"></span>
-									</span>
+									{isAlarm.alarmState ? (
+										<span className="relative top-0.5 flex w-2 h-2 right-3">
+											<span className="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+											<span className="relative inline-flex w-2 h-2 rounded-full bg-POINT_COLOR"></span>
+										</span>
+									) : null}
 								</div>
 							</button>
 							{isNotifi && <StoreNoti />}
 							<button className="px-5 hover:text-BASIC_BLACK whitespace-nowrap">
 								<Link to={"/mypage"}>마이페이지</Link>{" "}
 							</button>
-							<button className="px-5 hover:text-BASIC_BLACK whitespace-nowrap">
+							<button
+								className="px-5 hover:text-BASIC_BLACK whitespace-nowrap"
+								onClick={handleLogOut}
+							>
 								로그아웃
 							</button>
 						</>
@@ -109,7 +117,7 @@ const Header = () => {
 					</Link>
 
 					{/* 여행 대 메뉴 탭 */}
-					<Mmenu openNav={openNav} onSubMenuClose={onSubMenuClose}/>
+					<Mmenu openNav={openNav} onSubMenuClose={onSubMenuClose} />
 					<div className="items-center hidden h-full md:block whitespace-nowrap">
 						<button
 							className={navBtn}

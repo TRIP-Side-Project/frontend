@@ -21,8 +21,8 @@ export default {
 				toggle: "3px 0px 4px 0px rgba(255, 255, 255, 0.25)",
 			},
 			fontSize: {
-				exs: "8px",
-				esm: "12px",
+				exs: ["8px", "10px"],
+				esm: ["12px", "14px"],
 			},
 		},
 	},

@@ -5,12 +5,17 @@ import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { useSetRecoilState } from "recoil";
+import { loginSelector } from "@/store/loginState";
 // import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
 	// 스타일 클래스
-	const loginInputClass = "pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
+	const loginInputClass =
+		"pl-3 border-BASIC_BLACK w-full border h-12 rounded-md";
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+	const setIsLogin = useSetRecoilState(loginSelector);
 
 	// 로그인 정보
 	interface LoginData {
@@ -54,10 +59,13 @@ const Login = () => {
 		try {
 			const response = await mutation.mutateAsync();
 			const token = response.data.accessToken;
-			if (token) {
-				localStorage.setItem("access_token", token);
-				navigator('/');
-			}
+			const memberId = response.data.memberId;
+			const profileImgUrl = response.data.profileImgUrl;
+			if (token) localStorage.setItem("access_token", token);
+			if (memberId) localStorage.setItem("memberId", memberId);
+			if (profileImgUrl) localStorage.setItem("profileImg", profileImgUrl);
+			setIsLogin(true);
+			navigator("/");
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}

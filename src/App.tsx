@@ -11,8 +11,8 @@ import DetailForum from "./pages/DetailForum";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
-import KakaoRedirect from "./components/OauthRedirect/KakaoRedirect";
 import FindPw from "./pages/FindPw";
+import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
 // import Notification from "./components/notification/Notification";
 
 function App() {
@@ -24,14 +24,14 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/products" element={<ProductList />} />
-					<Route path="/products/detail" element={<ProductListDetail />} />
+					<Route path="/products/detail/:id" element={<ProductListDetail />} />
 					<Route path="/forum" element={<Forum />} />
 					<Route path="/forum/detail/:articleId" element={<DetailForum />} />
 					<Route path="/forum/edit" element={<EditForum />} />
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
+					<Route path="/home" element={<OauthRedirect />} />
 					<Route path="/findpw" element={<FindPw />} />
 				</Routes>
 			</Layout>
