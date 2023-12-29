@@ -15,7 +15,9 @@ export default function ProductListItems ({item}: ProductItemProps) {
     <div className="relative">
       <Link to={`/products/detail/${item.id}`}>
         <div className="flex flex-col justify-start items-start md:justify-normal md:items-stretch md:flex-row relative my-24 cursor-pointer">
-          <div className="w-full md:w-1/3 h-[250px] bg-rose-300 rounded-md"></div>
+          <div className="w-full md:w-1/3 h-[250px] overflow-hidden rounded-md">
+            <img src={item.imageUrl} alt="product image" className="w-full h-full" />
+          </div>
           <div className="md:pl-5 flex flex-col md:justify-between dark:text-BASIC_WHITE">
             <div className="md:w-[400px]">
               <h2 className="text-sm md:text-xl mb-5 mt-5 md:mt-0 font-bold ">{item.title}</h2>
