@@ -5,7 +5,7 @@ import PwdModal from "@/components/modal/PwdModal";
 import Lock from "@/assets/svg/Lock";
 
 import DeleteMemModal from "@/components/modal/DeleteMemModal";
-import ProfileNav from "@/components/mypage/profileNav";
+import ProfileNav from "@/components/mypage/ProfileNav";
 import MenuDot from "@/assets/svg/MenuDot";
 import ArrowDown from "@/assets/svg/ArrowDown";
 import axios from "axios";
@@ -59,7 +59,7 @@ const Mypage = () => {
 		queryKey: ["mayPage"],
 		queryFn: getMyProfile,
 	});
-
+	console.log(data);
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
 
