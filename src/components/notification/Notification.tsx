@@ -30,7 +30,7 @@ const Notification = () => {
 		};
 
 		//연결 성공 핸들러 - 접속이 맺어졌을 때 호출
-		eventSource.current.onopen = (event) => {
+		eventSource.current.onopen = async (event) => {
 			console.log("이벤트 성공 핸들러", event);
 		};
 
