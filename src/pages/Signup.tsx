@@ -136,9 +136,9 @@ const Signup = () => {
   formData.append('email', signupInfo.email);
   formData.append('password', signupInfo.password);
   formData.append('nickname', signupInfo.userName);
-  formData.append('profileImg', signupInfo.imageFile);
-
-    const navigator = useNavigate();
+  if(signupInfo.imageFile !== ""){formData.append('profileImg', signupInfo.imageFile)}
+  
+  const navigator = useNavigate();
 
   const submitMutation = useMutation({
     mutationFn: () => {
