@@ -114,14 +114,16 @@ const Mine = () => {
 	if (isError) return <ErrState err={error.message} />;
 
 	return (
-		<div className="w-full p-2 text-lg font-semibold border sm:text-2xl h-fit border-BASIC_BLACK bg-BASIC_WHITE">
+		<div className="w-full p-2 text-lg font-semibold border sm:text-2xl h-fit border-BASIC_BLACK dark:border-BASIC_WHITE">
 			{data.length === 0 ? (
-				<div className="flex flex-col items-center px-10 pt-3 pb-5 sm:pb-10">
+				<div className="flex flex-col items-center px-10 pt-3 pb-5 sm:pb-10 ">
 					<div className="mt-5 sm:my-10 whitespace-nowrap">{noDataText}</div>
 					<FindList width={"100px"} height={"100px"} />
 				</div>
 			) : (
-				<div className="flex flex-col w-full gap-3">{mineContent}</div>
+				<div className="flex flex-col w-full gap-3 text-DARK_GRAY_COLOR">
+					{mineContent}
+				</div>
 			)}
 		</div>
 	);

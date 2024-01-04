@@ -1,7 +1,11 @@
+import { darkState } from "@/store/loginState";
+import { useRecoilValue } from "recoil";
 import { SVG } from "@/types/svg";
 
 const Calendar2 = ({ fillColor, width, height }: SVG) => {
-	fillColor = fillColor ? `${fillColor}` : "#222222";
+	const darkMode = useRecoilValue(darkState);
+	fillColor = darkMode.darkState === true ? "#ffffff" : "#222222";
+
 	return (
 		<svg
 			fill={fillColor}
