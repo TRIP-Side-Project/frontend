@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import Search from "@/components/search/Search";
 import ProductListItems from "@/components/productListItems/ProductListItems";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-
-// import Pagination from "@/components/Pagination";
+import Pagination from "@/components/Pagination";
+import Loading from "@/components/Loading/Loading";
+import ErrState from "@/components/Loading/ErrState";
 
 export interface ProductInfo {
   id: number | null;
@@ -19,10 +20,11 @@ export interface ProductInfo {
 }
 
 const ProductList = () => {
-	// 동적 화면 상태
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-	const [, setSearch] = useState("");
+	const [search, setSearch] = useState("");
 	const [isSort, setIsSort] = useState(false);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [sort, setSort] = useState("");
 
 	useEffect(() => {
 		const resizeListener = () => {
@@ -32,49 +34,39 @@ const ProductList = () => {
 	});
 
 	// false -> 최신순 true -> 인기순
-	// 아무거나 눌러도 바뀌는 걸 만들어버렸다..
 	const handleSort = () => {
 		setIsSort(!isSort);
+		setSort("");
 	};
 
-	const viewSortClass =
-		"cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
+	const viewSortClass = "cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
 	const nonViewSortClass = "cursor-pointer px-2 text-LIGHT_GRAY_COLOR";
 
 	// 상품 가져오기
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-	
 	const [productItem, setProductItem] = useState([]);
-
-  const productMutation = useMutation({
-    mutationFn: () => {
-      return axios.get(
-        `${BASE_URL}/api/items?page=1&size=5`,
-        )
-    }
-  });
 
   const getProduct = async () => {
     try{
-      const response = await productMutation.mutateAsync();
+      const response = await axios.get(`${BASE_URL}/api/items?page=${currentPage}&size=5`)
 			setProductItem(
         response.data.itemList
       );
-      // console.log(response.data.itemList);
+			return response.data;
     } catch (error) {
       console.log("Error: " + error)
     }
   }
 
-	useEffect(() => {
-		getProduct();
-	}, [])
+	const { isPending, isError, data, error } = useQuery({
+		queryKey: ["productLists", currentPage, search, sort],
+		queryFn: getProduct,
+	});
 
-	// console.log(productItem);
+	if (isPending) return <Loading />;
+	if (isError) return <ErrState err={error.message} />;
 
 	return (
-		//md:px-0
 		<div className="w-full px-10 md:px-28 bg-BASIC_WHITE dark:bg-BASIC_BLACK">
 			<div className="md:flex md:justify-between md:items-end my-14 md:py-20">
 				<h1 className="text-2xl font-bold my-7 md:my-0 md:text-4xl dark:text-BASIC_WHITE">
@@ -120,8 +112,11 @@ const ProductList = () => {
 				)}
 			</div>
 			{productItem.map(item => <ProductListItems item={item} /> )}
-			{/* <ProductListItems /> */}
-			{/* <Pagination  /> */}
+			<Pagination
+					pageInfo={data.pagination}
+					activeBtn={currentPage}
+					setActiveBtn={setCurrentPage}
+				/>
 		</div>
 	);
 };
