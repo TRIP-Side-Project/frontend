@@ -1,7 +1,10 @@
+import { darkState } from "@/store/loginState";
+import { useRecoilValue } from "recoil";
 import { SVG } from "@/types/svg";
 
 const User = ({ fillColor, width, height }: SVG) => {
-	fillColor = fillColor ? `${fillColor}` : "#000000";
+	const darkMode = useRecoilValue(darkState);
+	fillColor = darkMode.darkState === true ? "#ffffff" : "#000000";
 	return (
 		<svg fill={fillColor} width={width} height={height} viewBox="0 0 48 48">
 			<title />

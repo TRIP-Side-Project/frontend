@@ -31,7 +31,7 @@ const ProfileNav = ({ data }: MyDataProps) => {
 					<User width={"25px"} height={"17px"} />
 					<p className="ml-2">{data.nickname}</p>
 				</div>
-				<div className="flex flex-row items-center mb-2">
+				<div className="flex flex-row items-center mb-2 ">
 					<Email width={"22px"} height={"22px"} />
 					<p className="ml-3">{data.email}</p>
 				</div>
