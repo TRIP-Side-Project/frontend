@@ -40,7 +40,6 @@ const Pagination = ({ pageInfo, activeBtn, setActiveBtn }: PaginationTypes) => {
 		const slicedPage = sliceArrayByLimit(totalPages, limit);
 		setCurrPageArr(slicedPage[Math.floor((page - 1) / limit)]);
 	}, [page, activeBtn, totalPages, limit]);
-
 	const handlePrev = () => {
 		if (pageInfo.hasPrevious === false) {
 			return null;
@@ -70,7 +69,7 @@ const Pagination = ({ pageInfo, activeBtn, setActiveBtn }: PaginationTypes) => {
 					<button
 						key={idx}
 						className={`mx-2 ${
-							activeBtn === idx + 1 ? "font-bold text-BTN_HOVER_COLOR" : ""
+							activeBtn === pageNum ? "font-bold text-BTN_HOVER_COLOR" : ""
 						}`}
 						onClick={() => setActiveBtn(pageNum)}
 					>
