@@ -11,6 +11,8 @@ import FindList from "@/assets/svg/FindList";
 import { useState } from "react";
 import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
+import { loginState } from "@/store/loginState";
+import { useRecoilValue } from "recoil";
 
 const Forum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -20,6 +22,7 @@ const Forum = () => {
 	const [isTitleSearch, setIsTitleSearch] = useState("title=");
 	const [filter, setFilter] = useState("");
 	const [category, setCategory] = useState("");
+	const isLoginState = useRecoilValue(loginState);
 
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
@@ -30,7 +33,7 @@ const Forum = () => {
 		position: "right",
 		text: "새 글 등록하기",
 		type: "square",
-		isLogin: window.localStorage.getItem("access_token") ? true : false,
+		isLogin: isLoginState,
 		loginBtnType: true,
 		onClick: () => navigateNewForum(),
 	};

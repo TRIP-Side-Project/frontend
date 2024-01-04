@@ -9,14 +9,14 @@ import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
 
 export interface ProductInfo {
-  id: number | null;
-  maxPrice: number | null;
-  minPrice: number | null;
-  productId: number | null;
-  shopName: string | null;
-  title: string | null;
-  buyUrl: string | null;
-  imageUrl: string | undefined;
+	id: number | null;
+	maxPrice: number | null;
+	minPrice: number | null;
+	productId: number | null;
+	shopName: string | null;
+	title: string | null;
+	buyUrl: string | null;
+	imageUrl: string | undefined;
 }
 
 const ProductList = () => {
@@ -25,6 +25,7 @@ const ProductList = () => {
 	const [isSort, setIsSort] = useState(false);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [sort, setSort] = useState("");
+	const [, setIsTitleSearch] = useState("title=");
 
 	useEffect(() => {
 		const resizeListener = () => {
@@ -39,24 +40,25 @@ const ProductList = () => {
 		setSort("");
 	};
 
-	const viewSortClass = "cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
+	const viewSortClass =
+		"cursor-pointer px-2 text-BASIC_BLACK dark:text-BASIC_WHITE";
 	const nonViewSortClass = "cursor-pointer px-2 text-LIGHT_GRAY_COLOR";
 
 	// 상품 가져오기
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const [productItem, setProductItem] = useState([]);
 
-  const getProduct = async () => {
-    try{
-      const response = await axios.get(`${BASE_URL}/api/items?page=${currentPage}&size=5`)
-			setProductItem(
-        response.data.itemList
-      );
+	const getProduct = async () => {
+		try {
+			const response = await axios.get(
+				`${BASE_URL}/api/items?page=${currentPage}&size=5`,
+			);
+			setProductItem(response.data.itemList);
 			return response.data;
-    } catch (error) {
-      console.log("Error: " + error)
-    }
-  }
+		} catch (error) {
+			console.log("Error: " + error);
+		}
+	};
 
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: ["productLists", currentPage, search, sort],
@@ -74,7 +76,7 @@ const ProductList = () => {
 				</h1>
 				{innerWidth > 768 && (
 					<>
-						<Search  setSearch={setSearch} />
+						<Search setSearch={setSearch} setIsTitleSearch={setIsTitleSearch} />
 						<div className="flex gap-2 px-3 pb-1 text-base border-b border-DARK_GRAY_COLOR">
 							<span
 								className={isSort ? viewSortClass : nonViewSortClass}
@@ -93,7 +95,7 @@ const ProductList = () => {
 				)}
 				{innerWidth <= 768 && (
 					<div className="flex items-center justify-between">
-						<Search  setSearch={setSearch} />
+						<Search setSearch={setSearch} setIsTitleSearch={setIsTitleSearch} />
 						<div className="flex pb-1 text-sm border-b border-DARK_GRAY_COLOR">
 							<span
 								className={isSort ? viewSortClass : nonViewSortClass}
@@ -111,12 +113,14 @@ const ProductList = () => {
 					</div>
 				)}
 			</div>
-			{productItem.map(item => <ProductListItems item={item} /> )}
+			{productItem.map((item) => (
+				<ProductListItems item={item} />
+			))}
 			<Pagination
-					pageInfo={data.pagination}
-					activeBtn={currentPage}
-					setActiveBtn={setCurrentPage}
-				/>
+				pageInfo={data.pagination}
+				activeBtn={currentPage}
+				setActiveBtn={setCurrentPage}
+			/>
 		</div>
 	);
 };
