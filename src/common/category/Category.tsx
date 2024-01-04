@@ -1,5 +1,5 @@
 interface categoryTypes {
-	isEditor: "EDITOR" | "MEMBER";
+	isEditor: "EDITOR" | "MEMBER" | string;
 }
 
 const Category = ({ isEditor }: categoryTypes) => {

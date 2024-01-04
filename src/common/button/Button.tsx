@@ -1,4 +1,5 @@
 import BasicModal, { ModalAttributes } from "@/components/modal/BasicModal";
+import { LoginTypes } from "@/store/loginState";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +15,7 @@ export interface btnAttributes {
 	//로그인 상태 일 때 실행되어야 할 함수
 	onClick?: (() => void) | void | undefined;
 	//현재 로그인 상태 여부 확인
-	isLogin?: boolean;
+	isLogin?: LoginTypes;
 	//로그인 버튼으로 사용할 거니 여부
 	loginBtnType?: true;
 	modal?: ModalAttributes | undefined;

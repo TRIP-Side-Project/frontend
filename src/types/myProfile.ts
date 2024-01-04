@@ -8,6 +8,8 @@ export interface MyPageTypes {
 	articleCount: number;
 	commentCount: number;
 	likeItemCount: number;
+	likeArticleCount: string;
+	socialCode: string;
 	tags: string[];
 }
 
@@ -24,7 +26,7 @@ export interface LikeMerchanTypes {
 	buyUrl: string;
 	maxPrice: number;
 	minPrice: number;
-	writerNickname: string;
+	imageUrl: string;
 }
 
 export interface LikeMerchanProps {

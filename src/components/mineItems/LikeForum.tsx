@@ -1,8 +1,8 @@
 import Category from "@/common/category/Category";
-import { WroteForumProps } from "@/types/myProfile";
+import { LikeForumProps } from "@/types/myProfile";
 import { Link } from "react-router-dom";
 
-const WroteForum = ({ data }: WroteForumProps) => {
+const LikeForum = ({ data }: LikeForumProps) => {
 	console.log(data);
 	//gap-3
 	return (
@@ -23,4 +23,4 @@ const WroteForum = ({ data }: WroteForumProps) => {
 	);
 };
 
-export default WroteForum;
+export default LikeForum;
