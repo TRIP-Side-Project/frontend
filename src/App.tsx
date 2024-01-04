@@ -20,7 +20,7 @@ function App() {
 		<div className="dark:bg-BASIC_BLACK bg-BASIC_WHITE">
 			<BrowserRouter>
 				<Header />
-<!-- 				<Notification /> -->
+				{/* <Notification /> */}
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
