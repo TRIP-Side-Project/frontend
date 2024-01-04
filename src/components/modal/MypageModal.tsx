@@ -1,22 +1,19 @@
 import Close from "@/assets/svg/Close";
+import RecoilTag from "@/common/tag/RecoilTag";
+// import useOutsideClick from "@/hooks/useOutsideClick";
+import { tagState } from "@/store/tagState";
 // import Upload from "@/assets/svg/Upload";
 import { MyPageTypes } from "@/types/myProfile";
 import { ToggleTypes } from "@/types/toggle";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 interface TempProps extends ToggleTypes {
 	data: MyPageTypes;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-// interface AmendData {
-// 	profileImg: File | null;
-// 	nickname: string;
-// 	intro: string | null;
-// 	tags: string[];
-// }
 
 const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -26,7 +23,10 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 	const [introduce, setIntroduce] = useState<string | null>(data.intro);
 	const [myImg, setMyImg] = useState<string>(data.profileImg);
 	const [sendImgFile, setSendImgFile] = useState<File | null>(null);
-	const [amendTags] = useState<string[]>([]);
+	const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
+	const tagList = useRecoilValue(tagState);
+
+	//스타일 설정
 	const inputStyle =
 		"rounded-lg border border-BASIC_BLACK px-2 py-1 mt-2 mb-5 w-full";
 	const titleStyle = "text-BASIC_BLACK font-bold text-lg mt-5";
@@ -53,18 +53,31 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 		if (introduce) {
 			newFormData.append("intro", introduce);
 		}
-		if (amendTags && amendTags.length > 0) {
-			newFormData.append("tags", JSON.stringify(amendTags));
+		if (tagList && tagList.length > 0) {
+			// newFormData.append("tags", JSON.stringify(amendTags));
+			newFormData.append("tags", JSON.stringify(tagList));
 		}
 		if (sendImgFile) {
 			newFormData.append("profileImg", sendImgFile);
 		}
+		console.log(newFormData);
 		try {
 			await amendMyProfileMutation.mutateAsync(newFormData);
 		} catch (err) {
 			throw new Error(`프로필 수정 mutation: ${err}`);
 		}
 	};
+
+	//태그 온오프 함수
+	const onOffTag = () => {
+		setIsTagOpen(!isTagOpen);
+	};
+
+	// const ref = useOutsideClick({
+	// 	onClickOutside: () => {
+	// 		setIsTagOpen(false);
+	// 	},
+	// });
 
 	//유효성 검증
 	const isValidName = name.length > 0 && name.length <= 10;
@@ -159,8 +172,13 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 						value={introduce === null ? "" : introduce}
 						onChange={(e) => setIntroduce(e.target.value)}
 					/>
-					<div className={titleStyle}> 관심태그</div>
-					<input className={inputStyle} type="text" />
+					<div className={titleStyle}>관심태그</div>
+					<RecoilTag
+						isTagOpen={isTagOpen}
+						onOffTag={onOffTag}
+						inputStyle={inputStyle}
+					/>
+					{/* <input className={inputStyle} type="text" /> */}
 				</form>
 				<button
 					className="blue_squareBtn w-[178px]"

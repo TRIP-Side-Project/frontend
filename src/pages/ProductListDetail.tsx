@@ -52,7 +52,7 @@ export default function ProductListDetail () {
   const getProduct = async () => {
     try{
       const response = await productMutation.mutateAsync();
-      console.log(response.data);
+      // console.log(response.data);
 			setProductItem(response.data);
     } catch (error) {
       console.log("Error: " + error)
@@ -63,7 +63,7 @@ export default function ProductListDetail () {
 		getProduct();
 	}, [])
 
-  console.log(productItem);
+  // console.log(productItem);
 
   return (
     <>
@@ -78,7 +78,7 @@ export default function ProductListDetail () {
             <img src={productItem.imageUrl} alt="Product image" className="w-full h-full" />
           </div>
           <div className="absolute top-3 right-3">
-            <Bookmark />
+            {productItem.id ? <Bookmark itemId={productItem.id} /> : "" }
           </div>
         </div>
         <div className="w-full h-full flex flex-col gap-5 md:gap-0 justify-between">

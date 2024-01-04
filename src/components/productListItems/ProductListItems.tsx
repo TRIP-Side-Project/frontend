@@ -41,7 +41,7 @@ export default function ProductListItems ({item}: ProductItemProps) {
         </div>
       </Link>
       <div className="absolute bottom-0 right-2 md:top-0 md:right-0 ">
-        <Bookmark />
+        {item.id ? <Bookmark itemId={item.id} /> : ""}
       </div>
     </div>
     

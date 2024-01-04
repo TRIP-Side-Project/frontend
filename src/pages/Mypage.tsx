@@ -60,6 +60,11 @@ const Mypage = () => {
 		queryFn: getMyProfile,
 	});
 	console.log(data);
+
+	//소셜 로그인 | 자체 로그인 판별 - 비밀번호 변경 가능 여부
+	// const isOauth = data.socialCode === "NORMAL" ? false : true;
+	// console.log(isOauth);
+
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
 
@@ -75,7 +80,20 @@ const Mypage = () => {
 					<div className="flex justify-between mt-5 text-sm sm:mt-0">
 						{isChange && <PwdModal isClick={handlePwd} />}
 						{isDeleteMem && (
-							<DeleteMemModal isClick={() => setIsDeleteMem(!isDeleteMem)} />
+							<DeleteMemModal
+								isClick={() => setIsDeleteMem(!isDeleteMem)}
+								isOauth={data ? data.socialCode : null}
+							/>
+						)}
+
+						{data && data.socialCode !== "NORMAL" && (
+							<button
+								className="flex flex-row px-4 py-1 text-sm font-semibold border rounded-lg bg-BASIC_WHITE border-LIGHT_GRAY_COLOR hover:bg-LINE_POINT_COLOR"
+								onClick={handlePwd}
+							>
+								<Lock width={"20px"} height={"20px"} />
+								<p className="ml-2 dark:text-BASIC_BLACK">비밀번호 변경</p>
+							</button>
 						)}
 						<button
 							className="flex flex-row px-4 py-1 text-sm font-semibold border rounded-lg bg-BASIC_WHITE border-LIGHT_GRAY_COLOR hover:bg-LINE_POINT_COLOR"
@@ -84,9 +102,13 @@ const Mypage = () => {
 							<Lock width={"20px"} height={"20px"} />
 							<p className="ml-2 dark:text-BASIC_BLACK">비밀번호 변경</p>
 						</button>
+
 						<button
 							className="hover:text-MAIN_COLOR"
-							onClick={() => setIsDeleteMem(!isDeleteMem)}
+							onClick={(e) => {
+								e.preventDefault();
+								setIsDeleteMem(!isDeleteMem);
+							}}
 						>
 							회원 탈퇴
 						</button>

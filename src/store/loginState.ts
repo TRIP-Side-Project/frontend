@@ -1,6 +1,6 @@
 import { DefaultValue, atom, selector } from "recoil";
 
-interface LoginTypes {
+export interface LoginTypes {
 	loginState: boolean;
 }
 

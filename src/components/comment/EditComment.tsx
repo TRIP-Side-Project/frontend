@@ -3,6 +3,8 @@ import axios from "axios";
 
 import Temp2 from "@/assets/img/seeallareas.png";
 import Button, { btnAttributes } from "@/common/button/Button";
+import { loginState } from "@/store/loginState";
+import { useRecoilValue } from "recoil";
 
 export interface ParentInfo {
 	// articleId: number;
@@ -18,10 +20,9 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 	const [isComment, setIsComment] = useState(editData ? editData : "");
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
-	const tempLogin = true; //임시 전역 로그인 상태
-	//console.log(parentInfo[0], parentInfo[1], parentInfo[2]);
-	// console.log(editData);
-	// console.log(isComment);
+	const userImg = window.localStorage.getItem("profileImg");
+	const isStateLogin = useRecoilValue(loginState);
+	// const tempLogin = true; //임시 전역 로그인 상태
 
 	//새 댓글 등록하는 함수
 	const sendNewComment = async () => {
@@ -76,14 +77,18 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 		width: "172px",
 		position: "end",
 
-		isLogin: tempLogin,
+		isLogin: isStateLogin,
 		loginBtnType: true,
 		onClick: isEditMode ? amendComment : sendNewComment,
 	};
 
 	return (
 		<div className="flex flex-row items-center justify-between flex-1 h-32 px-2 py-5 my-2 border-2 rounded-lg border-MAIN_COLOR">
-			<img src={Temp2} alt="userImage" className="rounded-full w-14 h-14" />
+			<img
+				src={userImg ? userImg : Temp2}
+				alt="userImage"
+				className="rounded-full w-14 h-14"
+			/>
 
 			<form className="flex items-center justify-center flex-1 h-full my-2 ml-3">
 				<textarea

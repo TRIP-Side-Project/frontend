@@ -65,9 +65,9 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 	// const [title, setTitle] = useState("");
 	// const [content, setContent] = useSatet("");
 	const [editorData, setEditorData] = useState<Inputs>({
-		title: "",
-		tags: [],
-		content: "",
+		title: editData ? editData.title : "",
+		tags: editData ? [...editData.tags] : [],
+		content: editData ? editData.content : "",
 	});
 
 	//title 입력
@@ -104,6 +104,8 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 		editorData.title.length >= 5 && editorData.title.length <= 20;
 	const isDisableContent = editorData.content.length >= 20;
 	const isOverContent = editorData.content.length <= 15000;
+	console.log(editorData.title.length);
+	console.log(isDisableTitle);
 
 	//mutation 새 게시글 등록
 	const sendNewForumMutation = useMutation<void, Error, Inputs>({
@@ -249,7 +251,11 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 							</span>
 						)}
 					</div>
-					<RecoilTag isTagOpen={isTagOpen} onOffTag={onOffTag} />
+					<RecoilTag
+						isTagOpen={isTagOpen}
+						onOffTag={onOffTag}
+						editData={editData}
+					/>
 				</div>
 
 				<div className="mb-8 ">

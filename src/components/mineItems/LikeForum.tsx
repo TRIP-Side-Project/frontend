@@ -1,10 +1,8 @@
 import Category from "@/common/category/Category";
-import useFormatDate from "@/hooks/useFormatDate";
-import { WroteForumProps } from "@/types/myProfile";
+import { LikeForumProps } from "@/types/myProfile";
 import { Link } from "react-router-dom";
 
-const WroteForum = ({ data }: WroteForumProps) => {
-	const formattedDate = useFormatDate(data.createdAt);
+const LikeForum = ({ data }: LikeForumProps) => {
 	console.log(data);
 	//gap-3
 	return (
@@ -15,7 +13,7 @@ const WroteForum = ({ data }: WroteForumProps) => {
 						<Category isEditor={data.writerRole} />
 					</div>
 
-					<div className=" text-LIGHT_GRAY_COLOR">{formattedDate}</div>
+					<div className=" text-LIGHT_GRAY_COLOR">{data.createdAt}</div>
 				</div>
 				<div className="text-lg font-semibold text-BASIC_BLACK">
 					{data.title}
@@ -25,4 +23,4 @@ const WroteForum = ({ data }: WroteForumProps) => {
 	);
 };
 
-export default WroteForum;
+export default LikeForum;

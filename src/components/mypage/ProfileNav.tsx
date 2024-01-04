@@ -31,7 +31,7 @@ const ProfileNav = ({ data }: MyDataProps) => {
 					<User width={"25px"} height={"17px"} />
 					<p className="ml-2">{data.nickname}</p>
 				</div>
-				<div className="flex flex-row items-center mb-2">
+				<div className="flex flex-row items-center mb-2 ">
 					<Email width={"22px"} height={"22px"} />
 					<p className="ml-3">{data.email}</p>
 				</div>
@@ -51,7 +51,13 @@ const ProfileNav = ({ data }: MyDataProps) => {
 			</div>
 			<div className={sectionStyle}>
 				<div className={titleStyle}>관심 태그 설정</div>
-				<div>#경주 #겨울여행</div>
+				<div className="flex flex-row whitespace-normal text-LIGHT_GRAY_COLOR">
+					{data.tags && data.tags.length > 0 ? (
+						data.tags.map((tag, idx) => <div key={idx}># {tag}</div>)
+					) : (
+						<div>관심 태그를 설정해주세요!</div>
+					)}
+				</div>
 			</div>
 		</>
 	);
