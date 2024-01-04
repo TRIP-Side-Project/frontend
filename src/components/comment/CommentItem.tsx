@@ -18,8 +18,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [is2CHide, setIs2CHide] = useState(false);
 	const [editCommitId, setEditCommentId] = useState<number | null>(null);
-	// const MEMBER_ID = Number(window.localStorage.getItem("memberId"));
-	const MEMBER_ID = 8; //임시
+	const MEMBER_ID = window.localStorage.getItem("memberId"); //임시
 	//console.log(datas);
 	const formattedDate = useFormatDate(datas.createdAt);
 
@@ -63,7 +62,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 							<div className="mx-3 text-sm text-DARK_GRAY_COLOR">
 								{formattedDate}
 							</div>
-							{datas.writerId === MEMBER_ID ? (
+							{datas && datas.writerId === Number(MEMBER_ID) ? (
 								<>
 									<AmendBtn
 										onClick={() => {
