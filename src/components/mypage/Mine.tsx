@@ -1,22 +1,24 @@
-import FindList from "@/assets/svg/FindList";
-// import Likeitem from "../mineItems/LikeItem";
-// import WroteComment from "../mineItems/WroteComment";
-import { myPageState } from "@/store/mypageState";
-import { useRecoilValue } from "recoil";
-import WroteForum from "../mineItems/WroteForum";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useRecoilValue } from "recoil";
+import { myPageState } from "@/store/mypageState";
+
+import FindList from "@/assets/svg/FindList";
+import WroteForum from "../mineItems/WroteForum";
+import Likeitem from "../mineItems/LikeItem";
+import WroteComment from "../mineItems/WroteComment";
+import LikeForum from "../mineItems/LikeForum";
 import Loading from "../Loading/Loading";
 import ErrState from "../Loading/ErrState";
-import Likeitem from "../mineItems/LikeItem";
+
 import {
-	// LikeForumTypes,
+	LikeForumTypes,
 	LikeMerchanTypes,
 	MyCommentTypes,
 	WroteForumTypes,
 } from "@/types/myProfile";
-import WroteComment from "../mineItems/WroteComment";
 
 const Mine = () => {
 	const BASER_URL = import.meta.env.VITE_BASE_URL;
@@ -99,12 +101,12 @@ const Mine = () => {
 			);
 		} else if (data && selectedTab === "likeForum") {
 			setNoDataText("재미있는 게시글을 모아보세요!");
+			setMineContent(
+				data.map((el: LikeForumTypes, idx: number) => (
+					<LikeForum key={idx} data={el} />
+				)),
+			);
 			// setURL(`${BASER_URL}/api/interest-articles/me`);
-			// setMineContent(
-			// 	data.map((el: LikeForumTypes, idx: number) => (
-			// 		<WroteComment key={idx} data={el} />
-			// 	)),
-			// );
 		}
 	}, [BASER_URL, data, selectedTab]);
 
@@ -119,12 +121,7 @@ const Mine = () => {
 					<FindList width={"100px"} height={"100px"} />
 				</div>
 			) : (
-				<div className="flex flex-col w-full gap-3">
-					{/* {Array.from(Array(5), (_, idx) => (
-						<WroteForum key={idx} />
-					))} */}
-					{mineContent}
-				</div>
+				<div className="flex flex-col w-full gap-3">{mineContent}</div>
 			)}
 		</div>
 	);

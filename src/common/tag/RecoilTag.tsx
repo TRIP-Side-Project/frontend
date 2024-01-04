@@ -1,17 +1,35 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { TagItem } from "./Tag";
-import { tagState, tagSelector, allTagState } from "@/store/tagState";
-import { useCallback } from "react";
+import { tagState, allTagState } from "@/store/tagState";
+import { useCallback, useEffect } from "react";
 
 interface RecoilTagTypes {
 	isTagOpen: boolean;
 	onOffTag: () => void;
+	inputStyle?: string;
+	editData?: {
+		title: string;
+		tags: string[];
+		content: string;
+	};
 }
 
-const RecoilTag = ({ isTagOpen, onOffTag }: RecoilTagTypes) => {
+const RecoilTag = ({
+	isTagOpen,
+	onOffTag,
+	inputStyle,
+	editData,
+}: RecoilTagTypes) => {
 	const [, setSelectedList] = useRecoilState(tagState);
 	const [allList] = useRecoilState(allTagState);
-	const filteredList = useRecoilValue(tagSelector);
+	// const filteredList = useRecoilValue(tagSelector);
+	const [filteredList, setFilteredList] = useRecoilState(tagState);
+	console.log(filteredList);
+	useEffect(() => {
+		if (editData) {
+			setFilteredList(editData.tags);
+		}
+	}, [editData, setFilteredList]);
 
 	const handleClickTag = useCallback(
 		(clickTag: string) => {
@@ -49,7 +67,11 @@ const RecoilTag = ({ isTagOpen, onOffTag }: RecoilTagTypes) => {
 	return (
 		<>
 			<div
-				className="flex text-sm font-semibold border bg-BAISC_WHITE flex-rowpx-3 rounded-xl border-BASIC_BLACK h-9"
+				className={
+					inputStyle
+						? "flex flex-row rounded-lg border border-BASIC_BLACK px-2 py-1 mt-2 w-full h-9"
+						: "flex text-sm font-semibold border bg-BAISC_WHITE flex-row px-3 rounded-xl border-BASIC_BLACK h-9"
+				}
 				onClick={onOffTag}
 			>
 				<div className="flex flex-row ">
@@ -66,7 +88,7 @@ const RecoilTag = ({ isTagOpen, onOffTag }: RecoilTagTypes) => {
 			</div>
 
 			{isTagOpen && (
-				<div className="relative z-30 flex flex-row flex-wrap w-full p-2 text-sm font-semibold rounded-lg shadow-2xl top-1 h-fit bg-zinc-200">
+				<div className="relative z-30 flex flex-row flex-wrap w-full p-2 text-sm font-semibold transition duration-300 ease-in-out rounded-lg shadow-2xl top-1 h-fit bg-zinc-200">
 					{allList.map((tag, idx) => (
 						<TagItem
 							key={idx}

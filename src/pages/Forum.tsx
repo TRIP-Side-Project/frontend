@@ -17,6 +17,7 @@ const Forum = () => {
 	const navigate = useNavigate();
 	const [activeBtn, setActiveBtn] = useState<number>(1);
 	const [search, setSearch] = useState("");
+	const [isTitleSearch, setIsTitleSearch] = useState("title=");
 	const [filter, setFilter] = useState("");
 	const [category, setCategory] = useState("");
 
@@ -39,9 +40,9 @@ const Forum = () => {
 		try {
 			const response = await axios.get(
 				search
-					? `${BASE_URL}/api/articles?title=${search}${category}`
+					? `${BASE_URL}/api/articles?${isTitleSearch}${search}${category}`
 					: `${BASE_URL}/api/articles?page=${activeBtn}${filter}${category}`,
-			); //category 부분은 어떻게 연계되는지 확인 필요 12/25 혜진 &category=MEMBER&sortCode=2??
+			);
 			return response.data;
 		} catch (err) {
 			throw new Error(`게시판 목록 에러 ${err}`);
@@ -49,7 +50,7 @@ const Forum = () => {
 	};
 
 	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["forumLists", activeBtn, search, category],
+		queryKey: ["forumLists", activeBtn, search, category, isTitleSearch],
 		queryFn: getForumLists,
 	});
 
@@ -88,7 +89,7 @@ const Forum = () => {
 			{/* 게시판 목록 및 검색 창 섹션 */}
 			<div className="flex flex-col mt-10">
 				<div className="mx-auto my-5">
-					<Search setSearch={setSearch} />
+					<Search setSearch={setSearch} setIsTitleSearch={setIsTitleSearch} />
 				</div>
 				<div className="">
 					<div className="flex flex-row justify-between my-3 text-LIGHT_GRAY_COLOR">
@@ -154,7 +155,6 @@ const Forum = () => {
 						<li className="basis-1/6">좋아요</li>
 					</ul>
 					{data?.articles?.length !== 0 ? (
-
 						<div className="flex flex-col min-h-fit bg-ITEM_BG_COLOR">
 							{data.articles.map((list: ForumList) => (
 								<Link

@@ -79,7 +79,7 @@ const EditProfile = ({ data }: MyDataProps) => {
 					</div>
 					<div className={summaryTitle}>
 						<div>보관 게시글</div>
-						<div>100</div>
+						<div>{data.likeArticleCount}</div>
 					</div>
 				</div>
 				<div className="flex flex-row justify-between sm:block">

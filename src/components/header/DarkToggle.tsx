@@ -38,7 +38,7 @@ const DarkToggle = () => {
 			document.documentElement.classList.add("dark");
 			setIsDark(true);
 		}
-	}, [isDark]);
+	}, [isDark, setIsDark]);
 
 	return (
 		<div className="relative w-[77px] h-[29px] rounded-full bg-LINE_POINT_COLOR flex-row flex items-center justify-between ">

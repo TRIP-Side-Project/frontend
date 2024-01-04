@@ -11,13 +11,13 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 
 	//const tempOriginPwd = "hima19185!"; //기존 비밀번호
 
-	const [checkOriginPwd, setCheckOriginPwd] = useState("");
+	const [checkOriginPwd, setCheckOriginPwd] = useState(""); //현재 비밀번호
 	const [amendPwd, setAmendPwd] = useState(""); // 변경 비밀번호
 	const [spanText, setSpanText] = useState(""); // 변경 비밀번호 내부 경고 문구
 	const [reAmendPwd, setReAmendPwd] = useState(""); // 변경 비밀번호 확인용
 
-	// const isOriginValid = tempOriginPwd === checkOriginPwd;
 	// const isSamePwd = tempOriginPwd === amendPwd;
+	const [isOriginValid, setIsOriginValid] = useState(false);
 	const isRePwdValid = amendPwd === reAmendPwd;
 	console.log(`변경 뉴 비번 : ${amendPwd}`);
 	//console.log(isSamePwd);
@@ -102,6 +102,23 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 				},
 			);
 		},
+		onSuccess: () => {
+			setIsOriginValid(false);
+		},
+		onError: (error) => {
+			if (axios.isAxiosError(error) && error.response) {
+				//Axios 오류와 응답 객체가 있는 경우
+				if (error.response.status === 401) {
+					console.log("틀린 비밀번호 입력 ");
+					setIsOriginValid(true);
+				} else {
+					console.log("다른 에러 발생 ");
+				}
+			} else {
+				//Axios 에러가 아닌 경우
+				console.log("axios 이외", error);
+			}
+		},
 	});
 
 	const sendChangePwd = async () => {
@@ -128,17 +145,17 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 				<form className="my-10">
 					<div className={titleStyle}>
 						현재 비밀번호
-						{/* {checkOriginPwd ? (
+						{isOriginValid ? (
 							<span
 								className={`ml-2 font-normal text-ETC_COLOR text-[14px] ${
-									isOriginValid ? "text-ETC_COLOR" : "text-POINT_COLOR"
+									isOriginValid ? "text-POINT_COLOR" : "text-ETC_COLOR"
 								}`}
 							>
 								{isOriginValid
-									? "* 비밀번호를 맞게 입력했습니다. "
-									: "* 비밀번호가 일치하지 않습니다. "}
+									? "* 비밀번호를 잘못 입력하였습니다. "
+									: "* 비밀번호를 맞게 입력했습니다. "}
 							</span>
-						) : null} */}
+						) : null}
 					</div>
 					<input
 						className={inputStyle}
@@ -182,7 +199,6 @@ const PwdModal = ({ isClick }: ToggleTypes) => {
 					<button
 						className="blue_squareBtn w-[178px]"
 						onClick={sendChangePwd}
-						//disabled={!isOriginValid || !isRePwdValid || isSamePwd}
 						disabled={!isRePwdValid}
 					>
 						비밀번호 변경

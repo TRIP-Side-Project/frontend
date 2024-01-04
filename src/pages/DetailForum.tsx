@@ -18,7 +18,7 @@ import Bookmark from "@/components/Bookmark/Bookmark";
 
 const DetailForum = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
-	const MEMBER_ID = 8; //임시
+	const MEMBER_ID = window.localStorage.getItem("memberId"); //임시
 	const { articleId } = useParams();
 	const navigator = useNavigate();
 	const backButton = () => {
@@ -54,12 +54,10 @@ const DetailForum = () => {
 		queryKey: ["detailForum"],
 		queryFn: getForumData,
 	});
-	// console.log(data);
+	console.log(data);
 
 	const formattedDate = useFormatDate(formatDate);
 	const formattedTitle = useFormatTitle(formatTitle, 15);
-	// console.log(formattedDate);
-	// console.log(formattedTitle);
 
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
@@ -103,7 +101,7 @@ const DetailForum = () => {
 						</div>
 						<div className="flex flex-row items-center">
 							{/* <Heart width={"28px"} height={"28px"} /> */}
-							<Bookmark />
+							<Bookmark itemId={data.articleId} />
 							<span className="ml-2 text-base font-semibold text-BASIC_BLACK dark:text-BASIC_WHITE">
 								{data.likeCount}
 							</span>
@@ -132,7 +130,7 @@ const DetailForum = () => {
 					</div>
 
 					<div className="flex flex-row justify-end my-2 text-sm border-b-2 border-BASIC_BLACK dark:border-BASIC_WHITE">
-						{data.writerId === MEMBER_ID && (
+						{data.writerId === Number(MEMBER_ID) ? (
 							<>
 								<AmendBtn
 									onClick={() => {
@@ -141,7 +139,7 @@ const DetailForum = () => {
 								/>
 								<DeleteBtn itemId={data.articleId} type={"forum"} />
 							</>
-						)}
+						) : null}
 					</div>
 
 					<Comment />
