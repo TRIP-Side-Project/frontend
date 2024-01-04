@@ -13,14 +13,14 @@ import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import FindPw from "./pages/FindPw";
 import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
-import Notification from "./components/notification/Notification";
+// import Notification from "./components/notification/Notification";
 
 function App() {
 	return (
 		<div className="dark:bg-BASIC_BLACK bg-BASIC_WHITE">
 			<BrowserRouter>
 				<Header />
-				<Notification />
+<!-- 				<Notification /> -->
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
