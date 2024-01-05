@@ -125,7 +125,9 @@ const DetailForum = () => {
 							className="object-cover border-[1px] rounded-lg h-24 w-24 text-sm border-LIGHT_GRAY_COLOR"
 						/>
 						<div className="flex-1 ml-3 text-md text-BASIC_BLACK dark:text-BASIC_WHITE">
-							자기 소개 한 줄 작성 예정
+							{data.writerIntro !== null
+								? data.writerIntro
+								: "자기소개 작성 예정인 여행가님입니다"}
 						</div>
 					</div>
 
