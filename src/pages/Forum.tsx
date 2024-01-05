@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import Pagenation from "@/components/Pagination";
 import Button, { btnAttributes } from "@/common/button/Button";
-// import HotItem from "@/components/cardItems/HotItem";
+import HotItem from "@/components/cardItems/HotItem";
 import ForumItem, { ForumList } from "@/components/forumItems/ForumItem";
 import Search from "@/components/search/Search";
 import FindList from "@/assets/svg/FindList";
@@ -81,12 +81,8 @@ const Forum = () => {
 		<div className="flex flex-col w-full px-2 text-BASIC_BLACK dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 			{/* 상단 인기 여행 아이템 섹션 */}
 			<div className="my-5 text-3xl font-bold">여행 후기</div>
-			<div className="grid grid-cols-3 m-auto gap-x-36">
-				{/* {Array.from(Array(3), (_, index) => (
-					<Link to={"/forum/detail"}>
-						<HotItem key={`hot-item-${index}`} />
-					</Link>
-				))} */}
+			<div className="w-full">
+				<HotItem />
 			</div>
 
 			{/* 게시판 목록 및 검색 창 섹션 */}
