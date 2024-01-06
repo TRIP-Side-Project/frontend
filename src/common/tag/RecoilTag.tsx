@@ -7,11 +7,7 @@ interface RecoilTagTypes {
 	isTagOpen: boolean;
 	onOffTag: () => void;
 	inputStyle?: string;
-	editData?: {
-		title: string;
-		tags: string[];
-		content: string;
-	};
+	editData?: string[];
 }
 
 const RecoilTag = ({
@@ -27,7 +23,7 @@ const RecoilTag = ({
 	console.log(filteredList);
 	useEffect(() => {
 		if (editData) {
-			setFilteredList(editData.tags);
+			setFilteredList(editData);
 		}
 	}, [editData, setFilteredList]);
 

@@ -55,12 +55,14 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 		}
 		if (tagList && tagList.length > 0) {
 			// newFormData.append("tags", JSON.stringify(amendTags));
-			newFormData.append("tags", JSON.stringify(tagList));
+			newFormData.append("tags", tagList.join(","));
+		} else {
+			newFormData.append("tags", "");
 		}
 		if (sendImgFile) {
 			newFormData.append("profileImg", sendImgFile);
 		}
-		console.log(newFormData);
+
 		try {
 			await amendMyProfileMutation.mutateAsync(newFormData);
 		} catch (err) {
@@ -85,7 +87,11 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 		(introduce !== null && introduce.length <= 20) || introduce === null
 			? true
 			: false;
-	const isValidTags = data.tags.length <= 3;
+	const isValidTags = tagList.length <= 5;
+	const validBtnStyle =
+		isValidName && isValidIntro && isValidTags
+			? "blue_squareBtn"
+			: "py-2 px-5 my-3 mx-2 text-center bg-LIGHT_GRAY_COLOR text-BASIC_WHITE rounded-lg font-medium";
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-end justify-center w-screen min-h-full p-4 overflow-y-auto text-center transition-opacity bg-gray-500 bg-opacity-75 sm:items-center sm:p-0">
@@ -172,19 +178,26 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 						value={introduce === null ? "" : introduce}
 						onChange={(e) => setIntroduce(e.target.value)}
 					/>
-					<div className={titleStyle}>관심태그</div>
+					<div className={titleStyle}>
+						관심태그
+						{!isValidTags && (
+							<span className="ml-2 text-xs font-normal text-POINT_COLOR">
+								! 최대 5개까지만 설정 가능합니다.
+							</span>
+						)}
+					</div>
 					<RecoilTag
 						isTagOpen={isTagOpen}
 						onOffTag={onOffTag}
 						inputStyle={inputStyle}
+						editData={data.tags}
 					/>
 					{/* <input className={inputStyle} type="text" /> */}
 				</form>
 				<button
-					className="blue_squareBtn w-[178px]"
+					className={`${validBtnStyle} w-[178px] cursor-pointer`}
 					onClick={(event: React.MouseEvent) => {
 						event.preventDefault();
-						console.log("버튼 클릭");
 						amendMyProfile();
 					}}
 					disabled={!isValidName || !isValidIntro || !isValidTags}

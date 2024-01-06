@@ -45,13 +45,8 @@ const Mypage = () => {
 			});
 			return response.data;
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (err: any) {
-			if (err.response.status === 401) {
-				//토큰 만료
-				setIsModalOpen(true);
-			}
-
-			// throw new Error(`마이페이지 데이터 GET 파트 : ${err}`);
+		} catch (err) {
+			throw new Error(`마이페이지 데이터 GET 파트 : ${err}`);
 		}
 	};
 
