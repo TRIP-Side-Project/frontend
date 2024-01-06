@@ -53,7 +53,11 @@ const ProfileNav = ({ data }: MyDataProps) => {
 				<div className={titleStyle}>관심 태그 설정</div>
 				<div className="flex flex-row whitespace-normal text-LIGHT_GRAY_COLOR">
 					{data.tags && data.tags.length > 0 ? (
-						data.tags.map((tag, idx) => <div key={idx}># {tag}</div>)
+						data.tags.map((tag, idx) => (
+							<div key={idx} className="mr-1.5">
+								# {tag}
+							</div>
+						))
 					) : (
 						<div>관심 태그를 설정해주세요!</div>
 					)}
