@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useSetRecoilState } from "recoil";
 import { loginSelector } from "@/store/loginState";
+import { notifiSelector } from "@/store/notifiState";
 // import { useMutation } from "@tanstack/react-query";
 
 const Login = () => {
@@ -16,6 +17,7 @@ const Login = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 	const setIsLogin = useSetRecoilState(loginSelector);
+	const setIsNotifiOpen = useSetRecoilState(notifiSelector);
 
 	// 로그인 정보
 	interface LoginData {
@@ -65,7 +67,9 @@ const Login = () => {
 			if (memberId) localStorage.setItem("memberId", memberId);
 			if (profileImgUrl) localStorage.setItem("profileImg", profileImgUrl);
 			setIsLogin(true);
+			setIsNotifiOpen(true);
 			navigator("/");
+			// setIsNotifi(true);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		}
@@ -76,6 +80,7 @@ const Login = () => {
 	return (
 		<>
 			<div className="flex items-center justify-center w-full h-screen">
+				{/* {isNotifi && <SSENotification isNotifi={isNotifi} />} */}
 				<div className="w-[700px] h-[600px] border border-BASIC_BLACK text-center flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between w-1/2">
 						<h1 className="text-2xl font-bold mb-7">로그인</h1>

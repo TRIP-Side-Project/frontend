@@ -254,7 +254,7 @@ const EditForum = ({ editData, handleEditMode, isEdit }: ParentData) => {
 					<RecoilTag
 						isTagOpen={isTagOpen}
 						onOffTag={onOffTag}
-						editData={editData}
+						editData={editData?.tags}
 					/>
 				</div>
 

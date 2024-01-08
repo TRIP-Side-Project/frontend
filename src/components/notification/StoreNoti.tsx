@@ -1,14 +1,23 @@
 import FindList from "@/assets/svg/FindList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+// import { useState } from "react";
 import ErrState from "../Loading/ErrState";
 import Loading from "../Loading/Loading";
+
+interface NotificationTypes {
+	notificationId: number;
+	itemId: number;
+	itemTitle: string;
+	tags: string[];
+	read: boolean;
+	createdAt: string;
+}
 
 const StoreNoti = () => {
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
-	const [notiData] = useState<string[]>([]);
+	// const [notiData] = useState<string[]>([]);
 
 	const getStoreNoti = async () => {
 		try {
@@ -37,22 +46,30 @@ const StoreNoti = () => {
 			<div className="pl-3 text-lg font-semibold align-topborder-b-shadow text-BASIC_BLACK ">
 				알림
 			</div>
-			{notiData.length !== 0 ? (
+			{data && data.notifications.length !== 0 ? (
 				<ul className="px-3 pt-3 text-BASIC_BLACK">
-					{Array.from(Array(5), (_, idx) => (
-						<li
-							key={idx}
-							className="w-full px-1 py-1 font-medium border-b cursor-pointer border-LIGHT_GRAY_COLOR h-fit hover:text-MAIN_COLOR"
-						>
-							<div className="flex flex-row justify-between text-xs">
-								<span>#겨울여행 #경주</span>
-								<span>1일전</span>
-							</div>
-							<div className="flex-1 mt-1 text-left ">
-								여기 어때~ 여기가면 어때 ...
-							</div>
-						</li>
-					))}
+					{data &&
+						data.notifications.map((item: NotificationTypes, idx: number) => (
+							<li
+								key={idx}
+								className="w-full px-1 py-1 font-medium border-b cursor-pointer border-LIGHT_GRAY_COLOR h-fit hover:text-MAIN_COLOR"
+							>
+								<div className="flex flex-row justify-between text-xs">
+									<span>
+										{item.tags &&
+											item.tags.map((el: string, idx: number) => (
+												<span className="mr-1.5" key={idx}>
+													# {el}
+												</span>
+											))}
+									</span>
+									<span>{data && item.createdAt}</span>
+								</div>
+								<div className="flex-1 mt-1 text-left ">
+									{data && item.itemTitle.slice(0, 12)}...
+								</div>
+							</li>
+						))}
 				</ul>
 			) : (
 				<div className="flex flex-col items-center justify-center h-56 ">

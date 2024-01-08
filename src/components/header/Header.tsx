@@ -6,9 +6,11 @@ import Bell from "@/assets/svg/Bell";
 import StoreNoti from "../notification/StoreNoti";
 import { Link } from "react-router-dom";
 import Mmenu from "./Mmenu";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "@/store/loginState";
 import { rtAlarmState } from "@/store/rtAlarmState";
+import { notifiSelector } from "@/store/notifiState";
+// import SSENotification from "../notification/SSENotificationNotification";
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +19,7 @@ const Header = () => {
 	const onSubMenuClose = () => setIsOpen(false);
 	const [isLogin, setIsLogin] = useRecoilState(loginState);
 	const isAlarm = useRecoilValue(rtAlarmState);
-
+	const setIsNotifiOpen = useSetRecoilState(notifiSelector);
 	const navBtn =
 		"h-full hover:bg-BASIC_BLACK hover:text-BASIC_WHITE px-9 focus:bg-BASIC_BLACK focus:text-BASIC_WHITE dark:text-BASIC_WHITE dark:hover:bg-BASIC_WHITE dark:hover:text-BASIC_BLACK dark:focus:bg-BASIC_WHITE dark:focus:text-BASIC_BLACK";
 
@@ -53,6 +55,7 @@ const Header = () => {
 		// localStorage.removeItem("");
 		localStorage.clear();
 		setIsLogin({ loginState: false });
+		setIsNotifiOpen(false);
 		window.location.href = "/";
 	};
 
@@ -81,6 +84,7 @@ const Header = () => {
 								</div>
 							</button>
 							{isNotifi && <StoreNoti />}
+							{/* {isNotifi && <SSENotification isNotifi={isNotifi} />} */}
 							<button className="px-5 hover:text-BASIC_BLACK whitespace-nowrap">
 								<Link to={"/mypage"}>마이페이지</Link>{" "}
 							</button>
