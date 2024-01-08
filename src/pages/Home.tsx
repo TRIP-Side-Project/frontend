@@ -3,17 +3,12 @@ import RecommendProductItems from "@/components/recommendProductItems/RecommendP
 import jeju1 from "@/assets/img/jeju1.png";
 import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
-import SeoulImage from "@/assets/img/seoul.png";
-import GangreoungImage from "@/assets/img/gangreoung.png";
-import BusanImage from "@/assets/img/busan.png";
-import JejuImage from "@/assets/img/jeju2.png";
 import AllAreasImage from "@/assets/img/seeallareas.png";
-import NextOutline from "@/assets/svg/NextOutline";
-import RegionProductTheme from "@/components/regionProductTheme/RegionProductTheme";
 import { useEffect, useState } from "react";
 
 import HomeForum from "@/components/home/HomeForum";
 import ThemeTravel from "@/components/home/ThemeTravel";
+import RegionTravel from "@/components/home/RegionTravel";
 
 export default function Home() {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
@@ -91,42 +86,7 @@ export default function Home() {
 					<div className="flex flex-col justify-between w-full">
 						<h1 className={sectionTitle}>지역별 여행</h1>
 						<div className="h-[370px] w-full flex flex-col justify-between">
-							<div className="h-[250px] flex justify-center md:justify-between relative">
-								<div className="absolute left-0 z-10 transform rotate-180 -translate-y-1/2 cursor-pointer top-1/2">
-									<NextOutline fillColor="#666666" width="40px" height="40px" />
-								</div>
-								<div className="absolute right-0 z-10 transform -translate-y-1/2 cursor-pointer top-1/2">
-									<NextOutline fillColor="#666666" width="40px" height="40px" />
-								</div>
-								{innerWidth > 768 && (
-									<>
-										<RegionProductTheme
-											region={"서울 | 경기"}
-											regionImgUrl={SeoulImage}
-										/>
-										<RegionProductTheme
-											region={"강릉"}
-											regionImgUrl={GangreoungImage}
-										/>
-										<RegionProductTheme
-											region={"부산"}
-											regionImgUrl={BusanImage}
-										/>
-										<RegionProductTheme
-											region={"제주"}
-											regionImgUrl={JejuImage}
-										/>
-									</>
-								)}
-								{innerWidth <= 768 && (
-									<>
-										<RegionProductTheme
-											region={"서울 | 경기"}
-											regionImgUrl={SeoulImage}
-										/>
-									</>
-								)}
-							</div>
+							<RegionTravel />
 							<div className="relative cursor-pointer">
 								<div className="w-full h-[100px] bg-BASIC_BLACK md:rounded-md overflow-hidden">
 									<img

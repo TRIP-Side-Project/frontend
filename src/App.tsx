@@ -13,14 +13,18 @@ import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import FindPw from "./pages/FindPw";
 import OauthRedirect from "./components/OauthRedirect/OauthRedirect";
-// import Notification from "./components/notification/Notification";
+import SSENotification from "./components/notification/SSENotificationNotification";
+import { notifiState } from "./store/notifiState";
+import { useRecoilValue } from "recoil";
 
 function App() {
+	const isOpen = useRecoilValue(notifiState);
+	console.log(isOpen);
 	return (
 		<div className="dark:bg-BASIC_BLACK bg-BASIC_WHITE">
 			<BrowserRouter>
 				<Header />
-				{/* <Notification /> */}
+				<SSENotification isOpen={isOpen} />
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
