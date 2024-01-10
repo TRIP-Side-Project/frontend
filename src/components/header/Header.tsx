@@ -10,7 +10,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "@/store/loginState";
 import { rtAlarmState } from "@/store/rtAlarmState";
 import { notifiSelector } from "@/store/notifiState";
-// import SSENotification from "../notification/SSENotificationNotification";
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
