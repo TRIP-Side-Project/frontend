@@ -15,6 +15,7 @@ export default function Bookmark({ itemId }: ItemIdProps) {
 
 	const [isBookmarked, setIsBookMarked] = useRecoilState(bookmarksState);
 	// const bookmarkValue = useRecoilValue(bookmarkSelector);
+	// console.log(bookmarkValue);
 
 	const handleBookmark = () => {
 		setIsBookMarked([...isBookmarked, itemId]);

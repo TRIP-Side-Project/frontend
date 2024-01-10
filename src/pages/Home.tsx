@@ -17,6 +17,7 @@ import { ProductInfo } from "./ProductList";
 import { useNavigate } from "react-router-dom";
 import { menuSelector } from "@/store/menuState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import _ from "lodash";
 
 export default function Home() {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
@@ -29,13 +30,24 @@ export default function Home() {
 	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
 	// 전역에서 관리해야할듯
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-	useEffect(() => {
-		const resizeListener = () => {
-			setInnerWidth(window.innerWidth);
-		};
-		window.addEventListener("resize", resizeListener);
-	});
+	//Debounce 활용하여 리사이즈 헨들러 최적화
+	const resizeListener = _.debounce(() => {
+		setInnerWidth(window.innerWidth);
+		// console.log(
+		// 	`innerWidth updated: ${innerWidth} at ${new Date().toISOString()}`,
+		// );
+	}, 100);
+	//100ms 동안 디바운스 시간
 
+	useEffect(() => {
+		window.addEventListener("resize", resizeListener);
+
+		return () => {
+			resizeListener.cancel();
+			window.removeEventListener("resize", resizeListener);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	// console.log("innerWidth", innerWidth);
 
 	const recommendProduct = async () => {
