@@ -9,9 +9,16 @@ import { useEffect, useState } from "react";
 import HomeForum from "@/components/home/HomeForum";
 import ThemeTravel from "@/components/home/ThemeTravel";
 import RegionTravel from "@/components/home/RegionTravel";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useRecoilValue } from "recoil";
+import { homeForumTag } from "@/store/homeForumTagState";
+import { ProductInfo } from "./ProductList";
 
 export default function Home() {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const forumTags = useRecoilValue(homeForumTag);
 
 	// 동적 화면 사이즈 구하기
 	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
@@ -25,6 +32,32 @@ export default function Home() {
 	});
 
 	// console.log("innerWidth", innerWidth);
+
+	const recommendProduct = async () => {
+		try {
+			const res = await axios.get(`${BASE_URL}/api/items?sortCode=2`);
+			const num1 = Math.floor(Math.random() * 8);
+			let num2;
+			do {
+				num2 = Math.floor(Math.random() * 9);
+			} while (num1 === num2);
+			const recommendData = res.data.itemList;
+			const forums = recommendData.filter((el: ProductInfo) => {
+				if (el.title && el.title.includes(forumTags[0])) {
+					return el;
+				}
+			});
+			return [recommendData[num1], recommendData[num2], forums[0], forums[1]];
+		} catch (Err) {
+			throw new Error(`홈 추천 상품 파트 : ${Err}`);
+		}
+	};
+
+	const { data } = useQuery({
+		queryKey: ["recommendProduct"],
+		queryFn: recommendProduct,
+	});
+	// console.log(data);
 
 	return (
 		<>
@@ -72,14 +105,17 @@ export default function Home() {
 						<h1 className={sectionTitle}>추천 상품</h1>
 						{innerWidth > 768 && (
 							<div className="h-[230px] w-full flex justify-between">
-								{Array.from(Array(2), (_, index) => (
-									<RecommendProductItems key={index} />
-								))}
+								{data &&
+									data
+										.slice(0, 2)
+										.map((item, idx: number) => (
+											<RecommendProductItems key={idx} data={item} />
+										))}
 							</div>
 						)}
 						{innerWidth <= 768 && (
 							<div className="h-[230px] w-full flex justify-center">
-								<RecommendProductItems />
+								<RecommendProductItems data={data && data[0]} />
 							</div>
 						)}
 					</div>
@@ -116,7 +152,7 @@ export default function Home() {
 						<ThemeTravel />
 					</div>
 				</div>
-				<HomeForum />
+				<HomeForum recommendProduct={data && data} />
 			</div>
 		</>
 	);

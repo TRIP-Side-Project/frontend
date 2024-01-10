@@ -6,6 +6,9 @@ import axios from "axios";
 import ProductCardItems from "@/components/productCardItems/ProductCardItems";
 import ArrowRight from "@/assets/svg/ArrowRight";
 import ErrState from "../Loading/ErrState";
+import { homeForumTag } from "@/store/homeForumTagState";
+import { useRecoilState } from "recoil";
+import { ProductInfo } from "@/pages/ProductList";
 // import Loading from "../Loading/Loading";
 
 interface TextNode {
@@ -36,12 +39,18 @@ interface ForumItemTypes {
 	writerRole: string;
 }
 
-const HomeForum = () => {
+interface RecommendProductTypes {
+	recommendProduct: ProductInfo[] | undefined;
+}
+
+const HomeForum = ({ recommendProduct }: RecommendProductTypes) => {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
 	// const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const [hotForum, setHorForum] = useState<number | null>(null);
 	const [homeData, setHomeData] = useState<ForumItemTypes>();
 	const [content, setContent] = useState("");
+	const [, setRelatedTag] = useRecoilState(homeForumTag);
+	const forumRelatedDatas = [recommendProduct?.[2], recommendProduct?.[3]];
 
 	const getHotForumData = async () => {
 		try {
@@ -93,6 +102,7 @@ const HomeForum = () => {
 				try {
 					const res = await getHotDetailData(data.articleId);
 					setHomeData(res);
+					setRelatedTag(res.tags);
 					const json = JSON.parse(res.content);
 					const textNode = extractTextNode(json.root).join("");
 					setContent(textNode);
@@ -103,9 +113,7 @@ const HomeForum = () => {
 
 			forumData();
 		}
-	}, [content, data, hotForum]);
-
-	// console.log(homeData);
+	}, [content, data, hotForum, setRelatedTag]);
 
 	if (isError) return <ErrState err={error.message} />;
 	// if (isPending) return <Loading />;
@@ -136,12 +144,20 @@ const HomeForum = () => {
 				<div className="mt-10 md:ml-10 flex justify-center md:justify-between md:w-[500px] md:gap-2">
 					{innerWidth > 768 && (
 						<>
-							{Array.from(Array(2), (_, index) => (
-								<ProductCardItems key={index} />
-							))}
+							{forumRelatedDatas &&
+								forumRelatedDatas.map(
+									(item, idx) =>
+										item && (
+											<ProductCardItems key={idx} item={item as ProductInfo} />
+										),
+								)}
 						</>
 					)}
-					{innerWidth <= 768 && <ProductCardItems />}
+					{innerWidth <= 768 && forumRelatedDatas && forumRelatedDatas[2] && (
+						<ProductCardItems
+							item={forumRelatedDatas && (forumRelatedDatas[2] as ProductInfo)}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

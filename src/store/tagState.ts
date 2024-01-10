@@ -5,7 +5,7 @@ import { atom, selector } from "recoil";
 // 	default: string[];
 // }
 
-const tempTags = [
+export const tempTags = [
 	"전체",
 	"서울",
 	"강원",
