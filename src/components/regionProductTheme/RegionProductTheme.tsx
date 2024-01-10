@@ -1,15 +1,20 @@
 interface RegionProductInfo {
 	region: string;
 	regionImgUrl: string;
+	handleRegion: () => void;
 }
 
 const RegionProductTheme: React.FC<RegionProductInfo> = ({
 	region,
 	regionImgUrl,
+	handleRegion,
 }) => {
 	return (
 		<>
-			<div className="w-[300px] md:w-[22%] rounded-md relative overflow-hidden cursor-pointer transition-transform duration-500 ease-in-out transform">
+			<div
+				className="w-[300px] md:w-[22%] rounded-md relative overflow-hidden cursor-pointer transition-transform duration-500 ease-in-out transform"
+				onClick={handleRegion}
+			>
 				<div className="w-full h-full bg-BASIC_BLACK">
 					<img
 						src={regionImgUrl}

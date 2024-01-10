@@ -3,7 +3,7 @@ import RecommendProductItems from "@/components/recommendProductItems/RecommendP
 import jeju1 from "@/assets/img/jeju1.png";
 import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
-import AllAreasImage from "@/assets/img/seeallareas.png";
+import allTravelImg from "@/assets/img/travel4.png";
 import { useEffect, useState } from "react";
 
 import HomeForum from "@/components/home/HomeForum";
@@ -11,14 +11,19 @@ import ThemeTravel from "@/components/home/ThemeTravel";
 import RegionTravel from "@/components/home/RegionTravel";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
+
 import { homeForumTag } from "@/store/homeForumTagState";
 import { ProductInfo } from "./ProductList";
+import { useNavigate } from "react-router-dom";
+import { menuSelector } from "@/store/menuState";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function Home() {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const forumTags = useRecoilValue(homeForumTag);
+	const navigate = useNavigate();
+	const setCode = useSetRecoilState(menuSelector);
 
 	// 동적 화면 사이즈 구하기
 	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
@@ -123,10 +128,16 @@ export default function Home() {
 						<h1 className={sectionTitle}>지역별 여행</h1>
 						<div className="h-[370px] w-full flex flex-col justify-between">
 							<RegionTravel />
-							<div className="relative cursor-pointer">
+							<div
+								className="relative cursor-pointer"
+								onClick={() => {
+									navigate("/products");
+									setCode("");
+								}}
+							>
 								<div className="w-full h-[100px] bg-BASIC_BLACK md:rounded-md overflow-hidden">
 									<img
-										src={AllAreasImage}
+										src={allTravelImg}
 										alt="see all areas of korea"
 										className="w-full h-full opacity-70"
 									/>

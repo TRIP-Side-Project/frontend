@@ -4,6 +4,9 @@ import snowTheme from "@/assets/img/snowTheme.jpg";
 import beachTheme from "@/assets/img/beachTheme.jpg";
 import mountainTheme from "@/assets/img/mountainTheme.jpg";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { menuSelector } from "@/store/menuState";
+import { useNavigate } from "react-router-dom";
 
 const themeArr = [
 	{
@@ -29,6 +32,8 @@ const ThemeTravel = () => {
 	const themeTitleStyle =
 		"absolute text-xl md:text-2xl text-BASIC_WHITE bottom-2 right-2";
 	const [themeNum, setThemeNum] = useState(0);
+	const setRegion = useSetRecoilState(menuSelector);
+	const navigation = useNavigate();
 
 	const handlePrev = () => {
 		setThemeNum((prev) => {
@@ -46,6 +51,18 @@ const ThemeTravel = () => {
 		});
 	};
 
+	const handleRegion = (code: string) => {
+		if (code === "눈꽃여행") {
+			setRegion("눈꽃");
+		} else if (code === "바닷가여행") {
+			setRegion("바다");
+		} else {
+			setRegion("트레킹");
+		}
+
+		navigation("/products");
+	};
+
 	return (
 		<>
 			{innerWidth > 768 && (
@@ -55,6 +72,7 @@ const ThemeTravel = () => {
 							<div
 								key={idx}
 								className="group w-[30%] h-full  overflow-hidden rounded-md relative cursor-pointer"
+								onClick={() => handleRegion(el.title)}
 							>
 								<img
 									src={el.img}

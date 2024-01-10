@@ -14,6 +14,9 @@ import Namhae from "@/assets/img/Namhae.jpg";
 import NextOutline from "@/assets/svg/NextOutline";
 import RegionProductTheme from "@/components/regionProductTheme/RegionProductTheme";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { menuSelector } from "@/store/menuState";
+import { useNavigate } from "react-router-dom";
 
 const regionArr = [
 	"서울",
@@ -50,6 +53,8 @@ const imgArr = [
 const RegionTravel = () => {
 	const [num, setNum] = useState(0);
 	const itemPerPage = 4;
+	const setRegion = useSetRecoilState(menuSelector);
+	const navigation = useNavigate();
 	// console.log(num);
 	const handlePrev = () => {
 		setNum((prev) => {
@@ -75,9 +80,15 @@ const RegionTravel = () => {
 				key={idx}
 				region={regionArr[idx]}
 				regionImgUrl={imgArr[idx]}
+				handleRegion={() => handleRegion(regionArr[idx])}
 			/>,
 		);
 	}
+
+	const handleRegion = (code: string) => {
+		setRegion(code);
+		navigation("/products");
+	};
 
 	return (
 		<div className="h-[250px] flex justify-center md:justify-between relative">
@@ -119,6 +130,7 @@ const RegionTravel = () => {
 					key={num}
 					region={regionArr[num]}
 					regionImgUrl={imgArr[num]}
+					handleRegion={() => handleRegion(regionArr[num])}
 				/>
 			)}
 		</div>
