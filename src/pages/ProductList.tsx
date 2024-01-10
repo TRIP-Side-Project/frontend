@@ -29,7 +29,7 @@ const ProductList = () => {
 	const [sort, setSort] = useState("");
 	const [, setIsTitleSearch] = useState("title=");
 	const code = useRecoilValue(menuState);
-	console.log(code);
+
 	useEffect(() => {
 		const resizeListener = () => {
 			setInnerWidth(window.innerWidth);
