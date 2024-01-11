@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 
 const Close = ({ fillColor, width, height }: SVG) => {
 	const darkMode = useRecoilValue(darkState);
-	fillColor = darkMode.darkState === true ? "#ffffff" : "#222222";
+	fillColor = darkMode.darkState === true ? "#ffffff" : fillColor;
 
 	return (
 		<svg
