@@ -97,28 +97,28 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-end justify-center w-screen min-h-full p-4 overflow-y-auto text-center transition-opacity bg-gray-500 bg-opacity-75 sm:items-center sm:p-0">
-			<div className="relative px-10 py-5 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl w-[560px]">
+			<div className="relative h-[600px] sm:h-fit px-5 md:px-10 py-5 overflow-y-auto md:overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl md:w-[560px]">
 				<button className="float-right px-3 pb-2 mt-2" onClick={isClick}>
 					<Close fillColor={"#333333"} width={"18px"} height={"18px"} />
 				</button>
 				<form className="my-10">
 					<div className={titleStyle}> 프로필 이미지</div>
-					<div className="flex flex-row items-center justify-around w-full h-32 p-5 rounded-lg w bg-zinc-300">
+					<div className="flex w-full p-3 rounded-lg h-fit sm:h-32 flex-rowitems-center bg-zinc-300">
 						<img
 							src={myImg}
 							alt="마이 프로필 이미지"
-							className="h-24 mr-5 rounded-full shadow-lg"
+							className="h-[70px] mr-5 my-auto rounded-full shadow-lg md:h-24"
 						/>
-						<div>
-							<p className="ml-2 text-xs font-normal text-ETC_COLOR">
+						<div className="">
+							<p className="ml-2 text-[11px] md:text-xs font-normal text-ETC_COLOR">
 								! 10kb 미만의 사진을 업로드 해주세요!
 							</p>
-							<p className="ml-2 text-xs font-normal text-ETC_COLOR">
+							<p className="ml-2 text-[11px] md:text-xs font-normal text-ETC_COLOR ">
 								! 등록하시지 않을 경우 기본 이미지가 업로드 됩니다.
 							</p>
 							<input
 								type="file"
-								className="mt-3"
+								className="w-24 mt-3 md:w-64"
 								onChange={(e) => {
 									if (e.currentTarget.files?.[0]) {
 										const file = e.currentTarget.files[0];

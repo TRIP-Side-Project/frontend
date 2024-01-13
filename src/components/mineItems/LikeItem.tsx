@@ -34,11 +34,11 @@ const Likeitem = ({ data }: LikeMerchanProps) => {
 		>
 			<img
 				src={data.imageUrl}
-				className="rounded-lg w-[130px] h-[100px] mr-3"
+				className="rounded-lg w-[100px] sm:w-[130px] h-[100px] mr-3"
 			/>
 			<div className="flex flex-col flex-1 text-BASIC_BLACK">
-				<div className="flex flex-row justify-between">
-					<div className="text-lg font-semibold">
+				<div className="flex flex-row justify-between ">
+					<div className="text-sm font-semibold whitespace-normal sm:text-lg">
 						{data.title.slice(0, 28)}..
 					</div>
 					<button
