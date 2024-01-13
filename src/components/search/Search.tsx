@@ -9,16 +9,19 @@ type SearchTypes = {
 const Search = ({ setSearch, setIsTitleSearch }: SearchTypes) => {
 	//Enter 키 발동 시 검색 keyword 전달
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-		const target = event.target as HTMLInputElement;
 		if (event.key === "Enter") {
-			setSearch(target.value);
+			event.preventDefault();
+			const target = event.target as HTMLInputElement;
+			const value = target.value.includes("#")
+				? target.value.slice(1, target.value.length)
+				: target.value;
+			setSearch(value);
 		}
 	};
 
 	//태그 검색 , 타이틀 검색 구분
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const target = event.target.value;
-		setSearch(target);
 
 		if (target.includes("#")) {
 			setIsTitleSearch("tag=");
@@ -37,8 +40,12 @@ const Search = ({ setSearch, setIsTitleSearch }: SearchTypes) => {
 				id="searchInput"
 				className="w-full px-2 py-1 outline-none bg-BASIC_WHITE"
 				placeholder="게시글 검색"
-				onChange={handleInputChange}
-				onKeyDown={handleKeyDown}
+				onChange={(e) => {
+					handleInputChange(e);
+				}}
+				onKeyDown={(e) => {
+					handleKeyDown(e);
+				}}
 				autoComplete="off"
 			></input>
 		</div>

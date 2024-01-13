@@ -42,7 +42,7 @@ const HotItem = () => {
 		<div className="flex-row hidden grid-cols-3 sm:grid gap-x-20 ">
 			{data &&
 				data.map((item: ItemTypes, idx: number) => (
-					<Link to={`/products/detail/${item.id}`}>
+					<Link to={`/products/detail/${item.id}`} key={`HotItem - ${idx}`}>
 						<div
 							key={idx}
 							className="relative flex p-3 border rounded-lg bg-BASIC_WHITE dark:bg-LINE_POINT_COLOR sm:flex-col sm:w-38 md:w-72 border-LIGHT_GRAY_COLOR text-BASIC_BLACK dark:text-ITEM_BG_COLOR"
@@ -57,7 +57,7 @@ const HotItem = () => {
 							</div>
 							<div className="flex-1 text-sm font-bold">
 								<div className="relative inline-block my-3">
-									<p className="relative z-50 overflow-x-hidden">
+									<p className="relative overflow-x-hidden">
 										{item.title && item.title.slice(0, 20)}
 									</p>
 									<span className="absolute bottom-0 left-0 hidden w-full p-1 opacity-75 md:block bg-SPECIAL_COLOR dark:bg-MAIN_COLOR"></span>
