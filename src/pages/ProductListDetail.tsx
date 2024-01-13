@@ -111,7 +111,11 @@ export default function ProductListDetail() {
 							/>
 						</div>
 						<div className="absolute top-3 right-3">
-							{productItem.id ? <Bookmark itemId={productItem.id} /> : ""}
+							{productItem.id ? (
+								<Bookmark itemId={productItem.id} type={"item"} />
+							) : (
+								""
+							)}
 						</div>
 					</div>
 					<div className="flex flex-col justify-between w-full h-full gap-5 md:gap-0">

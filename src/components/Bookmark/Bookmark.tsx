@@ -7,11 +7,14 @@ import { useMutation } from "@tanstack/react-query";
 
 interface ItemIdProps {
 	itemId: number;
+	type: "forum" | "item";
 }
 
-export default function Bookmark({ itemId }: ItemIdProps) {
+export default function Bookmark({ itemId, type }: ItemIdProps) {
 	// const [isBookmarked, setIsBookMarked] = useState(false);
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
+	console.log(itemId);
 
 	const [isBookmarked, setIsBookMarked] = useRecoilState(bookmarksState);
 	// const bookmarkValue = useRecoilValue(bookmarkSelector);
@@ -31,6 +34,24 @@ export default function Bookmark({ itemId }: ItemIdProps) {
 				{
 					headers: {
 						"Content-Type": "application/json",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
+					},
+				},
+			);
+		},
+	});
+
+	const interestArticleMutation = useMutation({
+		mutationFn: () => {
+			return axios.post(
+				`${BASE_URL}/api/interest-articles`,
+				{
+					articleId: itemId,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						accessToken: `Bearer ${ACCESS_TOKEN}`,
 					},
 				},
 			);
@@ -39,6 +60,7 @@ export default function Bookmark({ itemId }: ItemIdProps) {
 
 	const addInterestItem = async () => {
 		try {
+			if (type === "forum") await interestArticleMutation.mutateAsync();
 			const response = await interestItemMutation.mutateAsync();
 			console.log(response);
 			handleBookmark();

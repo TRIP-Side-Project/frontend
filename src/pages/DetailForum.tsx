@@ -101,7 +101,7 @@ const DetailForum = () => {
 						</div>
 						<div className="flex flex-row items-center">
 							{/* <Heart width={"28px"} height={"28px"} /> */}
-							<Bookmark itemId={data.articleId} />
+							<Bookmark itemId={data.articleId} type={"forum"} />
 							<span className="ml-2 text-base font-semibold text-BASIC_BLACK dark:text-BASIC_WHITE">
 								{data.likeCount}
 							</span>
