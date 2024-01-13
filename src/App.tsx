@@ -19,7 +19,7 @@ import { useRecoilValue } from "recoil";
 
 function App() {
 	const isOpen = useRecoilValue(notifiState);
-	console.log(isOpen);
+
 	return (
 		<div className="dark:bg-BASIC_BLACK bg-BASIC_WHITE">
 			<BrowserRouter>

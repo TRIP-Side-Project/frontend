@@ -62,6 +62,10 @@ const Comment = () => {
 	});
 	//console.log(data); //comments: []
 
+	// useEffect (() => {
+
+	// }, [])
+
 	//중복 데이터 메모이제이션
 	const memoizedData = useMemo(() => data, [data]);
 	// console.log(memoizedData);

@@ -40,6 +40,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 					parentInfo={[datas.articleId, datas.parentId, datas.commentId]}
 					editData={datas.content}
 					isEditMode={true}
+					setIsEdit={setIsEdit}
 				/>
 			) : (
 				<div className={bgClass}>
@@ -107,6 +108,7 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 					{is2CHide && editCommitId === datas.commentId ? (
 						<EditComment
 							parentInfo={[datas.articleId, editCommitId, datas.commentId]}
+							setIsEdit={setIsEdit}
 						/>
 					) : (
 						<></>

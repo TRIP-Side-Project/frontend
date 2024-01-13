@@ -21,14 +21,14 @@ const Mmenu = ({ openNav, onSubMenuClose }: NavTypes) => {
 			<div className="pr-5">
 				<button onClick={() => setIsOpen(!isOpen)}>
 					{isOpen ? (
-						<Close width={"38px"} height={"38px"} />
+						<Close width={"38px"} height={"38px"} fillColor={"#222222"} />
 					) : (
 						<Hamburger width={"42px"} height={"42px"} />
 					)}
 				</button>
 			</div>
 			{isOpen && (
-				<div className="absolute left-0 z-10 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
+				<div className="absolute left-0 z-30 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 					<button
 						className="py-8 border-b font-xl border-LIGHT_GRAY_COLOR"
 						onClick={() => {

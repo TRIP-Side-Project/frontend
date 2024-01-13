@@ -5,8 +5,9 @@ import Temp2 from "@/assets/img/seeallareas.png";
 import Button, { btnAttributes } from "@/common/button/Button";
 import { loginState } from "@/store/loginState";
 import { useRecoilValue } from "recoil";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export interface ParentInfo {
+export interface ParentInfoTypes {
 	// articleId: number;
 	// parentId: number | null;
 	//  - null이면 오리진 , - number이면 대댓글
@@ -14,59 +15,135 @@ export interface ParentInfo {
 	parentInfo: [number, number | null, number | null];
 	editData?: string;
 	isEditMode?: boolean;
+	setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
+interface mutationNewTypes {
+	articleId: number;
+	parentId: number;
+	content: string;
+}
+
+interface mutationAmendTypes {
+	content: string;
+}
+
+const EditComment = ({
+	parentInfo,
+	editData,
+	isEditMode,
+	setIsEdit,
+}: ParentInfoTypes) => {
 	const [isComment, setIsComment] = useState(editData ? editData : "");
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const userImg = window.localStorage.getItem("profileImg");
+	const articleId = parentInfo[0];
+	const parentId = parentInfo[1];
+	const commentId = parentInfo[2];
 	const isStateLogin = useRecoilValue(loginState);
+	const queryClient = useQueryClient();
 	// const tempLogin = true; //임시 전역 로그인 상태
 
 	//새 댓글 등록하는 함수
-	const sendNewComment = async () => {
-		try {
-			axios.post(
-				`${BASE_URL}/api/comments`,
-				{
-					articleId: parentInfo[0],
-					parentId: parentInfo[1],
-					content: isComment,
+	// const sendNewComment = async () => {
+	// 	try {
+	// 		axios.post(
+	// 			`${BASE_URL}/api/comments`,
+	// 			{
+	// 				articleId: parentInfo[0],
+	// 				parentId: parentInfo[1],
+	// 				content: isComment,
+	// 			},
+	// 			{
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 					accessToken: `Bearer ${ACCESS_TOKEN}`,
+	// 				},
+	// 			},
+	// 		);
+	// 		queryClient.invalidateQueries({ queryKey: ["comments"] });
+	// 		console.log("새 댓글 등록 기능 작동!");
+	// 		console.log(`등록 : ${isComment}`);
+	// 		setIsComment("");
+	// 	} catch (err) {
+	// 		throw new Error(`Err ${err}`);
+	// 	}
+	// };
+
+	const sendNewComment = useMutation<void, Error, mutationNewTypes>({
+		mutationFn: async (newComment) => {
+			await axios.post(`${BASE_URL}/api/comments`, newComment, {
+				headers: {
+					"Content-Type": "application/json",
+					accessToken: `Bearer ${ACCESS_TOKEN}`,
 				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						accessToken: `Bearer ${ACCESS_TOKEN}`,
-					},
-				},
-			);
+			});
 			console.log("새 댓글 등록 기능 작동!");
 			console.log(`등록 : ${isComment}`);
 			setIsComment("");
-		} catch (err) {
-			throw new Error(`Err ${err}`);
-		}
-	};
+		},
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["comments"] }),
+	});
+
+	const amendComment = useMutation<void, Error, mutationAmendTypes>({
+		mutationFn: async (amendComment) => {
+			try {
+				await axios.patch(
+					`${BASE_URL}/api/comments/${commentId}`,
+					amendComment,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							accessToken: `Bearer ${ACCESS_TOKEN}`,
+						},
+					},
+				);
+				queryClient.invalidateQueries({ queryKey: ["comments"] });
+				console.log("댓글 수정하는 기능 작동!");
+				console.log(`수정 : ${isComment}`);
+			} catch (Err) {
+				throw new Error(`${Err}`);
+			}
+		},
+	});
 
 	//댓글 수정 전달하는 함수
-	const amendComment = async () => {
+	// const amendComment = async () => {
+	// 	try {
+	// 		axios.patch(
+	// 			`${BASE_URL}/api/comments/${parentInfo[2]}`,
+	// 			{ content: isComment },
+	// 			{
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 					accessToken: `Bearer ${ACCESS_TOKEN}`,
+	// 				},
+	// 			},
+	// 		);
+	// 		queryClient.invalidateQueries({ queryKey: ["comments"] });
+	// 		console.log("댓글 수정하는 기능 작동!");
+	// 		console.log(`수정 : ${isComment}`);
+	// 		//페이지 리랜덜이 확인 필요
+	// 	} catch (err) {
+	// 		throw new Error(`댓글 수정 버튼 에러 ${err}`);
+	// 	}
+	// };
+
+	const handleEditClick = async () => {
 		try {
-			axios.patch(
-				`${BASE_URL}/api/comments/${parentInfo[2]}`,
-				{ content: isComment },
-				{
-					headers: {
-						"Content-Type": "application/json",
-						accessToken: `Bearer ${ACCESS_TOKEN}`,
-					},
-				},
-			);
-			console.log("댓글 수정하는 기능 작동!");
-			console.log(`수정 : ${isComment}`);
-			//페이지 리랜덜이 확인 필요
+			if (isEditMode) {
+				await amendComment.mutateAsync({ content: isComment });
+				setIsEdit?.(false);
+			} else {
+				await sendNewComment.mutateAsync({
+					articleId: articleId,
+					parentId: parentId as number,
+					content: isComment as string,
+				});
+			}
 		} catch (err) {
-			throw new Error(`댓글 수정 버튼 에러 ${err}`);
+			throw new Error(`${err}`);
 		}
 	};
 
@@ -79,7 +156,8 @@ const EditComment = ({ parentInfo, editData, isEditMode }: ParentInfo) => {
 
 		isLogin: isStateLogin,
 		loginBtnType: true,
-		onClick: isEditMode ? amendComment : sendNewComment,
+		// onClick: isEditMode ? amendComment : sendNewComment,
+		onClick: handleEditClick,
 	};
 
 	return (
