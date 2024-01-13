@@ -1,6 +1,3 @@
-// import { useRef } from "react";
-import "flowbite";
-
 import slider1 from "@/assets/img/slider/slider1.png";
 import slider2 from "@/assets/img/slider/slider2.png";
 import slider3 from "@/assets/img/slider/slider3.png";
@@ -15,11 +12,7 @@ import slider11 from "@/assets/img/slider/slider11.png";
 import slider12 from "@/assets/img/slider/slider12.png";
 import slider13 from "@/assets/img/slider/slider13.png";
 import { useEffect, useState } from "react";
-
-// import type { CarouselItem, CarouselOptions, InstanceOptions } from "flowbite";
-
-const Slider = () => {
-	const [reload, setReload] = useState(true);
+const Slider2 = () => {
 	const imgArr = [
 		slider1,
 		slider2,
@@ -36,89 +29,61 @@ const Slider = () => {
 		slider13,
 	];
 
+	const [currentIndex, setCurrentIndex] = useState(0);
+
+	const prevImage = () => {
+		setCurrentIndex((prev) => (prev === 0 ? imgArr.length - 1 : prev - 1));
+	};
+
+	const nextImage = () => {
+		setCurrentIndex((prev) => (prev === imgArr.length - 1 ? 0 : prev + 1));
+	};
+
 	useEffect(() => {
-		console.log(reload);
-		if (reload) {
-			setReload(false);
-			console.log("페이지 리로드");
-		}
-	}, []);
-	// const carouselRef = useRef<HTMLDivElement | null>(null);
-	// const itemRef = useRef<(HTMLDivElement | null)[]>(
-	// 	new Array(imgArr.length).fill(null),
-	// );
+		// 이미지를 자동으로 변경하기 위한 타이머 설정
+		const intervalId = setInterval(() => {
+			// 다음 이미지로 넘기기
+			setCurrentIndex((prevIndex) =>
+				prevIndex === imgArr.length - 1 ? 0 : prevIndex + 1,
+			);
+		}, 3000); // 3초마다 이미지 변경
 
-	// useEffect(() => {
-	// 	const carouselElement = carouselRef.current;
-	// 	if (carouselElement) {
-	// 		console.log(carouselElement);
-
-	// 		const items: CarouselItem[] = itemRef.current
-	// 			.map((ref, idx) => ({
-	// 				position: idx,
-	// 				el: ref as HTMLElement,
-	// 			}))
-	// 			.filter((item): item is CarouselItem => item.el !== null);
-
-	// 		const options: CarouselOptions = {
-	// 			defaultPosition: 1,
-	// 			interval: 3000,
-	// 		};
-
-	// 		const instanceOptions: InstanceOptions = {
-	// 			id: "carousel-example",
-	// 			override: true,
-	// 		};
-
-	// 		const carousel = new Carousel(
-	// 			carouselElement,
-	// 			items,
-	// 			options,
-	// 			instanceOptions,
-	// 		);
-	// 		carousel.cycle();
-
-	// 		return () => {
-	// 			carousel.pause();
-	// 		};
-	// 	}
-	// }, []);
+		// 컴포넌트가 언마운트될 때 타이머 해제
+		return () => clearInterval(intervalId);
+	}, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행
 
 	return (
-		<div
-			// ref={carouselRef}
-			id="default-carousel"
-			className="relative w-full"
-			data-carousel="slide"
-		>
-			<div className="relative h-80 overflow-hidden rounded-lg md:h-[420px]">
+		<div className="relative w-full ">
+			<div className="relative h-80 overflow-hidden rounded-lg md:h-[420px] ">
 				{imgArr.map((img, idx) => (
-					<div
-						// ref={(el) => (itemRef.current[idx + 1] = el)}
-						className="hidden duration-700 ease-in-out"
-						data-carousel-item
-						key={idx}
-					>
+					<div className="" key={idx}>
 						{/* 첫 번째 이미지에 대한 배경 처리 */}
 						<img
 							src={img}
 							alt={`Image ${idx}`}
-							className="absolute top-0 left-0 w-full h-full opacity-70"
+							className="absolute top-0 left-0 w-full h-full "
+							style={{
+								transition: "opacity 0.7s ease-in-out",
+								opacity: idx === currentIndex ? 0.6 : 0, // 현재 이미지면 투명도 1, 아니면 0
+							}}
 						/>
 						{/* 주 이미지 처리 */}
 						<img
 							src={img}
 							alt={`Image ${idx}`}
 							className="absolute w-4/5 transform -translate-x-1/2 -translate-y-1/2 h-3/4 top-1/2 left-1/2"
+							style={{
+								transition: "opacity 0.7s ease-in-out",
+								opacity: idx === currentIndex ? 1 : 0, // 현재 이미지면 투명도 1, 아니면 0
+							}}
 						/>
 					</div>
 				))}
 			</div>
-
 			<button
 				type="button"
 				className="absolute top-0 z-30 items-center justify-center hidden h-full px-4 cursor-pointer md:flex start-0 group focus:outline-none"
-				data-carousel-prev
+				onClick={prevImage}
 			>
 				<span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
 					<svg
@@ -142,7 +107,7 @@ const Slider = () => {
 			<button
 				type="button"
 				className="absolute top-0 z-30 items-center justify-center hidden h-full px-4 cursor-pointer md:flex end-0 group focus:outline-none"
-				data-carousel-next
+				onClick={nextImage}
 			>
 				<span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
 					<svg
@@ -167,4 +132,4 @@ const Slider = () => {
 	);
 };
 
-export default Slider;
+export default Slider2;

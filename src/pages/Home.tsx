@@ -18,7 +18,7 @@ import { menuSelector } from "@/store/menuState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tempTags } from "@/store/tagState";
 import _ from "lodash";
-import Slider from "@/components/homeSlider/Slider";
+import Slider from "@/components/homeSlider/Slider2";
 
 export default function Home() {
 	const sectionTitle =
@@ -47,7 +47,6 @@ export default function Home() {
 
 	useEffect(() => {
 		window.addEventListener("resize", resizeListener);
-
 		return () => {
 			resizeListener.cancel();
 			window.removeEventListener("resize", resizeListener);
@@ -92,7 +91,7 @@ export default function Home() {
 			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 				<Slider />
 				<div className="absolute w-full">
-					<div className="absolute origin-top-right md:left-[480px] z-30 flex flex-col justify-center md:h-[420px] gap-4 px-10 bg-[rgba(0,0,0,0.4)] md:w-1/3 w-full h-80">
+					<div className="absolute origin-top-right md:left-[480px] z-20 flex flex-col justify-center md:h-[420px] gap-4 px-10 bg-[rgba(0,0,0,0.4)] md:w-1/3 w-full h-80">
 						<h1 className="my-5 text-2xl text-BASIC_WHITE">출발지</h1>
 						<div className="relative flex flex-row border-b text-BASIC_WHITE ">
 							<span className="inline-block">

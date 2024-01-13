@@ -28,7 +28,7 @@ const Mmenu = ({ openNav, onSubMenuClose }: NavTypes) => {
 				</button>
 			</div>
 			{isOpen && (
-				<div className="absolute left-0 z-30 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
+				<div className="absolute left-0 z-50 flex flex-col w-screen shadow-md bg-BASIC_WHITE top-32 dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
 					<button
 						className="py-8 border-b font-xl border-LIGHT_GRAY_COLOR"
 						onClick={() => {
