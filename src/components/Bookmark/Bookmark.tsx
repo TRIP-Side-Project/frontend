@@ -14,7 +14,7 @@ export default function Bookmark({ itemId, type }: ItemIdProps) {
 	// const [isBookmarked, setIsBookMarked] = useState(false);
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
-	console.log(itemId);
+	// console.log(itemId);
 
 	const [isBookmarked, setIsBookMarked] = useRecoilState(bookmarksState);
 	// const bookmarkValue = useRecoilValue(bookmarkSelector);

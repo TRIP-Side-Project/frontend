@@ -27,7 +27,6 @@ const Forum = () => {
 	const navigateNewForum = () => {
 		navigate("/forum/edit");
 	};
-
 	const btnInfo: btnAttributes = {
 		width: "172px",
 		position: "right",

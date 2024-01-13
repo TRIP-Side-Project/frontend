@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -27,7 +28,7 @@ const ProductList = () => {
 	const [isSort, setIsSort] = useState(false);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [sort, setSort] = useState("");
-	const [, setIsTitleSearch] = useState("title=");
+	const [isTitleSearch, setIsTitleSearch] = useState("title=");
 	const code = useRecoilValue(menuState);
 
 	useEffect(() => {
@@ -54,9 +55,13 @@ const ProductList = () => {
 	const getProduct = async () => {
 		try {
 			const response = await axios.get(
-				`${BASE_URL}/api/items?page=${currentPage}&size=5${
-					"&title=" + code
-				}&sortCode=${isSort ? 2 : 4}`,
+				search
+					? `${BASE_URL}/api/items?page=${currentPage}&size=5&${isTitleSearch}${search}&sortCode=${
+							isSort ? 2 : 4
+					  }`
+					: `${BASE_URL}/api/items?page=${currentPage}&size=5&${isTitleSearch}${code}&sortCode=${
+							isSort ? 2 : 4
+					  }`,
 			);
 			setProductItem(response.data.itemList);
 			return response.data;
