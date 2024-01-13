@@ -44,7 +44,8 @@ interface RecommendProductTypes {
 }
 
 const HomeForum = ({ recommendProduct }: RecommendProductTypes) => {
-	const sectionTitle = "text-3xl text-center mb-14 font-bold";
+	const sectionTitle =
+		"text-3xl text-center mb-14 font-bold dark:text-BASIC_WHITE";
 	// const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const [hotForum, setHorForum] = useState<number | null>(null);
 	const [homeData, setHomeData] = useState<ForumItemTypes>();
@@ -54,7 +55,7 @@ const HomeForum = ({ recommendProduct }: RecommendProductTypes) => {
 
 	const getHotForumData = async () => {
 		try {
-			console.log("1번 목록 조회 ");
+			// console.log("1번 목록 조회 ");
 			const response = await axios.get(
 				`https://server.triptrip.site/api/articles?sortCode=2`,
 			);
@@ -77,7 +78,7 @@ const HomeForum = ({ recommendProduct }: RecommendProductTypes) => {
 			const response = await axios.get(
 				`https://server.triptrip.site/api/articles/${articleId}`,
 			);
-			console.log("2번 상세 조회");
+			// console.log("2번 상세 조회");
 			return response.data;
 		} catch (Err) {
 			throw new Error(`홈 - 여행 상세 데이터 에러 ${Err}`);

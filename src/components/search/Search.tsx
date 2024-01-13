@@ -38,7 +38,7 @@ const Search = ({ setSearch, setIsTitleSearch }: SearchTypes) => {
 			<input
 				type="text"
 				id="searchInput"
-				className="w-full px-2 py-1 outline-none bg-BASIC_WHITE"
+				className="w-full px-2 py-1 border-0 outline-none bg-BASIC_WHITE"
 				placeholder="게시글 검색"
 				onChange={(e) => {
 					handleInputChange(e);

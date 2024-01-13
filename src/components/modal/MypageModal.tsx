@@ -5,7 +5,7 @@ import { tagState } from "@/store/tagState";
 // import Upload from "@/assets/svg/Upload";
 import { MyPageTypes } from "@/types/myProfile";
 import { ToggleTypes } from "@/types/toggle";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -25,6 +25,7 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 	const [sendImgFile, setSendImgFile] = useState<File | null>(null);
 	const [isTagOpen, setIsTagOpen] = useState<boolean>(false);
 	const tagList = useRecoilValue(tagState);
+	const queryClient = useQueryClient();
 
 	//스타일 설정
 	const inputStyle =
@@ -46,6 +47,7 @@ const MyPageModal = ({ isClick, data, setIsOpen }: TempProps) => {
 				throw new Error(`프로필 수정 파트 : ${err}`);
 			}
 		},
+		onSettled: () => queryClient.invalidateQueries({ queryKey: ["mayPage"] }),
 	});
 	const newFormData = new FormData();
 	const amendMyProfile = async () => {

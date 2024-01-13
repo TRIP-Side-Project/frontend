@@ -1,6 +1,5 @@
 import RecommendProductItems from "@/components/recommendProductItems/RecommendProductItems";
 
-import jeju1 from "@/assets/img/jeju1.png";
 import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
 import allTravelImg from "@/assets/img/travel4.png";
@@ -19,9 +18,11 @@ import { menuSelector } from "@/store/menuState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tempTags } from "@/store/tagState";
 import _ from "lodash";
+import Slider from "@/components/homeSlider/Slider";
 
 export default function Home() {
-	const sectionTitle = "text-3xl text-center mb-14 font-bold";
+	const sectionTitle =
+		"text-3xl text-center mb-14 font-bold dark:text-BASIC_WHITE";
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const forumTags = useRecoilValue(homeForumTag);
 	const navigate = useNavigate();
@@ -89,74 +90,58 @@ export default function Home() {
 	return (
 		<>
 			<div className="flex flex-col w-full gap-20 bg-BASIC_WHITE dark:bg-BASIC_BLACK dark:text-BASIC_WHITE">
-				<div className="w-full h-[750px] relative">
-					<div>
-						<img
-							src={jeju1}
-							alt="jeju image"
-							className="absolute top-0 left-0 w-full h-full opacity-70"
-						/>
-					</div>
-					<img
-						src={jeju1}
-						alt="jejuImage"
-						className="absolute w-4/5 transform -translate-x-1/2 -translate-y-1/2 h-3/4 top-1/2 left-1/2"
-					/>
-					<div>
-						<div className="px-10 bg-[rgba(0,0,0,0.4)] w-full md:w-1/3 h-full z-1 absolute top-0 right-0 flex flex-col justify-center gap-4">
-							<h1 className="my-5 text-2xl text-BASIC_WHITE">출발지</h1>
-							<div className="relative flex flex-row border-b text-BASIC_WHITE ">
-								<span className="inline-block">
-									<DestinationSvg
-										fillColor="white"
-										width="20px"
-										height="24px"
-									/>
-								</span>
-								<button
-									type="button"
-									className="w-full pb-1 pl-3 text-left bg-transparent text-BASIC_WHITE"
-									onClick={() => setIsBtnOpen(!isBtnOpen)}
+				<Slider />
+				<div className="absolute w-full">
+					<div className="absolute origin-top-right md:left-[480px] z-30 flex flex-col justify-center md:h-[420px] gap-4 px-10 bg-[rgba(0,0,0,0.4)] md:w-1/3 w-full h-80">
+						<h1 className="my-5 text-2xl text-BASIC_WHITE">출발지</h1>
+						<div className="relative flex flex-row border-b text-BASIC_WHITE ">
+							<span className="inline-block">
+								<DestinationSvg fillColor="white" width="20px" height="24px" />
+							</span>
+							<button
+								type="button"
+								className="w-full pb-1 pl-3 text-left bg-transparent text-BASIC_WHITE"
+								onClick={() => setIsBtnOpen(!isBtnOpen)}
+							>
+								{homeSearch}
+							</button>
+							{isBtnOpen && (
+								<div
+									className="absolute z-10 w-56 mt-2 origin-top-right rounded-md shadow-lg opacity-75 top-6 right-30 bg-zinc-800 ring-1 ring-black ring-opacity-5 focus:outline-none"
+									role="menu"
+									aria-orientation="vertical"
+									aria-labelledby="menu-button"
 								>
-									{homeSearch}
-								</button>
-								{isBtnOpen && (
-									<div
-										className="absolute z-10 w-56 mt-2 origin-top-right rounded-md shadow-lg opacity-75 top-6 right-30 bg-zinc-800 ring-1 ring-black ring-opacity-5 focus:outline-none"
-										role="menu"
-										aria-orientation="vertical"
-										aria-labelledby="menu-button"
-									>
-										<div className="py-1" role="none">
-											{tagLists.slice(1, 14).map((tag, idx) => (
-												<a
-													key={idx}
-													className="block px-4 text-sm cursor-pointer text-BASIC_WHITE hover:bg-LINE_POINT_COLOR"
-													role="menuitem"
-													tabIndex={-1}
-													onClick={() => handleHomeSearch(tag)}
-												>
-													{tag}
-												</a>
-											))}
-										</div>
+									<div className="py-1" role="none">
+										{tagLists.slice(1, 14).map((tag, idx) => (
+											<a
+												key={idx}
+												className="block px-4 text-sm cursor-pointer text-BASIC_WHITE hover:bg-LINE_POINT_COLOR"
+												role="menuitem"
+												tabIndex={-1}
+												onClick={() => handleHomeSearch(tag)}
+											>
+												{tag}
+											</a>
+										))}
 									</div>
-								)}
-							</div>
+								</div>
+							)}
+						</div>
 
-							<div className="text-center">
-								<button
-									className="w-1/2 h-10 mt-4 rounded-md bg-BASIC_WHITE dark:text-BASIC_BLACK"
-									onClick={() => {
-										setRegion(homeSearch);
-										navigate(`/products`);
-									}}
-								>
-									검색하기
-								</button>
-							</div>
+						<div className="text-center">
+							<button
+								className="w-1/2 h-10 mt-4 rounded-md bg-BASIC_WHITE dark:text-BASIC_BLACK"
+								onClick={() => {
+									setRegion(homeSearch);
+									navigate(`/products`);
+								}}
+							>
+								검색하기
+							</button>
 						</div>
 					</div>
+					{/* </div> */}
 				</div>
 				<div className="flex flex-col px-10 gap-28">
 					<div className="flex flex-col justify-between w-full">

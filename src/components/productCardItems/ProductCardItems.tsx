@@ -7,7 +7,7 @@ interface ProductCardItmesTypes {
 
 export default function ProductCardItems({ item }: ProductCardItmesTypes) {
 	const navigation = useNavigate();
-	console.log(item);
+	//console.log(item);
 	const handleLink = (id: number | null) => {
 		navigation(`/products/detail/${id}`);
 		console.log("클릭", id);
