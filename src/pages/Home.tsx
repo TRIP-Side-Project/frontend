@@ -3,28 +3,78 @@ import RecommendProductItems from "@/components/recommendProductItems/RecommendP
 import jeju1 from "@/assets/img/jeju1.png";
 import DestinationSvg from "@/assets/svg/Destination";
 import ArrowRight from "@/assets/svg/ArrowRight";
-import AllAreasImage from "@/assets/img/seeallareas.png";
+import allTravelImg from "@/assets/img/travel4.png";
 import { useEffect, useState } from "react";
 
 import HomeForum from "@/components/home/HomeForum";
 import ThemeTravel from "@/components/home/ThemeTravel";
 import RegionTravel from "@/components/home/RegionTravel";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
+import { homeForumTag } from "@/store/homeForumTagState";
+import { ProductInfo } from "./ProductList";
+import { useNavigate } from "react-router-dom";
+import { menuSelector } from "@/store/menuState";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import _ from "lodash";
 
 export default function Home() {
 	const sectionTitle = "text-3xl text-center mb-14 font-bold";
+	const BASE_URL = import.meta.env.VITE_BASE_URL;
+	const forumTags = useRecoilValue(homeForumTag);
+	const navigate = useNavigate();
+	const setCode = useSetRecoilState(menuSelector);
 
 	// 동적 화면 사이즈 구하기
 	// 근데 바뀔 때마다 함수가 돌아가서 성능면에서 개선이 필요해 보임.
 	// 전역에서 관리해야할듯
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-	useEffect(() => {
-		const resizeListener = () => {
-			setInnerWidth(window.innerWidth);
-		};
-		window.addEventListener("resize", resizeListener);
-	});
+	//Debounce 활용하여 리사이즈 헨들러 최적화
+	const resizeListener = _.debounce(() => {
+		setInnerWidth(window.innerWidth);
+		// console.log(
+		// 	`innerWidth updated: ${innerWidth} at ${new Date().toISOString()}`,
+		// );
+	}, 100);
+	//100ms 동안 디바운스 시간
 
+	useEffect(() => {
+		window.addEventListener("resize", resizeListener);
+
+		return () => {
+			resizeListener.cancel();
+			window.removeEventListener("resize", resizeListener);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	// console.log("innerWidth", innerWidth);
+
+	const recommendProduct = async () => {
+		try {
+			const res = await axios.get(`${BASE_URL}/api/items?sortCode=2`);
+			const num1 = Math.floor(Math.random() * 8);
+			let num2;
+			do {
+				num2 = Math.floor(Math.random() * 9);
+			} while (num1 === num2);
+			const recommendData = res.data.itemList;
+			const forums = recommendData.filter((el: ProductInfo) => {
+				if (el.title && el.title.includes(forumTags[0])) {
+					return el;
+				}
+			});
+			return [recommendData[num1], recommendData[num2], forums[0], forums[1]];
+		} catch (Err) {
+			throw new Error(`홈 추천 상품 파트 : ${Err}`);
+		}
+	};
+
+	const { data } = useQuery({
+		queryKey: ["recommendProduct"],
+		queryFn: recommendProduct,
+	});
+	// console.log(data);
 
 	return (
 		<>
@@ -72,14 +122,17 @@ export default function Home() {
 						<h1 className={sectionTitle}>추천 상품</h1>
 						{innerWidth > 768 && (
 							<div className="h-[230px] w-full flex justify-between">
-								{Array.from(Array(2), (_, index) => (
-									<RecommendProductItems key={index} />
-								))}
+								{data &&
+									data
+										.slice(0, 2)
+										.map((item, idx: number) => (
+											<RecommendProductItems key={idx} data={item} />
+										))}
 							</div>
 						)}
 						{innerWidth <= 768 && (
 							<div className="h-[230px] w-full flex justify-center">
-								<RecommendProductItems />
+								<RecommendProductItems data={data && data[0]} />
 							</div>
 						)}
 					</div>
@@ -87,10 +140,16 @@ export default function Home() {
 						<h1 className={sectionTitle}>지역별 여행</h1>
 						<div className="h-[370px] w-full flex flex-col justify-between">
 							<RegionTravel />
-							<div className="relative cursor-pointer">
+							<div
+								className="relative cursor-pointer"
+								onClick={() => {
+									navigate("/products");
+									setCode("");
+								}}
+							>
 								<div className="w-full h-[100px] bg-BASIC_BLACK md:rounded-md overflow-hidden">
 									<img
-										src={AllAreasImage}
+										src={allTravelImg}
 										alt="see all areas of korea"
 										className="w-full h-full opacity-70"
 									/>
@@ -116,7 +175,7 @@ export default function Home() {
 						<ThemeTravel />
 					</div>
 				</div>
-				<HomeForum />
+				<HomeForum recommendProduct={data && data} />
 			</div>
 		</>
 	);

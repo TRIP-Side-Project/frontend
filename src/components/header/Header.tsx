@@ -10,7 +10,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "@/store/loginState";
 import { rtAlarmState } from "@/store/rtAlarmState";
 import { notifiSelector } from "@/store/notifiState";
-// import SSENotification from "../notification/SSENotificationNotification";
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +82,7 @@ const Header = () => {
 									) : null}
 								</div>
 							</button>
-							{isNotifi && <StoreNoti />}
+							{isNotifi && <StoreNoti setIsNotifi={setIsNotifi} />}
 							{/* {isNotifi && <SSENotification isNotifi={isNotifi} />} */}
 							<button className="px-5 hover:text-BASIC_BLACK whitespace-nowrap">
 								<Link to={"/mypage"}>마이페이지</Link>{" "}

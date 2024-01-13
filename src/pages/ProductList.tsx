@@ -7,6 +7,8 @@ import ProductListItems from "@/components/productListItems/ProductListItems";
 import Pagination from "@/components/Pagination";
 import Loading from "@/components/Loading/Loading";
 import ErrState from "@/components/Loading/ErrState";
+import { useRecoilValue } from "recoil";
+import { menuState } from "@/store/menuState";
 
 export interface ProductInfo {
 	id: number | null;
@@ -26,6 +28,7 @@ const ProductList = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [sort, setSort] = useState("");
 	const [, setIsTitleSearch] = useState("title=");
+	const code = useRecoilValue(menuState);
 
 	useEffect(() => {
 		const resizeListener = () => {
@@ -51,7 +54,9 @@ const ProductList = () => {
 	const getProduct = async () => {
 		try {
 			const response = await axios.get(
-				`${BASE_URL}/api/items?page=${currentPage}&size=5`,
+				`${BASE_URL}/api/items?page=${currentPage}&size=5${
+					"&title=" + code
+				}&sortCode=${isSort ? 2 : 4}`,
 			);
 			setProductItem(response.data.itemList);
 			return response.data;
@@ -61,10 +66,24 @@ const ProductList = () => {
 	};
 
 	const { isPending, isError, data, error } = useQuery({
-		queryKey: ["productLists", currentPage, search, sort],
+		queryKey: ["productLists", currentPage, search, sort, code, isSort],
 		queryFn: getProduct,
 	});
+	// console.log(data.itemList);
 
+	const pageTitle = (code: string) => {
+		if (code === "") {
+			return "전체";
+		} else if (code === "눈꽃") {
+			return "눈꽃여행";
+		} else if (code === "바다") {
+			return "바닷가여행";
+		} else if (code === "트레킹") {
+			return "산길여행";
+		} else {
+			return code;
+		}
+	};
 	if (isPending) return <Loading />;
 	if (isError) return <ErrState err={error.message} />;
 
@@ -72,7 +91,7 @@ const ProductList = () => {
 		<div className="w-full px-10 md:px-28 bg-BASIC_WHITE dark:bg-BASIC_BLACK">
 			<div className="md:flex md:justify-between md:items-end my-14 md:py-20">
 				<h1 className="text-2xl font-bold my-7 md:my-0 md:text-4xl dark:text-BASIC_WHITE">
-					눈꽃여행
+					{pageTitle(code)}
 				</h1>
 				{innerWidth > 768 && (
 					<>
