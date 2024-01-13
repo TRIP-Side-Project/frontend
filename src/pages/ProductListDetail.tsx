@@ -21,7 +21,8 @@ export default function ProductListDetail() {
 	};
 	const tagList = [...tempTags];
 	const [category, setCategory] = useState<string[]>([]);
-
+	const { id } = useParams();
+	console.log(id);
 	// 뒤로가기 버튼
 	const navigate = useNavigate();
 	const backButton = () => {
@@ -88,7 +89,7 @@ export default function ProductListDetail() {
 		getProduct();
 		window.scrollTo(0, 0);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [id]);
 
 	return (
 		<>

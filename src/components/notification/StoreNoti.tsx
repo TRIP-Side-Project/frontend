@@ -1,5 +1,5 @@
 import FindList from "@/assets/svg/FindList";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 // import { useState } from "react";
 import ErrState from "../Loading/ErrState";
@@ -23,7 +23,8 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 	const ACCESS_TOKEN = window.localStorage.getItem("access_token");
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
 	const readStyle = "text-LIGHT_GRAY_COLOR";
-	const notification = useNavigate();
+	const navigation = useNavigate();
+	const queryClient = useQueryClient();
 
 	//날짜 포맷팅
 	const formatDate = (date: string) => {
@@ -77,6 +78,7 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 	const handleDeleteAllClick = async () => {
 		try {
 			await deleteAllNoti.mutateAsync();
+			queryClient.invalidateQueries({ queryKey: ["storedNoti"] });
 		} catch (err) {
 			throw new Error(`알림 전체 삭제 ${err}`);
 		}
@@ -99,6 +101,7 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 	const handleEachDeleteClick = async (id: number) => {
 		try {
 			await deleteEachNoti.mutateAsync(id);
+			queryClient.invalidateQueries({ queryKey: ["storedNoti"] });
 		} catch (err) {
 			throw new Error(`알림 개별 삭제 ${err}`);
 		}
@@ -124,6 +127,8 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 	const handleReadNotiClick = async (id: number) => {
 		try {
 			await readNoti.mutateAsync(id);
+			navigation(`/products/detail/${id}`);
+			setIsNotifi(false);
 		} catch (Err) {
 			throw new Error(`읽음 알림 ${Err}`);
 		}
@@ -157,18 +162,10 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 									} flex flex-row items-center w-full px-1 py-1 font-medium border-b cursor-pointer border-LIGHT_GRAY_COLOR h-fit `}
 									onClick={(e) => {
 										e.preventDefault();
-
-										handleReadNotiClick(item.notificationId);
+										handleReadNotiClick(item.itemId);
 									}}
 								>
-									<div
-										className="flex flex-col flex-1 hover:text-MAIN_COLOR"
-										onClick={(e) => {
-											e.preventDefault();
-											notification(`/products/detail/${item.itemId}`);
-											setIsNotifi(false);
-										}}
-									>
+									<div className="flex flex-col flex-1 hover:text-MAIN_COLOR">
 										<div className="flex flex-row justify-between text-xs">
 											<span>
 												{item.tags &&
@@ -189,7 +186,8 @@ const StoreNoti = ({ setIsNotifi }: NotiTypes) => {
 										className="h-8 p-2 ml-2 rounded-lg hover:bg-slate-200"
 										onClick={(e) => {
 											e.preventDefault();
-											handleEachDeleteClick(data && item.notificationId);
+											handleEachDeleteClick(data && item.itemId);
+											console.log(item.itemId);
 										}}
 									>
 										<Close
