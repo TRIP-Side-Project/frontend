@@ -114,7 +114,7 @@ const Mine = () => {
 	if (isError) return <ErrState err={error.message} />;
 
 	return (
-		<div className="w-full p-2 text-lg font-semibold border sm:text-2xl h-fit border-BASIC_BLACK dark:border-BASIC_WHITE">
+		<div className="w-full p-2 overflow-scroll text-lg font-semibold border min-h-96 sm:text-2xl h-fit border-BASIC_BLACK dark:border-BASIC_WHITE">
 			{data.length === 0 ? (
 				<div className="flex flex-col items-center px-10 pt-3 pb-5 sm:pb-10 ">
 					<div className="mt-5 sm:my-10 whitespace-nowrap">{noDataText}</div>

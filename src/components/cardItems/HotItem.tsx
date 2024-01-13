@@ -45,7 +45,7 @@ const HotItem = () => {
 					<Link to={`/products/detail/${item.id}`} key={`HotItem - ${idx}`}>
 						<div
 							key={idx}
-							className="relative flex p-3 border rounded-lg bg-BASIC_WHITE dark:bg-LINE_POINT_COLOR sm:flex-col sm:w-38 md:w-72 border-LIGHT_GRAY_COLOR text-BASIC_BLACK dark:text-ITEM_BG_COLOR"
+							className="relative flex p-3 border rounded-lg bg-BASIC_WHITE dark:bg-LINE_POINT_COLOR sm:flex-col sm:w-38 md:w-72 sm:h-56 md:h-80 border-LIGHT_GRAY_COLOR text-BASIC_BLACK dark:text-ITEM_BG_COLOR"
 						>
 							<div className="overflow-hidden max-h-36 md:max-h-64">
 								<img
@@ -57,7 +57,7 @@ const HotItem = () => {
 							</div>
 							<div className="flex-1 text-sm font-bold">
 								<div className="relative inline-block my-3">
-									<p className="relative overflow-x-hidden">
+									<p className="relative z-10 overflow-x-hidden">
 										{item.title && item.title.slice(0, 20)}
 									</p>
 									<span className="absolute bottom-0 left-0 hidden w-full p-1 opacity-75 md:block bg-SPECIAL_COLOR dark:bg-MAIN_COLOR"></span>
