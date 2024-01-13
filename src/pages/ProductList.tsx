@@ -25,7 +25,7 @@ export interface ProductInfo {
 const ProductList = () => {
 	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	const [search, setSearch] = useState("");
-	const [isSort, setIsSort] = useState(false);
+	const [isSort, setIsSort] = useState(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [sort, setSort] = useState("");
 	const [isTitleSearch, setIsTitleSearch] = useState("title=");

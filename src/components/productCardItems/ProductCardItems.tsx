@@ -33,7 +33,7 @@ export default function ProductCardItems({ item }: ProductCardItmesTypes) {
 				</div>
 				<div className="w-full pt-3 text-BASIC_BLACK">
 					<h3 className="mb-2 text-md">
-						{item && item.title?.slice(0, 40)}...
+						{item && item.title?.slice(0, 35)}...
 					</h3>
 					<p className="text-LIGHT_GRAY_COLOR">@{item && item.shopName}</p>
 					<span className="float-right mt-1">
