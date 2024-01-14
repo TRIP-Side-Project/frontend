@@ -65,8 +65,8 @@ const RecoilTag = ({
 			<div
 				className={
 					inputStyle
-						? "flex flex-row rounded-lg border border-BASIC_BLACK px-2 py-1 mt-2 w-full h-fit md:h-9"
-						: "flex text-sm font-semibold border bg-BAISC_WHITE flex-row px-3 rounded-xl border-BASIC_BLACK h-fit md:h-9"
+						? "flex flex-row rounded-lg border border-BASIC_BLACK px-2 mt-2 w-full h-fit "
+						: "flex text-sm font-semibold border bg-BAISC_WHITE flex-row px-3 rounded-xl border-BASIC_BLACK h-fit"
 				}
 				onClick={onOffTag}
 			>
