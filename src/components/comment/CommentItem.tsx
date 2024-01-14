@@ -11,21 +11,32 @@ interface CommentItems {
 	datas: CommentTypes;
 	isHide?: boolean;
 	setIsHide?: () => void;
+	showComment: number | null;
 	type: "origin" | "child";
 }
 
-const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
+const CommentItem = ({
+	datas,
+	isHide,
+	setIsHide,
+	type,
+	showComment,
+}: CommentItems) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [is2CHide, setIs2CHide] = useState(false);
 	const [editCommitId, setEditCommentId] = useState<number | null>(null);
+	// const [reHcommentId, setReHcommentId] = useState<number | null>(null);
 	const MEMBER_ID = window.localStorage.getItem("memberId"); //임시
-	//console.log(datas);
+	// console.log(datas);
 	const formattedDate = useFormatDate(datas.createdAt);
 
 	const handle2CHide = (commentId: number) => {
 		setEditCommentId(commentId);
 		setIs2CHide(!is2CHide);
 	};
+	// const handleReCHide = (reCommentId: number) => {
+	// 	setReHcommentId(reCommentId)
+	// }
 
 	//css
 	const bgClass =
@@ -87,9 +98,11 @@ const CommentItem = ({ datas, isHide, setIsHide, type }: CommentItems) => {
 							{datas.children !== null && datas.children.length !== 0 ? (
 								<HideComment
 									isHide={isHide as boolean}
-									onClick={setIsHide as () => void}
+									setIsHide={setIsHide as () => void}
+									showComment={showComment}
 									isLength={datas.children.length}
 									key={`comment-showComment-${datas.commentId}`}
+									curId={datas.commentId}
 								/>
 							) : (
 								<></>
