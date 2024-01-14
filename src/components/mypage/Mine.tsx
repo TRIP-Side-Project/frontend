@@ -32,7 +32,7 @@ const Mine = () => {
 	);
 	//Tab 변경에 따른 데이터 컴포넌트
 	const [mineContent, setMineContent] = useState();
-
+	console.log(selectedTab);
 	const getMineDatas = async () => {
 		try {
 			let URL;

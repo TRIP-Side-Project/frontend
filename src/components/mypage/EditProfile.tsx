@@ -1,5 +1,5 @@
 import MyPageModal from "@/components/modal/MypageModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import Temp from "@/assets/img/temp.png";
 import Setting from "@/assets/svg/Setting";
 import { MyDataProps } from "@/types/myProfile";
@@ -22,6 +22,10 @@ const EditProfile = ({ data }: MyDataProps) => {
 	const handleMineItems = (item: string) => {
 		setActiveBtn(item);
 	};
+
+	useEffect(() => {
+		setSelectedTab("likeMerchan");
+	}, []);
 
 	//style
 	const summaryTitle =
