@@ -43,6 +43,7 @@ const Comment = () => {
 	const handleHideComment = (commentId: number) => {
 		setIsHide(!isHide);
 		setShowComment(commentId);
+		// console.log(`comment ${commentId}`);
 	};
 
 	const getComments = async () => {
@@ -92,6 +93,7 @@ const Comment = () => {
 								isHide={isHide}
 								setIsHide={() => handleHideComment(comment.commentId)}
 								type={"origin"}
+								showComment={showComment}
 							/>
 							{isHide &&
 							comment.children !== null &&
@@ -102,7 +104,11 @@ const Comment = () => {
 											className="flex flex-row justify-between px-2 ml-10 "
 										>
 											<ArrowComment width={"25px"} height={"25px"} />
-											<CommentItem datas={childComment} type={"child"} />
+											<CommentItem
+												datas={childComment}
+												type={"child"}
+												showComment={showComment}
+											/>
 										</div>
 								  ))
 								: null}

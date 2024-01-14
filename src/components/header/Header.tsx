@@ -50,9 +50,10 @@ const Header = () => {
 
 	//로그아웃 클릭 핸들
 	const handleLogOut = () => {
-		// localStorage.removeItem("access_token");
+		localStorage.removeItem("access_token");
+		localStorage.removeItem("memberId");
 		// localStorage.removeItem("");
-		localStorage.clear();
+		// localStorage.clear();
 		setIsLogin({ loginState: false });
 		setIsNotifiOpen(false);
 		window.location.href = "/";
